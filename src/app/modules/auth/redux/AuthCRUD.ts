@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/users/verify_token`
 export const LOGIN_URL = `${API_URL}/Token`
 export const REGISTER_URL = `${API_URL}/users/register`
-export const REQUEST_PASSWORD_URL = `${API_URL}/users/forgot_password`
+export const REQUEST_PASSWORD_URL = `${API_URL}/Api/Inner/RecoverPassword`
 export const UPDATE_PASSWORD_URL = `${API_URL}/users/update_password`
 
 // Server should return AuthModel
@@ -32,9 +32,9 @@ export function register(email: string, firstname: string, lastname: string, pas
 }
 
 // Server should return object => { result: boolean } (Is Email in DB)
-export function requestPassword(email: string) {
+export function requestPassword(email: string,userName:string) {
   return axios.post(REQUEST_PASSWORD_URL, {
-    email
+    contactInfo:email
   })
 }
 export function updatePassword(password: string, token: string) {

@@ -2,7 +2,7 @@
 import { FC } from 'react'
 import clsx from 'clsx'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserModel } from '../../../../app/modules/auth/models/UserModel'
 import { RootState } from '../../../../setup'
 import { Languages } from './Languages'
@@ -46,27 +46,33 @@ const HeaderUserMenu: FC = () => {
 
       <div className='separator my-2'></div>
 
-      
 
-     
 
-    
 
-        
-  
+
+
+
+
+
 
       <div className='separator my-2'></div>
 
       <div
-          className={clsx('cursor-pointer symbol', toolbarUserAvatarHeightClass)}
-          data-kt-menu-trigger='click'
-          data-kt-menu-attach='parent'
-          data-kt-menu-placement='bottom-end'
-          data-kt-menu-flip='bottom'
-        >
-          {/* <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='metronic' /> */}
-           <Languages />
-        </div>
+        className={clsx('cursor-pointer symbol', toolbarUserAvatarHeightClass)}
+        data-kt-menu-trigger='click'
+        data-kt-menu-attach='parent'
+        data-kt-menu-placement='bottom-end'
+        data-kt-menu-flip='bottom'
+      >
+        {/* <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='metronic' /> */}
+        <Languages />
+      </div>
+
+      <div className='menu-item px-5'>
+        <Link to='/change-password' className='menu-link px-5'>
+          Change Password
+        </Link>
+      </div>
 
       <div className='menu-item px-5'>
         <a onClick={logout} className='menu-link px-5'>

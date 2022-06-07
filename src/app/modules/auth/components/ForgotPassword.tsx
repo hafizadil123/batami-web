@@ -1,12 +1,15 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {useFormik} from 'formik'
-import {requestPassword} from '../redux/AuthCRUD'
+import { Link } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { requestPassword } from '../redux/AuthCRUD';
+import axios from 'axios'
+const API_URL = process.env.REACT_APP_API_URL;
 
 const initialValues = {
   email: '',
+  userName: ''
 }
 
 const forgotPasswordSchema = Yup.object().shape({
@@ -15,6 +18,7 @@ const forgotPasswordSchema = Yup.object().shape({
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Email is required'),
+  userName: Yup.string().required('Required')
 })
 
 export function ForgotPassword() {
@@ -23,23 +27,37 @@ export function ForgotPassword() {
   const formik = useFormik({
     initialValues,
     validationSchema: forgotPasswordSchema,
-    onSubmit: (values, {setStatus, setSubmitting}) => {
-      setLoading(true)
-      setHasErrors(undefined)
-      setTimeout(() => {
-        requestPassword(values.email)
-          .then(({data: { msg }}) => {
-            setStatus(msg)
-            setHasErrors(false)
-            setLoading(false)
-          })
-          .catch(() => {
-            setHasErrors(true)
-            setLoading(false)
-            setSubmitting(false)
-            setStatus('The login detail is incorrect')
-          })
-      }, 1000)
+    onSubmit: async (values, { setStatus, setSubmitting }) => {
+      console.log('Emaillll', values.email, values.userName);
+      try {
+        setLoading(true);
+        setStatus('');
+        const response = await axios.post(API_URL + '/Api/Inner/RecoverPassword', { userName: values.userName, contanctInfo: values.email },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+        if (response) {
+          console.log('Responseeee', response)
+          // setStatus(msg)
+          setHasErrors(false);
+          setLoading(false);
+          const { data } = response;
+          // localStorage.setItem('logged_user_detail', JSON.stringify(data))
+          // window.location.href = '/dashboard';
+        }
+      } catch (err) {
+        setHasErrors(true)
+        setLoading(false)
+        setSubmitting(false)
+        setStatus('Some Error occured');
+      }
+
+
+
+      /////////////////////////
     },
   })
 
@@ -87,7 +105,7 @@ export function ForgotPassword() {
             {...formik.getFieldProps('email')}
             className={clsx(
               'form-control form-control-lg form-control-solid',
-              {'is-invalid': formik.touched.email && formik.errors.email},
+              { 'is-invalid': formik.touched.email && formik.errors.email },
               {
                 'is-valid': formik.touched.email && !formik.errors.email,
               }
@@ -97,6 +115,28 @@ export function ForgotPassword() {
             <div className='fv-plugins-message-container'>
               <div className='fv-help-block'>
                 <span role='alert'>{formik.errors.email}</span>
+              </div>
+            </div>
+          )}
+
+          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>Username</label>
+          <input
+            type='text'
+            placeholder=''
+            autoComplete='off'
+            {...formik.getFieldProps('userName')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              { 'is-invalid': formik.touched.userName && formik.errors.userName },
+              {
+                'is-valid': formik.touched.userName && !formik.errors.userName,
+              }
+            )}
+          />
+          {formik.touched.userName && formik.errors.userName && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.userName}</span>
               </div>
             </div>
           )}
@@ -112,7 +152,7 @@ export function ForgotPassword() {
           >
             {loading ? (
               <span className='indicator-label'>please wait....</span>
-            ):  <span className='indicator-label'>Submit</span>}
+            ) : <span className='indicator-label'>Submit</span>}
           </button>
           <Link to='/auth/login'>
             <button

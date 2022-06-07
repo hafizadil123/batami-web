@@ -39,8 +39,8 @@ export function AsideMenuMain() {
         fontIcon='bi-archive'
         icon='/media/icons/duotune/general/gen022.svg'
       > */}
-      {/* <AsideMenuItem to={`/clan-meeting/branding?consumerId=${obj.consumerId}`} title='Branding' hasBullet={false}></AsideMenuItem> */}
-     
+      <AsideMenuItem to={`/`} title='Branding' hasBullet={false}></AsideMenuItem>
+
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub
         to='/crafted/accounts'

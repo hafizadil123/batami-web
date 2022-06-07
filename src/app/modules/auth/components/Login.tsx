@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react'
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import axios from 'axios';
 import * as Yup from 'yup'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
+
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
@@ -37,18 +38,18 @@ export function Login(props: any) {
         params.append('password', values.password)
         params.append('grant_type', 'password')
         const response = await axios.post(LOGIN_URL, params);
-        if(response) {
-         setLoading(false);
-         const { data } = response;
-         localStorage.setItem('logged_user_detail', JSON.stringify(data))
-         console.log('data', data);
+        if (response) {
+          setLoading(false);
+          const { data } = response;
+          localStorage.setItem('logged_user_detail', JSON.stringify(data))
+          window.location.href = '/dashboard';
         }
-      } catch(err) {
+      } catch (err) {
         setLoading(false)
         setSubmitting(false)
         setStatus('The login detail is incorrect')
       }
-      } 
+    }
   })
 
   return (
@@ -59,7 +60,7 @@ export function Login(props: any) {
       id='kt_login_signin_form'
     >
       {/* begin::Heading */}
-     
+
       <div className='text-center mb-10'>
         <h1 className='text-dark mb-3'>{<FormattedMessage id="AUTH.GENERAL.ACCOUNT_DETAILS" />}</h1>
       </div>
@@ -75,8 +76,8 @@ export function Login(props: any) {
 
       {/* begin::Form group */}
       <div className='fv-row mb-10'>
-        <label className='form-label fs-6 fw-bolder text-dark'>{<FormattedMessage id="AUTH.INPUT.USERNAME"/>}</label>
-        
+        <label className='form-label fs-6 fw-bolder text-dark'>{<FormattedMessage id="AUTH.INPUT.USERNAME" />}</label>
+
         <input
           placeholder='username'
           {...formik.getFieldProps('username')}
@@ -104,7 +105,7 @@ export function Login(props: any) {
         <div className='d-flex justify-content-between mt-n5'>
           <div className='d-flex flex-stack mb-2'>
             {/* begin::Label */}
-            <label className='form-label fw-bolder text-dark fs-6 mb-0'><FormattedMessage id="AUTH.INPUT.PASSWORD"/></label>
+            <label className='form-label fw-bolder text-dark fs-6 mb-0'><FormattedMessage id="AUTH.INPUT.PASSWORD" /></label>
             {/* end::Label */}
             {/* begin::Link */}
             <Link
@@ -158,7 +159,7 @@ export function Login(props: any) {
           )}
         </button>
 
-     
+
       </div>
       {/* end::Action */}
     </form>
