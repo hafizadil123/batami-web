@@ -47,14 +47,6 @@ const HeaderUserMenu: FC = () => {
       <div className='separator my-2'></div>
 
 
-
-
-
-
-
-
-
-
       <div className='separator my-2'></div>
 
       <div
@@ -69,7 +61,7 @@ const HeaderUserMenu: FC = () => {
       </div>
 
       <div className='menu-item px-5'>
-        <Link to='/change-password' className='menu-link px-5'>
+        <Link to='/profile/change-password' className='menu-link px-5'>
           Change Password
         </Link>
       </div>

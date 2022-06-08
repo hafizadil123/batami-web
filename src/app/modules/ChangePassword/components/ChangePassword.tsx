@@ -61,8 +61,8 @@ export function ChangePassword() {
   return (
     <>
 
-      Hereeeeeeeeeeeeeee
-      {/* <form
+
+      <form
         className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
         noValidate
         id='kt_login_password_reset_form'
@@ -153,7 +153,7 @@ export function ChangePassword() {
             </button>
           </Link>{' '}
         </div>
-      </form> */}
+      </form>
     </>
   )
 }

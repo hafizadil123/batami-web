@@ -24,7 +24,7 @@ const PrivateRoutes = () => {
         <Route path='dashboard' element={<DashboardWrapper />} />
         <Route path='builder' element={<BuilderPageWrapper />} />
         <Route path='menu-test' element={<MenuTestPage />} />
-        <Route path='change-password/*' element={<ChangePassword1 />} />
+        <Route path='profile/*' element={<ChangePassword1 />} />
 
         {/* Lazy Modules */}
         <Route
