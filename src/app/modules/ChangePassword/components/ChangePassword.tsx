@@ -60,23 +60,19 @@ export function ChangePassword() {
 
   return (
     <>
-      <form
+
+      Hereeeeeeeeeeeeeee
+      {/* <form
         className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
         noValidate
         id='kt_login_password_reset_form'
         onSubmit={formik.handleSubmit}
       >
         <div className='text-center mb-10'>
-          {/* begin::Title */}
           <h1 className='text-dark mb-3'>Change Password ?</h1>
-          {/* end::Title */}
-
-          {/* begin::Link */}
           <div className='text-gray-400 fw-bold fs-4'>Enter your email to reset your password.</div>
-          {/* end::Link */}
         </div>
 
-        {/* begin::Title */}
         {hasErrors === true && (
           <div className='mb-lg-15 alert alert-danger'>
             <div className='alert-text font-weight-bold'>
@@ -90,9 +86,7 @@ export function ChangePassword() {
             <div className='text-info'>{formik.status}</div>
           </div>
         )}
-        {/* end::Title */}
 
-        {/* begin::Form group */}
         <div className='fv-row mb-10'>
           <label className='form-label fw-bolder text-gray-900 fs-6'>Email</label>
           <input
@@ -138,9 +132,6 @@ export function ChangePassword() {
             </div>
           )}
         </div>
-        {/* end::Form group */}
-
-        {/* begin::Form group */}
         <div className='d-flex flex-wrap justify-content-center pb-lg-0'>
           <button
             type='submit'
@@ -162,8 +153,7 @@ export function ChangePassword() {
             </button>
           </Link>{' '}
         </div>
-        {/* end::Form group */}
-      </form>
+      </form> */}
     </>
   )
 }

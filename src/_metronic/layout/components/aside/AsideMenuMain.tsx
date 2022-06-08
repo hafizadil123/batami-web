@@ -39,7 +39,18 @@ export function AsideMenuMain() {
         fontIcon='bi-archive'
         icon='/media/icons/duotune/general/gen022.svg'
       > */}
-      <AsideMenuItem to={`/`} title='Branding' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Sorting' icon='/media/icons/duotune/coding/sort.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Tours' icon='/media/icons/duotune/coding/tour.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Settings' icon='/media/icons/duotune/coding/settings.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Documents' icon='/media/icons/duotune/coding/documents.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Messages' icon='/media/icons/duotune/coding/messages.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Salary' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Personal Detail' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Attendance' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Abroad' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Apartment' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='My Prefereneces' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='Daily Attendance' hasBullet={false}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub
