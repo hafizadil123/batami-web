@@ -4,16 +4,19 @@ import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import axios from 'axios'
+import { FormattedMessage } from 'react-intl';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const initialValues = {
   password: '',
+  NewPassword: '',
   ConfirmPassword: ''
 }
 
 const changePasswordSchema = Yup.object().shape({
   password: Yup.string()
     .required('Email is required'),
+  NewPassword: Yup.string().required('Required'),
   ConfirmPassword: Yup.string().required('Required')
 })
 
@@ -69,8 +72,12 @@ export function ChangePassword() {
         onSubmit={formik.handleSubmit}
       >
         <div className='text-center mb-10'>
-          <h1 className='text-dark mb-3'>Change Password ?</h1>
-          <div className='text-gray-400 fw-bold fs-4'>Enter your email to reset your password.</div>
+          <h1 className='text-dark mb-3'>
+            <FormattedMessage id="AUTH.GENERAL.CHANGE_PASSWORD" />
+          </h1>
+          <div className='text-gray-400 fw-bold fs-4'>
+            {/* Enter your email to reset your password. */}
+          </div>
         </div>
 
         {hasErrors === true && (
@@ -88,14 +95,16 @@ export function ChangePassword() {
         )}
 
         <div className='fv-row mb-10'>
-          <label className='form-label fw-bolder text-gray-900 fs-6'>Email</label>
+          <label className='form-label fw-bolder text-gray-900 fs-6'>
+            <FormattedMessage id="AUTH.GENERAL.PASSWORD" />
+          </label>
           <input
             type='password'
             placeholder=''
             autoComplete='off'
             {...formik.getFieldProps('password')}
             className={clsx(
-              'form-control form-control-lg form-control-solid',
+              'form-control form-control-lg',
               { 'is-invalid': formik.touched.password && formik.errors.password },
               {
                 'is-valid': formik.touched.password && !formik.errors.password,
@@ -110,14 +119,41 @@ export function ChangePassword() {
             </div>
           )}
 
-          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>Username</label>
+          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>
+            <FormattedMessage id="AUTH.GENERAL.NEW_PASSWORD" />
+          </label>
           <input
             type='text'
             placeholder=''
             autoComplete='off'
             {...formik.getFieldProps('userName')}
             className={clsx(
-              'form-control form-control-lg form-control-solid',
+              'form-control form-control-lg',
+              { 'is-invalid': formik.touched.NewPassword && formik.errors.NewPassword },
+              {
+                'is-valid': formik.touched.NewPassword && !formik.errors.NewPassword,
+              }
+            )}
+          />
+          {formik.touched.NewPassword && formik.errors.NewPassword && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.NewPassword}</span>
+              </div>
+            </div>
+          )}
+
+
+          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>
+            <FormattedMessage id="AUTH.GENERAL.CONFIRM_PASSWORD" />
+          </label>
+          <input
+            type='text'
+            placeholder=''
+            autoComplete='off'
+            {...formik.getFieldProps('userName')}
+            className={clsx(
+              'form-control form-control-lg',
               { 'is-invalid': formik.touched.ConfirmPassword && formik.errors.ConfirmPassword },
               {
                 'is-valid': formik.touched.ConfirmPassword && !formik.errors.ConfirmPassword,
@@ -140,7 +176,9 @@ export function ChangePassword() {
           >
             {loading ? (
               <span className='indicator-label'>please wait....</span>
-            ) : <span className='indicator-label'>Submit</span>}
+            ) : <span className='indicator-label'>
+              <FormattedMessage id="AUTH.GENERAL.SUBMIT" />
+            </span>}
           </button>
           <Link to='/auth/login'>
             <button
@@ -149,7 +187,7 @@ export function ChangePassword() {
               className='btn btn-lg btn-light-primary fw-bolder'
               disabled={formik.isSubmitting || !formik.isValid}
             >
-              Cancel
+              <FormattedMessage id="AUTH.GENERAL.CANCEL" />
             </button>
           </Link>{' '}
         </div>

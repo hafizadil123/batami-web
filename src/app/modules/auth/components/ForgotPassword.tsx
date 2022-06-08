@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { requestPassword } from '../redux/AuthCRUD';
 import axios from 'axios'
+import { FormattedMessage } from 'react-intl';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const initialValues = {
@@ -71,11 +72,13 @@ export function ForgotPassword() {
       >
         <div className='text-center mb-10'>
           {/* begin::Title */}
-          <h1 className='text-dark mb-3'>Forgot Password ?</h1>
+          <h1 className='text-dark mb-3'><FormattedMessage id="AUTH.GENERAL.FORGOT_PASSWORD" /></h1>
           {/* end::Title */}
 
           {/* begin::Link */}
-          <div className='text-gray-400 fw-bold fs-4'>Enter your email to reset your password.</div>
+          <div className='text-gray-400 fw-bold fs-4'>
+            <FormattedMessage id="AUTH.GENERAL.ENTER_YOUR_EMAIL_TO_RESET_YOUR_PASSWRD" />
+          </div>
           {/* end::Link */}
         </div>
 
@@ -97,7 +100,9 @@ export function ForgotPassword() {
 
         {/* begin::Form group */}
         <div className='fv-row mb-10'>
-          <label className='form-label fw-bolder text-gray-900 fs-6'>Email</label>
+          <label className='form-label fw-bolder text-gray-900 fs-6'>
+            <FormattedMessage id="AUTH.GENERAL.CONTACTINFO" />
+          </label>
           <input
             type='email'
             placeholder=''
@@ -119,7 +124,9 @@ export function ForgotPassword() {
             </div>
           )}
 
-          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>Username</label>
+          <label className='form-label fw-bolder text-gray-900 fs-6' style={{ marginTop: '5px' }}>
+            <FormattedMessage id="AUTH.GENERAL.USERNAME" />
+          </label>
           <input
             type='text'
             placeholder=''
@@ -152,7 +159,9 @@ export function ForgotPassword() {
           >
             {loading ? (
               <span className='indicator-label'>please wait....</span>
-            ) : <span className='indicator-label'>Submit</span>}
+            ) : <span className='indicator-label'>
+              <FormattedMessage id="AUTH.GENERAL.SUBMIT" />
+            </span>}
           </button>
           <Link to='/auth/login'>
             <button
@@ -161,7 +170,7 @@ export function ForgotPassword() {
               className='btn btn-lg btn-light-primary fw-bolder'
               disabled={formik.isSubmitting || !formik.isValid}
             >
-              Cancel
+              <FormattedMessage id="AUTH.GENERAL.CANCEL" />
             </button>
           </Link>{' '}
         </div>

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { KTSVG } from '../../../helpers'
 import { useSelector } from 'react-redux'
 import { UserModel } from '../../../../app/modules/auth/models/UserModel'
@@ -39,18 +39,19 @@ export function AsideMenuMain() {
         fontIcon='bi-archive'
         icon='/media/icons/duotune/general/gen022.svg'
       > */}
-      <AsideMenuItem to={`/`} title='Sorting' icon='/media/icons/duotune/coding/sort.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Tours' icon='/media/icons/duotune/coding/tour.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Settings' icon='/media/icons/duotune/coding/settings.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Documents' icon='/media/icons/duotune/coding/documents.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Messages' icon='/media/icons/duotune/coding/messages.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Salary' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Personal Detail' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Attendance' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Abroad' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Apartment' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='My Prefereneces' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='Daily Attendance' hasBullet={false}></AsideMenuItem>
+      {/* <FormattedMessage id="AUTH.GENERAL.ACCOUNT_DETAILS" /> */}
+      <AsideMenuItem to={`/`} title={`מִיוּן`} icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='סיורים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='הגדרות' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='מסמכים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='הודעות' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='שכר' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='פרטים אישיים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='נוֹכְחוּת' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='מחוץ לארץ' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='דִירָה' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='ההעדפות שלי' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='נוכחות יומית' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub
