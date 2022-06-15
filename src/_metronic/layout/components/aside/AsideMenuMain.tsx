@@ -16,12 +16,7 @@ export function AsideMenuMain() {
 
   return (
     <>
-      <AsideMenuItem
-        to='/dashboard'
-        icon='/media/icons/duotune/art/art002.svg'
-        title={intl.formatMessage({ id: 'MENU.DASHBOARD' })}
-        fontIcon='bi-app-indicator'
-      />
+    
       {/* <AsideMenuItem
         to='/builder'
         icon='/media/icons/duotune/general/gen019.svg'
@@ -40,18 +35,18 @@ export function AsideMenuMain() {
         icon='/media/icons/duotune/general/gen022.svg'
       > */}
       {/* <FormattedMessage id="AUTH.GENERAL.ACCOUNT_DETAILS" /> */}
-      <AsideMenuItem to={`/`} title={`מִיוּן`} icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='סיורים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='הגדרות' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='מסמכים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='הודעות' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='שכר' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='פרטים אישיים' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='נוֹכְחוּת' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='מחוץ לארץ' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='דִירָה' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='ההעדפות שלי' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='נוכחות יומית' icon='/media/logos/logo-1.svg' hasBullet={false}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title={`מִיוּן`} hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='סיורים' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='הגדרות' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='מסמכים' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='הודעות' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='שכר' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='פרטים אישיים' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='נוֹכְחוּת' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='מחוץ לארץ' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='דִירָה' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='ההעדפות שלי' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub

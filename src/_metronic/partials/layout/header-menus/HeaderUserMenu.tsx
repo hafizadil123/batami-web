@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserModel } from '../../../../app/modules/auth/models/UserModel'
 import { RootState } from '../../../../setup'
+import axios from 'axios';
 import { Languages } from './Languages'
 import * as auth from '../../../../app/modules/auth/redux/AuthRedux'
 import { useDispatch } from 'react-redux'
@@ -16,18 +17,39 @@ const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
   toolbarButtonIconSizeClass = 'svg-icon-1'
 
 const HeaderUserMenu: FC = () => {
-  const user: UserModel = useSelector<RootState>(({ auth }) => auth.user, shallowEqual) as UserModel
+  const [user, setUser] = useState<any>({});
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const getUserDetailUrl = `${API_URL}/api/Inner/GetLoggedInUser`;
+  const logged_user_detail: any = localStorage.getItem('logged_user_detail');
+  const getUser = JSON.parse(logged_user_detail);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const response = await axios.post(getUserDetailUrl, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${getUser.access_token}`
+        }
+      });
+      setUser(response.data)
+    }
+
+    fetchMyAPI()
+   
+  }, []);
   const dispatch = useDispatch()
   const logout = () => {
+    localStorage.removeItem('logged_user_detail')
     dispatch(auth.actions.logout())
+    window.location.href = '/auth';
   }
-
+  console.log(user)
   return (
     <div
       className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px'
       data-kt-menu='true'
     >
-      <div className='menu-item px-3'>
+      <div className='menu-item'>
         <div className='menu-content d-flex align-items-center px-3'>
           <div className='symbol symbol-50px me-5'>
             <img alt='Logo' src={toAbsoluteUrl('/media/avatars/300-1.jpg')} />
@@ -35,11 +57,11 @@ const HeaderUserMenu: FC = () => {
 
           <div className='d-flex flex-column'>
             <div className='fw-bolder d-flex align-items-center fs-5'>
-              Adil Sikandar
+             {user.firstName} {user.lastName}
             </div>
             <a href='#' className='fw-bold text-muted text-hover-primary fs-7'>
-              ahafiz167@gmail.com
-            </a>
+              {user.email}
+             </a>
           </div>
         </div>
       </div>
@@ -47,18 +69,9 @@ const HeaderUserMenu: FC = () => {
       <div className='separator my-2'></div>
 
 
-      <div className='separator my-2'></div>
+    
 
-      <div
-        className={clsx('cursor-pointer symbol', toolbarUserAvatarHeightClass)}
-        data-kt-menu-trigger='click'
-        data-kt-menu-attach='parent'
-        data-kt-menu-placement='bottom-end'
-        data-kt-menu-flip='bottom'
-      >
-        {/* <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='metronic' /> */}
-        <Languages />
-      </div>
+      
 
       <div className='menu-item px-5'>
         <Link to='/profile/change-password' className='menu-link px-5'>

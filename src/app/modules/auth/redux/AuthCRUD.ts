@@ -32,9 +32,10 @@ export function register(email: string, firstname: string, lastname: string, pas
 }
 
 // Server should return object => { result: boolean } (Is Email in DB)
-export function requestPassword(email: string,userName:string) {
+export function requestPassword(contanctInfo: string,userName:string) {
   return axios.post(REQUEST_PASSWORD_URL, {
-    contactInfo:email
+    contactInfo: contanctInfo,
+    userName: userName,
   })
 }
 export function updatePassword(password: string, token: string) {

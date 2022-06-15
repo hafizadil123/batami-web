@@ -12,7 +12,9 @@ import {PrivateRoutes} from './PrivateRoutes'
 import {ErrorsPage} from '../modules/errors/ErrorsPage'
 import {Logout, AuthPage} from '../modules/auth'
 import {RootState} from '../../setup'
-import {App} from '../App'
+import {App} from '../App';
+
+
 
 
 /**
@@ -24,6 +26,7 @@ import {App} from '../App'
 
 const AppRoutes: FC = () => {
   const isAuthorized =localStorage.getItem('logged_user_detail')
+  // setLanguage('he')
   return (
     <BrowserRouter>
       <Routes>

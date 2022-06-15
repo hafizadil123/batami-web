@@ -47,7 +47,7 @@ export function Login(props: any) {
       } catch (err) {
         setLoading(false)
         setSubmitting(false)
-        setStatus('The login detail is incorrect')
+        setStatus('תעודת זהות וסיסמא אינם תקינים, יש לנסות שנית או לפנות למוקד.')
       }
     }
   })

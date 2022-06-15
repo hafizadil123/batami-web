@@ -15,49 +15,52 @@ const initialValues = {
 
 const changePasswordSchema = Yup.object().shape({
   password: Yup.string()
-    .required('Email is required'),
-  NewPassword: Yup.string().required('Required'),
-  ConfirmPassword: Yup.string().required('Required')
+    .required(),
+  NewPassword: Yup.string().required(),
+  ConfirmPassword: Yup.string().required()
 })
 
 export function ChangePassword() {
   const [loading, setLoading] = useState(false)
   const [hasErrors, setHasErrors] = useState<boolean | undefined>(undefined)
+  const logged_user_detail: any = localStorage.getItem('logged_user_detail');
+  console.log('dddd', JSON.parse(logged_user_detail))
+  const getUser = JSON.parse(logged_user_detail);
   const formik = useFormik({
     initialValues,
     validationSchema: changePasswordSchema,
     onSubmit: async (values, { setStatus, setSubmitting }) => {
-      console.log('Emaillll', values.password, values.ConfirmPassword);
       try {
         setLoading(true);
         setStatus('');
-        // const response = await axios.post(API_URL + '/Api/Inner/RecoverPassword', { userName: values.userName, contanctInfo: values.email },
-        //   {
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     }
-        //   }
-        // );
-        // if (response) {
-        //   console.log('Responseeee', response)
-        //   // setStatus(msg)
-        //   setHasErrors(false);
-        //   setLoading(false);
-        //   const { data } = response;
-        //   // localStorage.setItem('logged_user_detail', JSON.stringify(data))
-        //   // window.location.href = '/dashboard';
-        // }
+        const response = await axios.post(API_URL + '/api/Inner/ChangePassword', { oldPassword: values.password, newPassword: values.NewPassword, confirmPassword: values.ConfirmPassword },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `bearer ${getUser.access_token}`
+            }
+          }
+        );
+        if (response) {
+        
+          setHasErrors(false);
+          setLoading(false);
+          const { data } = response;
+          console.log('dataaa', data)
+          if(data.result) {
+            setStatus('הסיסמאות עודכנו')
+          } else  {
+            setStatus(data.message)
+          }
+        }
       }
       catch (err) {
-        // setHasErrors(true)
-        // setLoading(false)
-        // setSubmitting(false)
-        // setStatus('Some Error occured');
+        setHasErrors(true)
+        setLoading(false)
+        setSubmitting(false)
+        setStatus('אירעה שגיאה כלשהי ');
       }
 
-
-
-      /////////////////////////
     },
   })
 
@@ -126,7 +129,7 @@ export function ChangePassword() {
             type='text'
             placeholder=''
             autoComplete='off'
-            {...formik.getFieldProps('userName')}
+            {...formik.getFieldProps('NewPassword')}
             className={clsx(
               'form-control form-control-lg',
               { 'is-invalid': formik.touched.NewPassword && formik.errors.NewPassword },
@@ -151,7 +154,7 @@ export function ChangePassword() {
             type='text'
             placeholder=''
             autoComplete='off'
-            {...formik.getFieldProps('userName')}
+            {...formik.getFieldProps('ConfirmPassword')}
             className={clsx(
               'form-control form-control-lg',
               { 'is-invalid': formik.touched.ConfirmPassword && formik.errors.ConfirmPassword },
