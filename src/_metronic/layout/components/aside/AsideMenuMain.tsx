@@ -16,7 +16,7 @@ export function AsideMenuMain() {
 
   return (
     <>
-    
+
       {/* <AsideMenuItem
         to='/builder'
         icon='/media/icons/duotune/general/gen019.svg'
@@ -47,6 +47,7 @@ export function AsideMenuMain() {
       <AsideMenuItem to={`/`} title='דִירָה' hasBullet={true}></AsideMenuItem>
       <AsideMenuItem to={`/`} title='ההעדפות שלי' hasBullet={true}></AsideMenuItem>
       <AsideMenuItem to={`/`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub

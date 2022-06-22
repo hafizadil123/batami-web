@@ -6,6 +6,7 @@ import { DashboardWrapper } from '../pages/dashboard/DashboardWrapper'
 import { MenuTestPage } from '../pages/MenuTestPage'
 import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
 import { ChangePassword1 } from '../modules/ChangePassword'
+import { UserDetailsPage } from '../modules/user-details'
 
 const PrivateRoutes = () => {
   const BuilderPageWrapper = lazy(() => import('../pages/layout-builder/BuilderPageWrapper'))
@@ -25,6 +26,7 @@ const PrivateRoutes = () => {
         <Route path='builder' element={<BuilderPageWrapper />} />
         <Route path='menu-test' element={<MenuTestPage />} />
         <Route path='profile/*' element={<ChangePassword1 />} />
+        <Route path='/*' element={<UserDetailsPage />} />
 
         {/* Lazy Modules */}
         <Route

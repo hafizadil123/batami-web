@@ -7,6 +7,7 @@ import axios from 'axios'
 import { FormattedMessage } from 'react-intl';
 const API_URL = process.env.REACT_APP_API_URL;
 
+
 const initialValues = {
   password: '',
   NewPassword: '',
@@ -42,14 +43,14 @@ export function ChangePassword() {
           }
         );
         if (response) {
-        
+
           setHasErrors(false);
           setLoading(false);
           const { data } = response;
           console.log('dataaa', data)
-          if(data.result) {
+          if (data.result) {
             setStatus('הסיסמאות עודכנו')
-          } else  {
+          } else {
             setStatus(data.message)
           }
         }
