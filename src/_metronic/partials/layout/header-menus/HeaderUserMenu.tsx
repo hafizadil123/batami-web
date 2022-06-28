@@ -31,6 +31,7 @@ const HeaderUserMenu: FC = () => {
           Authorization: `bearer ${getUser.access_token}`
         }
       });
+      localStorage.setItem('userType', response.data.userType);
       setUser(response.data)
     }
 

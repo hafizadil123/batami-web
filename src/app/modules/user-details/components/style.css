@@ -4,7 +4,18 @@
       box-sizing: border-box;
   }
   
-  
+  .form-control.form-control-solid{
+    background-color: #F5F8FA;
+    border-color: black;
+    color: #5E6278;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+  .form-select.form-select-solid {
+    background-color: #F5F8FA;
+    border-color: black;
+    color: #5E6278;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
   .head-1 {
       margin-top: 1.5rem;
   }

@@ -10,11 +10,14 @@ import { Link } from 'react-router-dom'
 import { toAbsoluteUrl } from '../../../../_metronic/helpers'
 import moment from 'moment';
 import { PasswordMeterComponent } from "../../../../_metronic/assets/ts/components";
+import './style.css'
 const API_URL = process.env.REACT_APP_API_URL;
 
+const logged_user_detail: any = localStorage.getItem('logged_user_detail');
+const getUser = JSON.parse(logged_user_detail);
+let userType = localStorage.getItem('userType');
 
-
-const registrationSchema = Yup.object().shape({
+const userDetailValidation = Yup.object().shape({
   firstname: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
@@ -59,9 +62,10 @@ export function UserDetails() {
     poBox: userDetails?.['poBox'],
     zipCode: userDetails?.['zipCode'],
     schoolCityCode: userDetails?.['schoolCityCode'],
+    cityCode:userDetails?.['cityCode'],
     schoolCode: userDetails?.['schoolCode'],
     houseNumber: userDetails?.['houseNumber'],
-    birthDate: moment(userDetails?.['birthDate']).format('yyyy-MM-DD'),
+    birthDate: "2001-11-1",
     hebYear: userDetails?.['hebYear'],
     hebMonth: userDetails?.['hebMonth'],
     hebDay: userDetails?.['hebDay'],
@@ -82,7 +86,6 @@ export function UserDetails() {
     acceptTerms: false,
   }
 
-  console.log('KAAAAAAAAA', moment(userDetails?.['birthDate']).format('DD/MM/YYYY'));
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -90,7 +93,6 @@ export function UserDetails() {
 
   const getUserDetails = async () => {
     const logged_user_detail: any = localStorage.getItem('logged_user_detail');
-    console.log('USerrrrrrrrrrrr', JSON.parse(logged_user_detail))
     const getUser = JSON.parse(logged_user_detail);
     try {
       setLoading(true);
@@ -113,26 +115,36 @@ export function UserDetails() {
     }
   }
 
+  const getUrl = () => {
+    if(userType === 'Volunteer'){
+      return API_URL + '/api/Inner/UpdateUserDetails'
+    }
+    return  API_URL + '/api/Inner/UpdateUserDetails'
+  }
+
+  const getInitialValues = (initialValues: any) => {
+    if(userType !== 'Volunteer'){
+      delete initialValues['volunteerNumber']
+    }
+    return initialValues
+  }
   const formik = useFormik({
-    initialValues,
+    initialValues: getInitialValues(initialValues),
     enableReinitialize: true,
     // validationSchema: registrationSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
-      setLoading(true)
-      // setTimeout(() => {
-      //   register(values.email, values.firstname, values.lastname, values.password, location.search)
-      //     .then(({data: {api_token, msg}}) => {
-      //       setLoading(false)
-      //       setStatus(msg)
-      //       setSubmitting(false)
-      //       dispatch(auth.actions.register(api_token))
-      //     })
-      //     .catch(() => {
-      //       setLoading(false)
-      //       setSubmitting(false)
-      //       setStatus('Registration process has broken')
-      //     })
-      // }, 1000)
+      setLoading(true);
+      axios.post(getUrl(), values, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${getUser.access_token}`
+        }
+      }).then(res => {
+        setLoading(false);
+        if(res){
+          alert('data has been updated')
+        }
+      });
     },
   })
 
@@ -163,8 +175,8 @@ export function UserDetails() {
       )}
 
       {/* begin::Form group Firstname */}
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
+      <div className='row'>
+        <div className={`${userType === 'Volunteer' ? 'col-xl-6' : 'col-xl-12'}`}>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>Father name</label>
@@ -193,14 +205,16 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
-        <div className='col-xl-6'>
+        {userType === 'Volunteer' && <div className='col-xl-6'>
+      
           <label className='class="form-label fw-bolder text-dark fs-6'>Volunteer Number</label>
           <input
             placeholder=''
             type='text'
-            disabled
             autoComplete='off'
+            disabled
             {...formik.getFieldProps('volunteerNumber')}
+            style={{marginTop:'5px'}}
             className={clsx(
               'form-control form-control-lg form-control-solid',
               {
@@ -218,7 +232,8 @@ export function UserDetails() {
               </div>
             </div>
           )}
-        </div>
+        
+        </div>}
       </div>
 
 
@@ -260,6 +275,7 @@ export function UserDetails() {
             placeholder='First name'
             type='text'
             autoComplete='off'
+            style={{marginTop:'5px'}}
             {...formik.getFieldProps('firstname')}
             className={clsx(
               'form-control form-control-lg form-control-solid',
@@ -314,6 +330,7 @@ export function UserDetails() {
               placeholder='Last name'
               type='text'
               autoComplete='off'
+              
               {...formik.getFieldProps('lastname')}
               className={clsx(
                 'form-control form-control-lg form-control-solid',
@@ -368,8 +385,8 @@ export function UserDetails() {
             <label className='form-label fw-bolder text-dark fs-6'>ID Number</label>
             <input
               placeholder='ID Number'
-              type='text'
               disabled
+              type='text'
               autoComplete='off'
               {...formik.getFieldProps('IdNumber')}
               className={clsx(
@@ -482,12 +499,11 @@ export function UserDetails() {
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>Birthdate</label>
-            {formik.getFieldProps('birthDate').value}
             <input
               // placeholder='Passport'
               type='date'
-              autoComplete='off'
               {...formik.getFieldProps('birthDate')}
+              value="2022-2-2"
               className={clsx(
                 'form-control form-control-lg form-control-solid',
                 {
@@ -581,7 +597,7 @@ export function UserDetails() {
       </div>
 
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
+        <div className='col-xl-6' style={{marginTop: "30px"}}>
           <label className='class="form-label fw-bolder text-dark fs-6' style={{ marginRight: '1rem' }}>Is Army Interested</label>
           <input
             type='checkbox'
@@ -595,18 +611,21 @@ export function UserDetails() {
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>CityCode</label>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <select
-                name='timezone'
-                aria-label='Select a Timezone'
-                data-control='select2'
-                data-placeholder='date_period'
-                className='form-select form-select-sm form-select-solid'
-              >
-                <option value='next'>year</option>
-                <option value='last'>Within the last</option>
-                <option value='between'>Between</option>
-                <option value='on'>On</option>
-              </select>
+            <input
+            placeholder='City Code'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('cityCode')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.cityCode && formik.errors.cityCode,
+              },
+              {
+                'is-valid': formik.touched.cityCode && !formik.errors.cityCode,
+              }
+            )}
+          />
             </div>
           </div>
           {/* end::Form group */}
@@ -1053,10 +1072,9 @@ export function UserDetails() {
         <button
           type='submit'
           id='kt_sign_up_submit'
-          className='btn btn-lg btn-primary w-100 mb-5'
-          disabled={formik.isSubmitting || !formik.isValid || !formik.values.acceptTerms}
+          className='btn btn-lg btn-primary mb-5'
         >
-          {!loading && <span className='indicator-label'>Submit</span>}
+          {!loading && <span className='indicator-label'>Update</span>}
           {loading && (
             <span className='indicator-progress' style={{ display: 'block' }}>
               Please wait...{' '}
@@ -1064,15 +1082,7 @@ export function UserDetails() {
             </span>
           )}
         </button>
-        <Link to='/auth/login'>
-          <button
-            type='button'
-            id='kt_login_signup_form_cancel_button'
-            className='btn btn-lg btn-light-primary w-100 mb-5'
-          >
-            Cancel
-          </button>
-        </Link>
+      
       </div>
       {/* end::Form group */}
     </form>
