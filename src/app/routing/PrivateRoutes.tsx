@@ -14,6 +14,7 @@ const PrivateRoutes = () => {
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
+  const DailyAttendancePage = lazy(() => import('../modules/daily-attendance'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
 
   return (
@@ -27,6 +28,7 @@ const PrivateRoutes = () => {
         <Route path='menu-test' element={<MenuTestPage />} />
         <Route path='profile/*' element={<ChangePassword1 />} />
         <Route path='/*' element={<UserDetailsPage />} />
+        <Route path='/daily-attendance' element={<DailyAttendancePage />} />
 
         {/* Lazy Modules */}
         <Route

@@ -1,91 +1,146 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
+import axios from 'axios'
 import { PageTitle } from '../../../_metronic/layout/core'
-import {
-  MixedWidget2,
-  MixedWidget10,
-  MixedWidget11,
-  ListsWidget2,
-  ListsWidget3,
-  ListsWidget4,
-  ListsWidget5,
-  ListsWidget6,
-  TablesWidget5,
-  TablesWidget10,
-  MixedWidget8,
-} from '../../../_metronic/partials/widgets'
 
-const DashboardPage: FC = () => (
-  <>
-    {/* begin::Row */}
-    <div className='row gy-5 g-xl-8'>
-      <div className='col-xxl-4'>
-        <MixedWidget2
-          className='card-xl-stretch mb-xl-8'
-          chartColor='danger'
-          chartHeight='200px'
-          strokeColor='#cb1e46'
-        />
-      </div>
-      <div className='col-xxl-4'>
-        <ListsWidget5 className='card-xxl-stretch' />
-      </div>
-      <div className='col-xxl-4'>
-        <MixedWidget10
-          className='card-xxl-stretch-50 mb-5 mb-xl-8'
-          chartColor='primary'
-          chartHeight='150px'
-        />
-        <MixedWidget11
-          className='card-xxl-stretch-50 mb-5 mb-xl-8'
-          chartColor='primary'
-          chartHeight='175px'
-        />
-      </div>
-    </div>
-    {/* end::Row */}
+const DashboardPage: FC = () => {
+  
+  const [responseMessage, setResponseMessage] = useState('');
+  const [isStartDisabled,setStartDisabled] = useState(false);
+  const [startTime,setStartTime] = useState(null);
+  const [isEndDisabled,setEndDisabled] = useState(false);
+  const [displayWorkActivity,setDisplayWorkActivity] = useState(false);
+  const [endTime,setEndTime] = useState(null);
+  const [selectedOption,setSelectedOption] = useState(null);
+  const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
 
-    {/* begin::Row */}
-    <div className='row gy-5 gx-xl-8'>
-      <div className='col-xxl-4'>
-        <ListsWidget3 className='card-xxl-stretch mb-xl-3' />
-      </div>
-      <div className='col-xl-8'>
-        <TablesWidget10 className='card-xxl-stretch mb-5 mb-xl-8' />
-      </div>
-    </div>
-    {/* end::Row */}
+  const logged_user_detail: any = localStorage.getItem('logged_user_detail');
+  const loggedInUserDetails = JSON.parse(logged_user_detail);
 
-    {/* begin::Row */}
-    <div className='row gy-5 g-xl-8'>
-      <div className='col-xl-4'>
-        <ListsWidget2 className='card-xl-stretch mb-xl-8' />
-      </div>
-      <div className='col-xl-4'>
-        <ListsWidget6 className='card-xl-stretch mb-xl-8' />
-      </div>
-      <div className='col-xl-4'>
-        <ListsWidget4 className='card-xl-stretch mb-5 mb-xl-8' items={5} />
-        {/* partials/widgets/lists/_widget-4', 'class' => 'card-xl-stretch mb-5 mb-xl-8', 'items' => '5' */}
-      </div>
-    </div>
-    {/* end::Row */}
+  const baseUrl = process.env.REACT_APP_API_URL;
+  const getDailyAttendanceEndpoint = `${baseUrl}/Inner/GetAttendanceDaily`;
+  const saveStartShiftEndpoint = `${baseUrl}/Inner/SaveStartShift`;
+  const saveEndShiftEndpoint = `${baseUrl}Inner/SaveEndShift`;
 
-    <div className='row g-5 gx-xxl-8'>
-      <div className='col-xxl-4'>
-        <MixedWidget8
-          className='card-xxl-stretch mb-xl-3'
-          chartColor='success'
-          chartHeight='150px'
-        />
-      </div>
-      <div className='col-xxl-8'>
-        <TablesWidget5 className='card-xxl-stretch mb-5 mb-xxl-8' />
-      </div>
+  useEffect(() => {
+    getDailyAttendance();
+  },[]);
+
+  const setStartTimeStatus = (time: any) => {
+    setStartDisabled(time != null);
+    setStartTime(time)
+  }
+
+  const setEndTimeStatus = (time: any) => {
+    setEndDisabled(time != null);
+    setEndTime(time)
+  }
+
+  const getDailyAttendance = async() => {
+      const response = await axios.get(getDailyAttendanceEndpoint, 
+        {
+          headers: {
+            Authorization: `bearer ${loggedInUserDetails.access_token}`
+          }
+        })
+
+      if(response && response.data.result){
+        const {data} = response;
+        const {result, message, latestStartTime, latestEndTime, workActivityItems, displayWorkActivity} = data;
+        if(result){
+          setStartTimeStatus(latestStartTime)
+          setEndTimeStatus(latestEndTime)
+          setDisplayWorkActivity(displayWorkActivity)
+          // eslint-disable-next-line no-lone-blocks
+          workActivityItems && workActivityItems.length && setWorkActivityCodeItems(workActivityItems)
+        }
+        setResponseMessage(message)
+      }
+  }
+
+  const saveStartShiftTiming = async() => {
+    const response = await axios.post(saveStartShiftEndpoint,{
+      workActivityCode: selectedOption
+    })
+
+    if(response && response.data.result){
+      const {data} = response;
+      const {result, message} = data;
+      if(result){
+        setStartTimeStatus(data.time)
+      }
+      setResponseMessage(message)
+    }
+  }
+
+  const saveEndShiftTiming = async() => {
+    const response = await axios.post(saveEndShiftEndpoint,{
+      workActivityCode: selectedOption
+    })
+
+    if(response && response.data.result){
+      const {data} = response;
+      const {result, message} = data;
+      if(result){
+        setEndTimeStatus(data.time)
+      }
+      setResponseMessage(message)
+    }
+  }
+
+  const handleChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  }
+
+  return <>
+   <div>
+    {displayWorkActivity && workActivityCodeItems && workActivityCodeItems.length && <select
+      aria-label=''
+      data-control='select2'
+      data-placeholder='Work Activity Code'
+      className='form-select form-select-sm form-select-solid'
+      onChange={handleChange}>
+      {
+        workActivityCodeItems.map(({id, name}) => <option value={id}>{`${name}`}</option>)
+      }
+    </select>
+    }
+
+    <div style={{width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"100px", cursor:"pointer" }}>
+    <button 
+      onClick={() => {
+        if(displayWorkActivity && selectedOption){
+          saveEndShiftTiming()
+        }else{
+
+        }
+      }}
+      disabled={isEndDisabled || responseMessage != null}
+      type='submit' 
+      id='exit_time_button' 
+      className='btn btn-lg btn-secondary mb-5'>
+      {isEndDisabled ? endTime : `Exit`}
+    </button>
+    <button 
+      type='submit' 
+      id='entrance_time_button'  
+      className='btn btn-lg btn-primary mb-5'
+      disabled={isStartDisabled || responseMessage != null}
+      onClick={() => {
+        if(displayWorkActivity && selectedOption){
+          saveStartShiftTiming()
+        }else {
+
+        }
+      }}>
+      {isStartDisabled ? startTime : `Entrance`}
+    </button>
     </div>
+    {responseMessage && <div>{responseMessage}</div>}
+  </div>
   </>
-)
+}
 
 const DashboardWrapper: FC = () => {
   const intl = useIntl()
