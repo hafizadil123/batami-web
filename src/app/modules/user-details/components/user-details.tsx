@@ -38,7 +38,7 @@ const userDetailValidation = Yup.object().shape({
   streetName: Yup.string().max(100, 'Maximum length is 100'),
   houseNumber: Yup.string().max(5, 'Maximum length is 5'),
   apartmentNumber: Yup.number().required().min(1, 'Minimum limit is 1').max(9999, 'Maximum limit is 9999'),
-  houseEnterance: Yup.string().max(5, 'Maximum length is 5').required(),
+  houseEntrance: Yup.string().max(5, 'Maximum length is 5').required(),
   poBox: Yup.string().max(5, 'Maximum length is 10').required(),
   zipCode: Yup.string().max(7, 'Maximum length is 7').matches(/^[0-9]*$/).required(),
   schoolCityCode: Yup.string().required(),
@@ -54,6 +54,7 @@ const userDetailValidation = Yup.object().shape({
   isHighEducation: Yup.boolean(),
   selectedYear: Yup.string(),
   serviceGuideCode: Yup.string(),
+  isArmyInterested: Yup.boolean(),
   friendFirstName: Yup.string().nullable().when('serviceGuideCode', {
     is: (serviceGuideCode: any) => {
       return (serviceGuideCode == 2);
@@ -72,6 +73,10 @@ const userDetailValidation = Yup.object().shape({
     },
     then: Yup.string().required().matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format')
   }),
+  genderCode: Yup.string().when('isArmyInterested', {
+    is: true,
+    then: Yup.string().required()
+  })
   // acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
 })
 
@@ -88,7 +93,6 @@ export function UserDetails() {
 
   const initialValues = {
     ...userDetails,
-    gender: '',
     birthDate: moment(userDetails?.['birthDate']).format('yyyy-MM-DD'),
     // acceptTerms: false,
   }
@@ -120,7 +124,13 @@ export function UserDetails() {
         setLoading(false);
         const { data } = response;
         setUserDetails(data);
-        console.log('dataaa', data)
+        console.log('aAAAAAAAAAAAAAdataaa', data)
+        if (data?.isArmyInterested) {
+          setShowGender(true);
+        }
+        else {
+          setShowGender(false);
+        }
       }
     }
     catch (err) {
@@ -678,20 +688,23 @@ export function UserDetails() {
             {...formik.getFieldProps('isArmyInterested')}
             onChange={() => setShowGender(!show)}
           />
-          {show &&
-            <select
-              style={{ marginTop: '1.5rem' }}
-              aria-label='Select Gender'
-              data-control='select2'
-              data-placeholder='date_period'
-              className='form-select form-select-sm form-select-solid'
-              {...formik.getFieldProps('gender')}
-              onChange={formik.handleChange}
-            >
-              {dataForFields?.genderTypes?.map((item: any) => (
-                <option value={item.id} >{item.name}</option>
-              ))}
-            </select>
+          {!show &&
+            <div className='col-xl-6' >
+              <label className='class="form-label fw-bolder text-dark fs-6' style={{ marginRight: '1rem' }}>Gender</label>
+              <select
+                style={{ marginTop: '1.5rem' }}
+                aria-label='Select Gender'
+                data-control='select2'
+                data-placeholder='date_period'
+                className='form-select form-select-sm form-select-solid'
+                {...formik.getFieldProps('genderCode')}
+                onChange={formik.handleChange}
+              >
+                {dataForFields?.genderTypes?.map((item: any) => (
+                  <option value={item.id} >{item.name}</option>
+                ))}
+              </select>
+            </div>
           }
         </div>
         <div className='col-xl-6'>
@@ -838,26 +851,26 @@ export function UserDetails() {
 
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>House Entrance</label>
+          <label className='form-label fw-bolder text-dark fs-6'>House Enterance</label>
           <input
             placeholder='House Enterance'
             type='text'
             autoComplete='off'
-            {...formik.getFieldProps('houseEnterance')}
+            {...formik.getFieldProps('houseEntrance')}
             className={clsx(
               'form-control form-control-lg form-control-solid',
               {
-                'is-invalid': formik.touched.houseEnterance && formik.errors.houseEnterance,
+                'is-invalid': formik.touched.houseEntrance && formik.errors.houseEntrance,
               },
               {
-                'is-valid': formik.touched.houseEnterance && !formik.errors.houseEnterance,
+                'is-valid': formik.touched.houseEntrance && !formik.errors.houseEntrance,
               }
             )}
           />
-          {formik.touched.houseEnterance && formik.errors.houseEnterance && (
+          {formik.touched.houseEntrance && formik.errors.houseEntrance && (
             <div className='fv-plugins-message-container'>
               <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.houseEnterance}</span>
+                <span role='alert'>{formik.errors.houseEntrance}</span>
               </div>
             </div>
           )}
@@ -1175,32 +1188,32 @@ export function UserDetails() {
 
 
       <div className='row fv-row mb-7'>
-        {show &&
-          <div className='col-xl-6'>
-            <label className='form-label fw-bolder text-dark fs-6'>Selected Year</label>
-            <select
-              style={{ marginTop: '1.5rem' }}
-              aria-label='Select Year'
-              data-control='select2'
-              data-placeholder='date_period'
-              className='form-select form-select-sm form-select-solid'
-              {...formik.getFieldProps('selectedYear')}
-              onChange={formik.handleChange}
-            >
-              {dataForFields?.selectedYearTypes?.map((item: any) => (
-                <option value={item.id} >{item.name}</option>
-              ))}
-            </select>
+        {/* {show && */}
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>Selected Year</label>
+          <select
+            style={{ marginTop: '1.5rem' }}
+            aria-label='Select Year'
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('selectedYear')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.selectedYearTypes?.map((item: any) => (
+              <option value={item.id} >{item.name}</option>
+            ))}
+          </select>
 
-            {formik.touched.educationYears && formik.errors.educationYears && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.educationYears}</span>
-                </div>
+          {formik.touched.educationYears && formik.errors.educationYears && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.educationYears}</span>
               </div>
-            )}
-          </div>
-        }
+            </div>
+          )}
+        </div>
+        {/* } */}
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           {console.log('Formikkkkkkkkk', formik.values)}
