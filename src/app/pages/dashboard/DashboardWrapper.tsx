@@ -38,7 +38,7 @@ const DashboardPage: FC = () => {
   }
 
   const getDailyAttendance = async() => {
-      const response = await axios.get(getDailyAttendanceEndpoint, 
+      const response = await axios.post(getDailyAttendanceEndpoint, 
         {
           headers: {
             Authorization: `bearer ${loggedInUserDetails.access_token}`
@@ -110,13 +110,14 @@ const DashboardPage: FC = () => {
     <div style={{width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"100px", cursor:"pointer" }}>
     <button 
       onClick={() => {
+        console.log('Clicked : ',displayWorkActivity);
         if(displayWorkActivity && selectedOption){
           saveEndShiftTiming()
         }else{
-
+          setResponseMessage('חובה לבחור ערך בשדה פעילות');
         }
       }}
-      disabled={isEndDisabled || responseMessage != null}
+    //  disabled={isEndDisabled || responseMessage != null}
       type='submit' 
       id='exit_time_button' 
       className='btn btn-lg btn-secondary mb-5'>
@@ -126,12 +127,13 @@ const DashboardPage: FC = () => {
       type='submit' 
       id='entrance_time_button'  
       className='btn btn-lg btn-primary mb-5'
-      disabled={isStartDisabled || responseMessage != null}
+    //  disabled={isStartDisabled || responseMessage != null}
       onClick={() => {
+        console.log('Clicked : ',displayWorkActivity);
         if(displayWorkActivity && selectedOption){
           saveStartShiftTiming()
         }else {
-
+          setResponseMessage('חובה לבחור ערך בשדה פעילות');
         }
       }}>
       {isStartDisabled ? startTime : `Entrance`}
