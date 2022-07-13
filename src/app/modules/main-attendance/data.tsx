@@ -31,7 +31,6 @@ export const listData = [
         yearOneValue: null,
         yearTwoValue: null
     },
-    
     {
         keyYearOne: 'SettingDays1',
         keyYearTwo: 'SettingDays2',
