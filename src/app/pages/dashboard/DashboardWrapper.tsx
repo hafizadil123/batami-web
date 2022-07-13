@@ -12,16 +12,21 @@ const DashboardPage: FC = () => {
   const [isEndDisabled,setEndDisabled] = useState(false);
   const [displayWorkActivity,setDisplayWorkActivity] = useState(false);
   const [endTime,setEndTime] = useState(null);
-  const [selectedOption,setSelectedOption] = useState(null);
+  const [selectedOption,setSelectedOption] = useState(0);
   const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
 
   const logged_user_detail: any = localStorage.getItem('logged_user_detail');
   const loggedInUserDetails = JSON.parse(logged_user_detail);
 
   const baseUrl = process.env.REACT_APP_API_URL;
-  const getDailyAttendanceEndpoint = `${baseUrl}/Inner/GetAttendanceDaily`;
-  const saveStartShiftEndpoint = `${baseUrl}/Inner/SaveStartShift`;
-  const saveEndShiftEndpoint = `${baseUrl}Inner/SaveEndShift`;
+  const getDailyAttendanceEndpoint = `${baseUrl}/api/Inner/GetAttendanceDaily`;
+  const saveStartShiftEndpoint = `${baseUrl}/api/Inner/SaveStartShift`;
+  const saveEndShiftEndpoint = `${baseUrl}/api/Inner/SaveEndShift`;
+  const headerJson = {
+    headers: {
+      Authorization: `bearer ${loggedInUserDetails.access_token}`
+    }
+  }
 
   useEffect(() => {
     getDailyAttendance();
@@ -33,17 +38,13 @@ const DashboardPage: FC = () => {
   }
 
   const setEndTimeStatus = (time: any) => {
+    console.log('Time : ',time);
     setEndDisabled(time != null);
     setEndTime(time)
   }
 
   const getDailyAttendance = async() => {
-      const response = await axios.post(getDailyAttendanceEndpoint, 
-        {
-          headers: {
-            Authorization: `bearer ${loggedInUserDetails.access_token}`
-          }
-        })
+      const response = await axios.post(getDailyAttendanceEndpoint, {},headerJson)
 
       if(response && response.data.result){
         const {data} = response;
@@ -53,7 +54,11 @@ const DashboardPage: FC = () => {
           setEndTimeStatus(latestEndTime)
           setDisplayWorkActivity(displayWorkActivity)
           // eslint-disable-next-line no-lone-blocks
-          workActivityItems && workActivityItems.length && setWorkActivityCodeItems(workActivityItems)
+          if(workActivityItems && workActivityItems.length){
+            setWorkActivityCodeItems(workActivityItems)
+            console.log('Data : ',workActivityItems);
+            setSelectedOption(workActivityItems[0].id)
+          }
         }
         setResponseMessage(message)
       }
@@ -62,7 +67,7 @@ const DashboardPage: FC = () => {
   const saveStartShiftTiming = async() => {
     const response = await axios.post(saveStartShiftEndpoint,{
       workActivityCode: selectedOption
-    })
+    },headerJson)
 
     if(response && response.data.result){
       const {data} = response;
@@ -77,7 +82,7 @@ const DashboardPage: FC = () => {
   const saveEndShiftTiming = async() => {
     const response = await axios.post(saveEndShiftEndpoint,{
       workActivityCode: selectedOption
-    })
+    },headerJson)
 
     if(response && response.data.result){
       const {data} = response;
@@ -90,6 +95,7 @@ const DashboardPage: FC = () => {
   }
 
   const handleChange = (event: any) => {
+    console.log('SelectedValue : ',event.target.value);
     setSelectedOption(event.target.value);
   }
 
@@ -100,6 +106,8 @@ const DashboardPage: FC = () => {
       data-control='select2'
       data-placeholder='Work Activity Code'
       className='form-select form-select-sm form-select-solid'
+      disabled={false}
+      value={selectedOption}
       onChange={handleChange}>
       {
         workActivityCodeItems.map(({id, name}) => <option value={id}>{`${name}`}</option>)
@@ -110,14 +118,13 @@ const DashboardPage: FC = () => {
     <div style={{width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"100px", cursor:"pointer" }}>
     <button 
       onClick={() => {
-        console.log('Clicked : ',displayWorkActivity);
-        if(displayWorkActivity && selectedOption){
+        if(displayWorkActivity && selectedOption && startTime != null){
           saveEndShiftTiming()
         }else{
           setResponseMessage('חובה לבחור ערך בשדה פעילות');
         }
       }}
-    //  disabled={isEndDisabled || responseMessage != null}
+      disabled={isEndDisabled}
       type='submit' 
       id='exit_time_button' 
       className='btn btn-lg btn-secondary mb-5'>
@@ -127,9 +134,8 @@ const DashboardPage: FC = () => {
       type='submit' 
       id='entrance_time_button'  
       className='btn btn-lg btn-primary mb-5'
-    //  disabled={isStartDisabled || responseMessage != null}
+      disabled={isStartDisabled || responseMessage != null}
       onClick={() => {
-        console.log('Clicked : ',displayWorkActivity);
         if(displayWorkActivity && selectedOption){
           saveStartShiftTiming()
         }else {
