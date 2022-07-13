@@ -1,125 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { colors, listData } from './data'
+import { colors, listData, parentKeys } from './data'
 
-const MainAttendance = () => {
-    const [data, setData] = useState(listData);
-    const [hasSecondYear, setHasSecondYear] = useState(false);
-
-    const logged_user_detail: any = localStorage.getItem('logged_user_detail');
-    const loggedInUserDetails = JSON.parse(logged_user_detail);
-
-    const baseUrl = process.env.REACT_APP_API_URL;
-    const getAttendanceSummaryEndpoint = `${baseUrl}/api/Inner/GetAttendanceSummary`;
-
-    useEffect(() => {
-        getAttendanceSummary()
-    }, [])
-
-    const getAttendanceSummary = async () => {
-        const response = await axios.post(getAttendanceSummaryEndpoint, {},
-            {
-                headers: {
-                    Authorization: `bearer ${loggedInUserDetails.access_token}`
+const SectionDataView = (props: any) => {
+    const { data, hasSecondYear, sectionTitle, parentKey } = props;
+    return (
+        <div style={{ flex: 1, margin: '5px' }}>
+            <ListHeaderSection headerTitle={`${sectionTitle}`} />
+            {data.map((item: any) => {
+                if (item.parentKey === parentKey && item.yearOneValue != null && item.yearTwoValue != null) {
+                    return <AttendaneDetailItem
+                        item={item}
+                        hasSecondYear={hasSecondYear} />
                 }
             })
-
-        if (response && response.data.result) {
-            const { data } = response;
-            const { result, message, isHasSecondYear } = data;
-            setHasSecondYear(isHasSecondYear);
-            renderDataWithFields(data);
-        }
-    }
-
-    const renderDataWithFields = (data: any) => {
-        Object.keys(data).forEach((item) => {
-            if (!['result', 'message'].includes(item)) {
-                listData.forEach((temp) => {
-                    if (temp.keyYearOne === item) {
-                        temp.yearOneValue = data[`${item}`]
-                    }
-                    if(temp.keyYearTwo === item){
-                        temp.yearTwoValue = data[`${item}`]
-                    }
-                })
-                setData(listData);
             }
-        })
-    }
-
-    return (
-        <>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`נתוני שיבוץ`} />
-                    {data.map((item) => {
-                        if(item.yearOneValue != null && item.yearTwoValue != null){
-                        return <AttendaneDetailItem
-                            item={item}
-                            hasSecondYear={hasSecondYear} />
-                        }
-                        return null
-                    })
-                    }
-                </div>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`Vacation Data`} />
-                    {data.map((item) => {
-                        return <AttendaneDetailItem
-                            item={item}
-                            hasSecondYear={hasSecondYear} />
-                    })
-                    }
-                </div>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`Vacation Data`} />
-                    {data.map((item) => {
-                        if (item.parentKey == 'settingsData') {
-                            return <AttendaneDetailItem
-                                item={item}
-                                hasSecondYear={hasSecondYear} />
-                        }
-                    })
-                    }
-                </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`Vacation Data`} />
-                    {data.map((item) => {
-                        return <AttendaneDetailItem
-                            item={item}
-                            hasSecondYear={hasSecondYear} />
-                    })
-                    }
-                </div>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`Sick Days Data`} />
-                    {data.map((item) => {
-                        return <AttendaneDetailItem
-                            item={item}
-                            hasSecondYear={hasSecondYear} />
-                    })
-                    }
-                </div>
-                <div style={{ flex: 1, margin: '5px' }}>
-                    <ListHeaderSection headerTitle={`Setting Data`} />
-                    {data.map((item) => {
-                        if (item.parentKey == 'settingsData') {
-                            return <AttendaneDetailItem
-                                item={item}
-                                hasSecondYear={hasSecondYear} />
-                        }
-                    })
-                    }
-                </div>
-            </div>
-        </>
+        </div>
     )
 }
-
-export default MainAttendance;
 
 const ListHeaderSection = (props: any) => {
     const { headerTitle } = props;
@@ -133,7 +31,6 @@ const ListHeaderSection = (props: any) => {
         </>
     )
 }
-
 
 const AttendaneDetailItem = (props: any) => {
     const { item, hasSecondYear } = props
@@ -152,3 +49,107 @@ const AttendaneDetailItem = (props: any) => {
         </>
     )
 }
+
+const MainAttendance = () => {
+    const [data, setData] = useState(listData);
+    const [hasSecondYear, setHasSecondYear] = useState(false);
+
+    const logged_user_detail: any = localStorage.getItem('logged_user_detail');
+    const loggedInUserDetails = JSON.parse(logged_user_detail);
+
+    const baseUrl = process.env.REACT_APP_API_URL;
+    const getAttendanceSummaryEndpoint = `${baseUrl}/api/Inner/GetAttendanceSummary`;
+    const getAttendanceShowListEndpoint = `${baseUrl}/api/Inner/GetAttendanceShowList`;
+    const authHeader = {
+        headers: {
+            Authorization: `bearer ${loggedInUserDetails.access_token}`
+        }
+    }
+
+    useEffect(() => {
+        getAttendanceSummary()
+    }, [])
+
+    const getAttendanceSummary = async () => {
+        const response = await axios.post(getAttendanceSummaryEndpoint, {},
+            authHeader)
+
+        if (response && response.data.result) {
+            const { data } = response;
+            const { result, message, isHasSecondYear } = data;
+            setHasSecondYear(isHasSecondYear);
+            renderDataWithFields(data);
+        }
+    }
+
+    const getAttendanceShowList = async (list: any, type: any, year: any) => {
+        const response = await axios.post(getAttendanceShowListEndpoint, {
+            list,
+            type,
+            year,
+            sortBy: 'code',
+            sortOrder: 'asc',
+            page: 1,
+            rows: 15
+
+        }, authHeader)
+
+        if (response && response.data.result) {
+            const { data } = response;
+            const { result, message } = data;
+        }
+    }
+
+    const renderDataWithFields = (data: any) => {
+        Object.keys(data).forEach((item) => {
+            if (!['result', 'message'].includes(item)) {
+                listData.forEach((temp) => {
+                    if (temp.keyYearOne === item) {
+                        temp.yearOneValue = data[`${item}`]
+                    }
+                    if (temp.keyYearTwo === item) {
+                        temp.yearTwoValue = data[`${item}`]
+                    }
+                })
+                setData(listData);
+            }
+        })
+    }
+
+    const
+
+    return (
+        <>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <SectionDataView
+                    parentKey={parentKeys.settingsData}
+                    sectionTitle={`נתוני שיבוץ`}
+                />
+                <SectionDataView
+                    parentKey={parentKeys.vacationData}
+                    sectionTitle={`נתוני חופשה`}
+                />
+                <SectionDataView
+                    parentKey={parentKeys.sickDaysData}
+                    sectionTitle={`נתוני ימי מחלה`}
+                />
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <SectionDataView
+                    parentKey={parentKeys.timeData}
+                    sectionTitle={`נתוני שעות`}
+                />
+                <SectionDataView
+                    parentKey={parentKeys.supplementData}
+                    sectionTitle={`נתוני השלמות`}
+                />
+                <SectionDataView
+                    parentKey={parentKeys.summaryData}
+                    sectionTitle={`סיכום`}
+                />
+            </div>
+        </>
+    )
+}
+
+export default MainAttendance;
