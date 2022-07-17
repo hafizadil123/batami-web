@@ -2,7 +2,7 @@
 export const colors = {
     red: '#ff0000',
     green: '#00FF00',
-    plain: '#808080'
+    plain: '#000000'
 }
 
 export const parentKeys = {
@@ -12,6 +12,12 @@ export const parentKeys = {
     timeData: `timeData`,
     supplementData: `supplementData`,
     summaryData: `summaryData`
+}
+
+export const fieldTypes = {
+    editText: 'editText',
+    checkbox: 'checkbox',
+    text: 'text'
 }
 
 export const listData = [
@@ -411,4 +417,273 @@ export const listData = [
         yearOneValue: null,
         yearTwoValue: null
     },
+]
+
+export const listOneFields = [
+    {
+        key: 'date',
+        name: 'תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'day',
+        name: 'יום',
+        type: fieldTypes.text
+    },
+    {
+        key: 'type',
+        name: 'סוג',
+        type: fieldTypes.text
+    },
+    {
+        key: 'isHalfDay',
+        name: 'האם חצי יום?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'approved',
+        name: 'מאושר?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'note',
+        name: 'הערות',
+        type: fieldTypes.text
+    }
+]
+
+export const listTwoFields = [
+    {
+        key: 'date',
+        name: 'תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'day',
+        name: 'יום',
+        type: fieldTypes.text
+    },
+    {
+        key: 'type',
+        name: 'סוג',
+        type: fieldTypes.text
+    },
+    {
+        key: 'isHalfDay',
+        name: 'האם חצי יום?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'approved',
+        name: 'מאושר?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'isQuarantine',
+        name: 'האם בידוד?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'note',
+        name: 'הערות',
+        type: fieldTypes.text
+    }
+]
+
+export const listThreeFields = [
+    {
+        key: 'fromDate',
+        name: 'מתאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'tillDate',
+        name: 'עד תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'dayNumber',
+        name: 'מספר ימים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'status',
+        name: 'סטטוס',
+        type: fieldTypes.text
+    }
+]
+
+export const listFourFields = [
+    {
+        key: 'fromDate',
+        name: 'מתאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'tillDate',
+        name: 'עד תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'dayNumber',
+        name: 'מספר ימים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'extraType',
+        name: 'סוג',
+        type: fieldTypes.text
+    },
+    {
+        key: 'description',
+        name: 'תיאור',
+        type: fieldTypes.text
+    },
+    {
+        key: 'notes',
+        name: 'הערות',
+        type: fieldTypes.text
+    }
+]
+
+export const listFiveTypeOneFields = [
+    {
+        key: 'name',
+        name: 'סוג',
+        type: fieldTypes.text
+    },
+    {
+        key: 'days',
+        name: 'ימים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'approvedDays',
+        name: 'מאושרים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'onSystemDays',
+        name: 'ע”ח מערכת',
+        type: fieldTypes.text
+    },
+    {
+        key: 'onVolunteerDays',
+        name: 'ע”ח מתנדב',
+        type: fieldTypes.text
+    }
+]
+
+export const listFiveTypeNintyNineFields = [
+    {
+        key: 'day',
+        name: 'תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'dayInWeek',
+        name: 'יום',
+        type: fieldTypes.text
+    },
+    {
+        key: 'absenceType',
+        name: 'סוג',
+        type: fieldTypes.text
+    },
+    {
+        key: 'dayType',
+        name: 'סוג יום',
+        type: fieldTypes.text
+    },
+    {
+        key: 'isHalfDay',
+        name: 'האם חצי יום?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'approved',
+        name: 'מאושר?',
+        type: fieldTypes.checkbox
+    },
+    {
+        key: 'notes',
+        name: 'הערות',
+        type: fieldTypes.text
+    },
+]
+
+export const listSixFields = [
+    {
+        key: 'code',
+        name: 'קוד',
+        type: fieldTypes.text
+    },
+    {
+        key: 'fromDate',
+        name: 'מתאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'tillDate',
+        name: 'עד תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'dayNumber',
+        name: 'מספר ימים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'commSubmitDate',
+        name: 'תאריך הגשה',
+        type: fieldTypes.text
+    },
+    {
+        key: 'commApprovalDate',
+        name: 'תאריך קבלת אישור',
+        type: fieldTypes.text
+    },
+    {
+        key: 'notes',
+        name: 'הערות',
+        type: fieldTypes.text
+    },
+    {
+        key: 'created',
+        name: 'הוסף ב-',
+        type: fieldTypes.text
+    },
+    {
+        key: 'updated',
+        name: 'עודכן לאחרונה ב-',
+        type: fieldTypes.text
+    }
+]
+
+export const listNineFields = [
+    {
+        key: 'fromDate',
+        name: 'מתאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'tillDate',
+        name: 'עד תאריך',
+        type: fieldTypes.text
+    },
+    {
+        key: 'absenceDayNumber',
+        name: 'כמות ימים בטפסים',
+        type: fieldTypes.text
+    },
+    {
+        key: 'vacationDayNumber',
+        name: 'ניכוי ימי חופשה שנתית',
+        type: fieldTypes.text
+    },
+    {
+        key: 'notes',
+        name: 'הערות',
+        type: fieldTypes.text
+    }
 ]
