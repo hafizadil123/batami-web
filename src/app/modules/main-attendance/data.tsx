@@ -47,16 +47,16 @@ export const listData = [
         yearTwoValue: null
     },
     {
-        keyYearOne: 'SettingDays1',
-        keyYearTwo: 'SettingDays2',
+        keyYearOne: 'settingDays1',
+        keyYearTwo: 'settingDays2',
         parentKey: parentKeys.settingsData,
         label: 'ימי שיבוץ',
         color: colors.plain,
         isEditable: false,
         listNo: 3,
         type: 4,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'settingInOtherNPO1',
@@ -67,8 +67,8 @@ export const listData = [
         isEditable: false,
         listNo: 3,
         type: 5,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'settedDays1',
@@ -79,8 +79,8 @@ export const listData = [
         isEditable: false,
         listNo: 3,
         type: 6,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'missingDays1',
@@ -91,8 +91,8 @@ export const listData = [
         isEditable: false,
         listNo: 3,
         type: 4,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'continuityHoleDays1',
@@ -103,8 +103,8 @@ export const listData = [
         isEditable: false,
         listNo: 3,
         type: 8,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
 
     // === Vacation Data === //
@@ -117,8 +117,8 @@ export const listData = [
         isEditable: false,
         listNo: 0,
         type: 0,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'onVolVacationDays1',
@@ -129,8 +129,8 @@ export const listData = [
         isEditable: false,
         listNo: 5,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'missingDaysForCorona1',
@@ -141,8 +141,8 @@ export const listData = [
         isEditable: false,
         listNo: 9,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'onSysVacationDays1',
@@ -153,8 +153,8 @@ export const listData = [
         isEditable: false,
         listNo: 1,
         type: 4,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'extraVacationDays1',
@@ -165,8 +165,8 @@ export const listData = [
         isEditable: false,
         listNo: 4,
         type: 3,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'additionalDays1',
@@ -177,8 +177,8 @@ export const listData = [
         isEditable: false,
         listNo: 4,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'leftVacationDays1',
@@ -189,8 +189,8 @@ export const listData = [
         isEditable: false,
         listNo: 0,
         type: 0,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
    
     // === Sick Days Data === //
@@ -203,8 +203,8 @@ export const listData = [
         isEditable: false,
         listNo: 0,
         type: 0,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
 
     {
@@ -216,8 +216,8 @@ export const listData = [
         isEditable: false,
         listNo: 2,
         type: 5,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'notAppSickDays1',
@@ -228,8 +228,8 @@ export const listData = [
         isEditable: false,
         listNo: 2,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'appSickDays1',
@@ -240,8 +240,8 @@ export const listData = [
         isEditable: false,
         listNo: 1,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'appQuarantineSickDays1',
@@ -252,8 +252,8 @@ export const listData = [
         isEditable: false,
         listNo: 2,
         type: 4,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'aboveSickDays1',
@@ -264,8 +264,8 @@ export const listData = [
         isEditable: false,
         listNo: 1,
         type: 2,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'medicalDays1',
@@ -276,8 +276,8 @@ export const listData = [
         isEditable: false,
         listNo: 6,
         type: 1,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
     {
         keyYearOne: 'leftMedicalDays1',
@@ -288,8 +288,8 @@ export const listData = [
         isEditable: false,
         listNo: 0,
         type: 0,
-        yearOneValue: '',
-        yearTwoValue: ''
+        yearOneValue: null,
+        yearTwoValue: null
     },
 
     // === Time Data === //

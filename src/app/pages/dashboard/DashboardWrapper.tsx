@@ -56,7 +56,6 @@ const DashboardPage: FC = () => {
           // eslint-disable-next-line no-lone-blocks
           if(workActivityItems && workActivityItems.length){
             setWorkActivityCodeItems(workActivityItems)
-            console.log('Data : ',workActivityItems);
             setSelectedOption(workActivityItems[0].id)
           }
         }
@@ -128,7 +127,7 @@ const DashboardPage: FC = () => {
       type='submit' 
       id='exit_time_button' 
       className='btn btn-lg btn-secondary mb-5'>
-      {isEndDisabled ? endTime : `Exit`}
+      {isEndDisabled ? endTime : `יציאה`}
     </button>
     <button 
       type='submit' 
@@ -142,7 +141,7 @@ const DashboardPage: FC = () => {
           setResponseMessage('חובה לבחור ערך בשדה פעילות');
         }
       }}>
-      {isStartDisabled ? startTime : `Entrance`}
+      {isStartDisabled ? startTime : `כניסה`}
     </button>
     </div>
     {responseMessage && <div>{responseMessage}</div>}
