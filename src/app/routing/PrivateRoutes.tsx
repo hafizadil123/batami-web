@@ -16,6 +16,7 @@ const PrivateRoutes = () => {
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const DailyAttendancePage = lazy(() => import('../modules/main-attendance'))
   const DocumentsPage = lazy(() => import('../modules/documents'))
+  const UploadDocumentSection = lazy(() => import('../modules/upload-document'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
 
   return (
@@ -31,6 +32,7 @@ const PrivateRoutes = () => {
         <Route path='/*' element={<UserDetailsPage />} />
         <Route path='/main-attendance' element={<DailyAttendancePage />} />
         <Route path='/documents' element={<DocumentsPage />} />
+        <Route path='/upload-document' element={<UploadDocumentSection />} />
 
         {/* Lazy Modules */}
         <Route
