@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import ReactPaginate from 'react-paginate';
-import { colors, listData, parentKeys, fieldTypes, listOneFields, listTwoFields, listThreeFields } from './data'
+import { colors, listData, parentKeys, fieldTypes, listOneFields, listTwoFields, listThreeFields, listFourFields, listFiveTypeOneFields, listFiveTypeNintyNineFields } from './data'
 
 const SectionDataView = (props: any) => {
     const { data, hasSecondYear, sectionTitle, parentKey, onFieldClicked } = props;
@@ -12,7 +12,8 @@ const SectionDataView = (props: any) => {
             {data && data.map((item: any, index: any) => {
                 const { yearOneValue, yearTwoValue } = item;
                 if (item.parentKey === parentKey) {
-                     if ((hasSecondYear && yearOneValue != null) || (yearOneValue != null && yearTwoValue != null)) {
+                    if ((hasSecondYear && yearOneValue != null) || (yearOneValue != null && yearTwoValue != null)) {
+                        console.log('ITem : ',item)
                         return <AttendaneDetailItem
                             key={index}
                             item={item}
@@ -57,6 +58,7 @@ const AttendaneDetailItem = (props: any) => {
                 <p
                     style={{ marginLeft: '5px', color: color, flex: 3, textAlign: 'right', fontSize: '15px' }}
                     onClick={() => {
+                        console.log('Clicked')
                         onFieldClicked(listNo, type, hasSecondYear ? 2 : 1)
                     }}
                 >{`${label}`}</p>
@@ -166,7 +168,7 @@ const MainAttendance = () => {
         if (response && response.data.result) {
             const { data } = response;
             const { result, message, rows } = data;
-
+            console.log('Data : ',data);
             if (result) {
                 setAlertList(rows);
             }
@@ -197,35 +199,49 @@ const MainAttendance = () => {
                 })
             }
         })
-        console.log('List Data ',listData)
         setData(listData);
     }
 
     const renderDynamicTable = () => {
+        console.log('Selected List : ',selectedList);
+        console.log('Selected Type : ',selectedType);
+        console.log('AlertList : ',alertList);
         if (selectedList === 1) {
             // === If list one is selected then this section will render === //
-            return <table style={{ width: '100%' }} >
-                <thead>
-                    <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
-                        {
-                            listOneFields.map((item, index) => {
-                                return <p key={index} style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
-                            })
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        {
-                            alertList.map((item, index) => {
-                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item[`${listOneFields[index].key}`]}</p>
-                            })
-                        }
-                    </tr>
-                </tbody>
-            </table>
+            return <div>
+
+
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={() => { }}
+                    pageRangeDisplayed={5}
+                    pageCount={1}
+                    previousLabel="< previous"
+                />
+                <table style={{ width: '100%' }} >
+                    <thead>
+                        <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5', justifyContent: 'center' }}>
+                            {
+                                listOneFields.map((item, index) => {
+                                    return <p key={index} style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                                })
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {
+                                alertList.map((item, index) => {
+                                    return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item[`${listOneFields[index].key}`]}</p>
+                                })
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         } else if (selectedList === 2) {
-             // === If list two is selected then this section will render === //
+            // === If list two is selected then this section will render === //
             return <table style={{ width: '100%' }} >
                 <thead>
                     <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
@@ -247,12 +263,81 @@ const MainAttendance = () => {
                 </tbody>
             </table>
         } else if (selectedList === 3) {
-             // === If list three is selected then this section will render === //
+            // === If list three is selected then this section will render === //
+            console.log('List 3 : ', listThreeFields)
             return <table style={{ width: '100%' }} >
                 <thead>
                     <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
                         {
                             listThreeFields.map((item) => {
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                            })
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {
+                            alertList.map((item, index) => {
+                                console.log('ITem : ',item);
+                                console.log('EE : ',item[`${listThreeFields[index].key}`]);
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item[`${listThreeFields[index].key}`]}</p>
+                            })
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        } else if (selectedList === 4) {
+            // === If list three is selected then this section will render === //
+            return <table style={{ width: '100%' }} >
+                <thead>
+                    <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
+                        {
+                            listFourFields.map((item) => {
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                            })
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {
+                            alertList.map((item, index) => {
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item[`${listThreeFields[index].key}`]}</p>
+                            })
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        } else if (selectedList === 4 && selectedType === 1) {
+            // === If list three is selected then this section will render === //
+            return <table style={{ width: '100%' }} >
+                <thead>
+                    <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
+                        {
+                            listFiveTypeOneFields.map((item) => {
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                            })
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {
+                            alertList.map((item, index) => {
+                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item[`${listThreeFields[index].key}`]}</p>
+                            })
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        } else if (selectedList === 4 && selectedType === 9) {
+            // === If list three is selected then this section will render === //
+            return <table style={{ width: '100%' }} >
+                <thead>
+                    <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
+                        {
+                            listFiveTypeNintyNineFields.map((item) => {
                                 return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
                             })
                         }
@@ -357,8 +442,8 @@ const MainAttendance = () => {
                                 <thead>
                                     <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
                                         {
-                                            listOneFields.map((item) => {
-                                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                                            listOneFields.map((item, index) => {
+                                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item.key}</p>
                                             })
                                         }
                                     </tr>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import Select from 'react-select'
 import './style.css'
 
@@ -17,7 +18,7 @@ const UploadDocumentSection = () => {
     const [file, setFile] = useState<any>(null)
 
     const inputFileRef = React.createRef<any>()
-
+    const [responseStatus, setResponseStatus] = useState<any>(false);
     const [description, setDescription] = useState<any>('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
@@ -96,22 +97,33 @@ const UploadDocumentSection = () => {
         if (isValidated()) {
             console.log('Data : ', file);
             const data = new FormData()
-            data.append('code', selectedCategoryTypeId.toString());
-            data.append('documentType', selectedDocumentTypeId.toString());
-            data.append('description', description.toString());
-            data.append('startDate', startDate.toString());
-            data.append('endDate', endDate.toString());
-            data.append('file', file);
-            data.append('marriageDate', marriageDate);
-            data.append('bank', selectedBank.toString());
-            data.append('bankBranch', bankBranch.toString());
-            data.append('bankAccount', bankAccount.toString());
-            data.append('reportDate', reportDate.toString());
+
+
+            //   data.append('code', selectedCategoryTypeId !=0 ? selectedCategoryTypeId.toString() : ''+undefined);
+            selectedDocumentTypeId != 0 && data.append('DocumentTypeCode', selectedDocumentTypeId.toString());
+            description && data.append('description', description.toString());
+            startDate && data.append('AttendanceStartDate', moment(startDate).format('DD/MM/YYYY').toString());
+            endDate && data.append('AttendanceEndDate', moment(endDate).format('DD/MM/YYYY').toString());
+            file && data.append('file', file);
+            marriageDate && data.append('MarriageDate', moment(marriageDate).format('DD/MM/YYYY').toString());
+            selectedHMO && data.append('hmoTypeCode', selectedHMO.id.toString());
+            selectedBank != {} && data.append('bankCode', selectedBank.id.toString());
+            bankBranch && data.append('bankBranch', bankBranch.toString());
+            bankAccount && data.append('bankAccount', bankAccount.toString());
+            reportDate && data.append('reportDate', reportDate.toString());
 
             const response = await axios.post(getDocumentsDetailsSaveEndpoint, data, authHeader)
-
-            console.log('Response : ', response);
-
+            console.log('response : ',response)
+            if (response && response.data) {
+                const { data } = response
+                const { result, message } = data;
+               
+                setResponseStatus(result);
+                if (!result)
+                    setErrorMessage(message)
+                else
+                    setErrorMessage('')
+            }
         }
     }
 
@@ -125,12 +137,20 @@ const UploadDocumentSection = () => {
         if (response && response.data.result) {
             const { data } = response;
             const { documentCategoryTypes, hmoTypes, banks } = data;
-            console.log('Data : ', data);
+            // === Assign list and value to Category Type === //
             setCategoryTypes(getTheUpdatedCategoryTypes(documentCategoryTypes) || [])
-            setHmoTypes(getTheUpdatedCategoryTypes(hmoTypes) || [])
-            setBanks(getTheUpdatedCategoryTypes(banks) || [])
+            setSelectedCategoryType(documentCategoryTypes[0] || {});
+            setSelectedCategoryTypeId(documentCategoryTypes[0].id || 0);
+            // === Assign list and value to Document Type === //
             setDocumentTypes(documentCategoryTypes && documentCategoryTypes.length && getTheUpdatedCategoryTypes(documentCategoryTypes[0].documentTypes) || [])
-            console.log('Data : ', data);
+            setSelectedDocumentType(documentCategoryTypes[0] || {})
+            setSelectedDocumentTypeId(documentCategoryTypes[0].id || 0)
+            // === Assign list and value to HMO Type === //
+            setHmoTypes(getTheUpdatedCategoryTypes(hmoTypes) || [])
+            setSelectedHMO(hmoTypes[0] || {})
+            // === Assign list and value to Category Type === //
+            setBanks(getTheUpdatedCategoryTypes(banks) || [])
+            setSelectedBank(banks[0] || {})
         }
     }
 
@@ -146,10 +166,6 @@ const UploadDocumentSection = () => {
             })
         })
         return temp || []
-    }
-
-    const getTheUpdatedDocumentTypes = (documentTypes: any) => {
-        console.log('documentTypes : ', documentTypes);
     }
 
     function handleChange(event: any) {
@@ -174,6 +190,7 @@ const UploadDocumentSection = () => {
                                 setDocumentTypes(getTheUpdatedCategoryTypes(selectedItem && selectedItem.documentTypes))
                                 setSelectedCategoryType(selectedItem)
                                 setSelectedCategoryTypeId(selectedItem.id)
+                                console.log('DocumentTypes : ', selectedItem.documentTypes);
                             }}>
                             {
                                 categoryTypes.map((item: any, index) => {
@@ -336,9 +353,13 @@ const UploadDocumentSection = () => {
                     </div>
                 }
             </div>
-            <button style={{ width: 150, height: 40, cursor: 'pointer', marginTop: 10 }} onClick={() => {
+            <button className='btn btn-lg btn-primary mb-5' onClick={() => {
                 postImageToServer()
             }}>Save</button>
+            {errorMessage && <div className='message_section' style={{ background: responseStatus ? '#4CAF50' : '#EF5350' }}>
+                {errorMessage}
+            </div>
+            }
         </div>
     )
 }

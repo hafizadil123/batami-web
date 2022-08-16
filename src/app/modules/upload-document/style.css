@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: flex-end;
     border: 1px solid black;
+    margin-bottom: 10px;
 }
 .inputView {
     display: flex;
@@ -25,4 +26,10 @@
     text-align: right;
     margin-left: 5px;
     flex: 1;
+}
+.message_section {
+    background-color: #EF5350;
+    color: white;
+    padding: 5px;
+    text-align: center;
 }
