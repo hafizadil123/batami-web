@@ -7,6 +7,8 @@ import { MenuTestPage } from '../pages/MenuTestPage'
 import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
 import { ChangePassword1 } from '../modules/ChangePassword'
 import { UserDetailsPage } from '../modules/user-details'
+import { AdminInterface } from '../modules/admin-interface'
+import { HebrewBirthDate } from '../modules/hebrew-birth-date'
 
 const PrivateRoutes = () => {
   const BuilderPageWrapper = lazy(() => import('../pages/layout-builder/BuilderPageWrapper'))
@@ -33,6 +35,7 @@ const PrivateRoutes = () => {
         <Route path='/main-attendance' element={<DailyAttendancePage />} />
         <Route path='/documents' element={<DocumentsPage />} />
         <Route path='/upload-document' element={<UploadDocumentSection />} />
+        <Route path='/admin-interface' element={<HebrewBirthDate />} />
 
         {/* Lazy Modules */}
         <Route
