@@ -98,7 +98,7 @@
     ]
   },
   "engines": {
-    "node": "14.x"
+    "node": "^14.x.x"
   },
   "devDependencies": {
     "@types/backblaze-b2": "^1.5.1",
