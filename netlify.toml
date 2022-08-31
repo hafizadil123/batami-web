@@ -1,1 +1,5 @@
-CI= npm run build
+# Settings in the [build] context are global and are applied to
+# all contexts unless otherwise overridden by more specific contexts.
+[build]
+  # Default build command.
+  command = "npm run build"
