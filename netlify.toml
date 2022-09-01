@@ -3,3 +3,8 @@
 [build]
   # Default build command.
   command = "npm run build"
+  
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
