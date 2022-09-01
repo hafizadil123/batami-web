@@ -107,7 +107,7 @@ const UploadDocumentSection = () => {
             file && data.append('file', file);
             marriageDate && data.append('MarriageDate', moment(marriageDate).format('DD/MM/YYYY').toString());
             selectedHMO && data.append('hmoTypeCode', selectedHMO.id.toString());
-            selectedBank != {} && data.append('bankCode', selectedBank.id.toString());
+            true && data.append('bankCode', selectedBank.id.toString());
             bankBranch && data.append('bankBranch', bankBranch.toString());
             bankAccount && data.append('bankAccount', bankAccount.toString());
             reportDate && data.append('reportDate', reportDate.toString());
@@ -201,7 +201,7 @@ const UploadDocumentSection = () => {
                     </div>
 
                 </div>
-                {selectedCategoryType != {} && <div className='inputView'>
+                {true && <div className='inputView'>
                     <p className='labelStyle'>Document Type</p>
                     <div className='sectionOne'>
                         <select style={{ width: '100%' }}
