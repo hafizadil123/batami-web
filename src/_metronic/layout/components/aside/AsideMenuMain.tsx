@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { KTSVG } from '../../../helpers'
-import { useSelector } from 'react-redux'
-import { UserModel } from '../../../../app/modules/auth/models/UserModel'
-import { RootState } from '../../../../setup'
-import { AsideMenuItemWithSub } from './AsideMenuItemWithSub'
-import { AsideMenuItem } from './AsideMenuItem'
+import {FormattedMessage, useIntl} from 'react-intl'
+import {KTSVG} from '../../../helpers'
+import {useSelector} from 'react-redux'
+import {UserModel} from '../../../../app/modules/auth/models/UserModel'
+import {RootState} from '../../../../setup'
+import {AsideMenuItemWithSub} from './AsideMenuItemWithSub'
+import {AsideMenuItem} from './AsideMenuItem'
 
 export interface objectV {
   access_token?: string
@@ -16,7 +16,6 @@ export function AsideMenuMain() {
 
   return (
     <>
-
       {/* <AsideMenuItem
         to='/builder'
         icon='/media/icons/duotune/general/gen019.svg'
@@ -35,19 +34,35 @@ export function AsideMenuMain() {
         icon='/media/icons/duotune/general/gen022.svg'
       > */}
       {/* <FormattedMessage id="AUTH.GENERAL.ACCOUNT_DETAILS" /> */}
-      <AsideMenuItem to={`/`} title={`מִיוּן`} hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='סיורים' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='הגדרות' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='מסמכים' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='הודעות' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='שכר' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='פרטים אישיים' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='נוֹכְחוּת' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='מחוץ לארץ' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='דִירָה' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='ההעדפות שלי' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem
+        to={`/`}
+        title={`לוּחַ מַחווָנִים
+`}
+        hasBullet={true}
+      ></AsideMenuItem>
       <AsideMenuItem to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
+
+      <AsideMenuItem to={`/builder`} title='בּוֹנֶה' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem to={`/menu-test`} title='תַפרִיט' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem
+        to={`/documents`}
+        title='מסמכים
+'
+        hasBullet={true}
+      ></AsideMenuItem>
+      <AsideMenuItem
+        to={`/upload-document`}
+        title='להעלות מסמך
+'
+        hasBullet={true}
+      ></AsideMenuItem>
+      <AsideMenuItem
+        to={`/admin-interface`}
+        title='ממשק ניהול
+'
+        hasBullet={true}
+      ></AsideMenuItem>
+      <AsideMenuItem to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub

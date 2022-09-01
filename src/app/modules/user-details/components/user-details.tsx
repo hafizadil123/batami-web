@@ -1,46 +1,50 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useFormik } from 'formik'
+import React, {useState, useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import clsx from 'clsx';
-import { useLocation } from 'react-router-dom'
-import axios from 'axios';
-import { Link } from 'react-router-dom'
-import { toAbsoluteUrl } from '../../../../_metronic/helpers'
-import moment from 'moment';
-import { PasswordMeterComponent } from "../../../../_metronic/assets/ts/components";
+import clsx from 'clsx'
+import {useLocation} from 'react-router-dom'
+import axios from 'axios'
+import {Link} from 'react-router-dom'
+import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+import moment from 'moment'
+import {PasswordMeterComponent} from '../../../../_metronic/assets/ts/components'
 import './style.css'
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL
 
-const logged_user_detail: any = localStorage.getItem('logged_user_detail');
-const getUser = JSON.parse(logged_user_detail);
-let userType = localStorage.getItem('userType');
+const logged_user_detail: any = localStorage.getItem('logged_user_detail')
+const getUser = JSON.parse(logged_user_detail)
+let userType = localStorage.getItem('userType')
 
 const userDetailValidation = Yup.object().shape({
-  firstName: Yup.string()
-    .max(50, 'Maximum 50 letters')
-    .required('First name is required'),
+  firstName: Yup.string().max(50, 'Maximum 50 letters').required('First name is required'),
   volunteerNumber: Yup.string().required('Required'),
   email: Yup.string()
     .email('Wrong email format')
     .max(50, 'Maximum 50 letters')
     .required('Email is required'),
-  lastName: Yup.string()
-    .max(50, 'Maximum 50 letters')
-    .required('Last name is required'),
-  cellPhone: Yup.string().max(10, 'Maximum length is 10').matches(
-    /^(0[23489]\d{7})|(0[57]\d{8})$/,
-    "Incorrect number format"
-  ).required(),
-  phoneNumber: Yup.string().max(10, "Maximum length is 10").matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format'),
+  lastName: Yup.string().max(50, 'Maximum 50 letters').required('Last name is required'),
+  cellPhone: Yup.string()
+    .max(10, 'Maximum length is 10')
+    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect number format')
+    .required(),
+  phoneNumber: Yup.string()
+    .max(10, 'Maximum length is 10')
+    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format'),
   idNumber: Yup.string().required('Required'),
   streetName: Yup.string().max(100, 'Maximum length is 100'),
   houseNumber: Yup.string().max(5, 'Maximum length is 5'),
-  apartmentNumber: Yup.number().required().min(1, 'Minimum limit is 1').max(9999, 'Maximum limit is 9999'),
+  apartmentNumber: Yup.number()
+    .required()
+    .min(1, 'Minimum limit is 1')
+    .max(9999, 'Maximum limit is 9999'),
   houseEntrance: Yup.string().max(5, 'Maximum length is 5').required(),
   poBox: Yup.string().max(5, 'Maximum length is 10').required(),
-  zipCode: Yup.string().max(7, 'Maximum length is 7').matches(/^[0-9]*$/).required(),
+  zipCode: Yup.string()
+    .max(7, 'Maximum length is 7')
+    .matches(/^[0-9]*$/)
+    .required(),
   schoolCityCode: Yup.string().required(),
   passport: Yup.string().max(9, 'Maximum length is 9'),
   schoolCode: Yup.string().required(),
@@ -50,46 +54,56 @@ const userDetailValidation = Yup.object().shape({
   bankBranch: Yup.string(),
   bankAccount: Yup.string(),
   immigrationCountryCode: Yup.string(),
-  educationYears: Yup.number().required().nullable().min(0, 'Minimum limit is 0').max(20, 'Maximum limit is 20'),
+  educationYears: Yup.number()
+    .required()
+    .nullable()
+    .min(0, 'Minimum limit is 0')
+    .max(20, 'Maximum limit is 20'),
   isHighEducation: Yup.boolean(),
   selectedYear: Yup.string(),
   serviceGuideCode: Yup.string(),
   isArmyInterested: Yup.boolean(),
-  friendFirstName: Yup.string().nullable().when('serviceGuideCode', {
-    is: (serviceGuideCode: any) => {
-      return (serviceGuideCode == 2);
-    },
-    then: Yup.string().required()
-  }),
-  friendLastName: Yup.string().nullable().when('serviceGuideCode', {
-    is: (serviceGuideCode: any) => {
-      return (serviceGuideCode == 2);
-    },
-    then: Yup.string().required()
-  }),
-  friendCellPhone: Yup.string().nullable().when('serviceGuideCode', {
-    is: (serviceGuideCode: any) => {
-      return (serviceGuideCode == 2);
-    },
-    then: Yup.string().required().matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format')
-  }),
+  friendFirstName: Yup.string()
+    .nullable()
+    .when('serviceGuideCode', {
+      is: (serviceGuideCode: any) => {
+        return serviceGuideCode == 2
+      },
+      then: Yup.string().required(),
+    }),
+  friendLastName: Yup.string()
+    .nullable()
+    .when('serviceGuideCode', {
+      is: (serviceGuideCode: any) => {
+        return serviceGuideCode == 2
+      },
+      then: Yup.string().required(),
+    }),
+  friendCellPhone: Yup.string()
+    .nullable()
+    .when('serviceGuideCode', {
+      is: (serviceGuideCode: any) => {
+        return serviceGuideCode == 2
+      },
+      then: Yup.string()
+        .required()
+        .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format'),
+    }),
   genderCode: Yup.string().when('isArmyInterested', {
     is: true,
-    then: Yup.string().required()
-  })
+    then: Yup.string().required(),
+  }),
   // acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
 })
 
 export function UserDetails() {
-
   const [loading, setLoading] = useState(false)
-  const [userDetails, setUserDetails] = useState<any>({});
-  const [dataForFields, setGetData] = useState<any>([]);
-  const [show, setShowGender] = useState<any>(false);
-  const [schoolCodes, setSchoolCodesArray] = useState<any>([]);
+  const [userDetails, setUserDetails] = useState<any>({})
+  const [dataForFields, setGetData] = useState<any>([])
+  const [show, setShowGender] = useState<any>(false)
+  const [schoolCodes, setSchoolCodesArray] = useState<any>([])
   const dispatch = useDispatch()
   const location = useLocation()
-
 
   const initialValues = {
     ...userDetails,
@@ -100,58 +114,55 @@ export function UserDetails() {
   console.log('User Details', moment(userDetails?.['birthDate']).format('yyyy-MM-DD'))
 
   useEffect(() => {
-    getUserDetails();
-  }, []);
+    getUserDetails()
+  }, [])
 
   useEffect(() => {
-    getData();
-  }, []);
-
+    getData()
+  }, [])
 
   const getUserDetails = async () => {
-    const logged_user_detail: any = localStorage.getItem('logged_user_detail');
-    const getUser = JSON.parse(logged_user_detail);
+    const logged_user_detail: any = localStorage.getItem('logged_user_detail')
+    const getUser = JSON.parse(logged_user_detail)
     try {
-      setLoading(true);
-      const response = await axios.post(API_URL + '/api/Inner/GetUserDetails', {},
+      setLoading(true)
+      const response = await axios.post(
+        API_URL + '/api/Inner/GetUserDetails',
+        {},
         {
           headers: {
-            Authorization: `bearer ${getUser.access_token}`
-          }
+            Authorization: `bearer ${getUser.access_token}`,
+          },
         }
-      );
+      )
       if (response) {
-        setLoading(false);
-        const { data } = response;
-        setUserDetails(data);
+        setLoading(false)
+        const {data} = response
+        setUserDetails(data)
         console.log('aAAAAAAAAAAAAAdataaa', data)
         if (data?.isArmyInterested) {
-          setShowGender(true);
-        }
-        else {
-          setShowGender(false);
+          setShowGender(true)
+        } else {
+          setShowGender(false)
         }
       }
-    }
-    catch (err) {
-      console.log('Errorrrr', err);
+    } catch (err) {
+      console.log('Errorrrr', err)
     }
   }
 
-
   const getData = async () => {
     try {
-      setLoading(true);
-      const response = await axios.post(API_URL + '/api/Inner/GetData');
+      setLoading(true)
+      const response = await axios.post(API_URL + '/api/Inner/GetData')
       if (response) {
-        setLoading(false);
-        const { data } = response;
-        setGetData(data);
-        console.log('dataaa', data);
+        setLoading(false)
+        const {data} = response
+        setGetData(data)
+        console.log('dataaa', data)
       }
-    }
-    catch (err) {
-      console.log('Errorrrr', err);
+    } catch (err) {
+      console.log('Errorrrr', err)
     }
   }
 
@@ -172,34 +183,36 @@ export function UserDetails() {
     initialValues: getInitialValues(initialValues),
     enableReinitialize: true,
     validationSchema: userDetailValidation,
-    onSubmit: (values, { setStatus, setSubmitting }) => {
-      console.log('VAluesssssssss', values);
-      setLoading(true);
-      axios.post(getUrl(), values, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `bearer ${getUser.access_token}`
-        }
-      }).then(res => {
-        setLoading(false);
-        if (res) {
-          alert('data has been updated')
-        }
-      });
+    onSubmit: (values, {setStatus, setSubmitting}) => {
+      console.log('VAluesssssssss', values)
+      setLoading(true)
+      axios
+        .post(getUrl(), values, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${getUser.access_token}`,
+          },
+        })
+        .then((res) => {
+          setLoading(false)
+          if (res) {
+            alert('data has been updated')
+          }
+        })
     },
   })
 
   useEffect(() => {
-    PasswordMeterComponent.bootstrap();
-  }, []);
+    PasswordMeterComponent.bootstrap()
+  }, [])
 
-  var schools: any = [];
+  var schools: any = []
   for (let i = 0; i < dataForFields?.schoolCityTypes?.length; i++) {
     if (dataForFields.schoolCityTypes[i].id === 3002) {
-      schools = dataForFields.schoolCityTypes[i].schools;
+      schools = dataForFields.schoolCityTypes[i].schools
     }
   }
-  console.log('Schollsssssssss', schools);
+  console.log('Schollsssssssss', schools)
 
   return (
     <form
@@ -211,11 +224,10 @@ export function UserDetails() {
       {/* begin::Heading */}
       <div className='mb-10 text-center'>
         {/* begin::Title */}
-        <h1 className='text-dark mb-3'>User Details</h1>
+        <h1 className='text-dark mb-3'>פרטי המשתמש</h1>
         {/* end::Title */}
       </div>
       {/* end::Heading */}
-
 
       {formik.status && (
         <div className='mb-lg-15 alert alert-danger'>
@@ -228,9 +240,9 @@ export function UserDetails() {
         <div className={`${userType === 'Volunteer' ? 'col-xl-6' : 'col-xl-12'}`}>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Father name</label>
+            <label className='form-label fw-bolder text-dark fs-6'>שם האב</label>
             <input
-              placeholder='Father name'
+              placeholder='שם האב'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('fatherName')}
@@ -254,46 +266,44 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
-        {userType === 'Volunteer' && <div className='col-xl-6'>
-
-          <label className='class="form-label fw-bolder text-dark fs-6'>Volunteer Number</label>
-          <input
-            placeholder=''
-            type='text'
-            autoComplete='off'
-            disabled
-            {...formik.getFieldProps('volunteerNumber')}
-            style={{ marginTop: '5px' }}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.volunteerNumber && formik.errors.volunteerNumber,
-              },
-              {
-                'is-valid': formik.touched.volunteerNumber && !formik.errors.volunteerNumber,
-              }
-            )}
-          />
-          {formik.touched.volunteerNumber && formik.errors.volunteerNumber && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.volunteerNumber}</span>
+        {userType === 'Volunteer' && (
+          <div className='col-xl-6'>
+            <label className='class="form-label fw-bolder text-dark fs-6'>Volunteer Number</label>
+            <input
+              placeholder=''
+              type='text'
+              autoComplete='off'
+              disabled
+              {...formik.getFieldProps('volunteerNumber')}
+              style={{marginTop: '5px'}}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.volunteerNumber && formik.errors.volunteerNumber,
+                },
+                {
+                  'is-valid': formik.touched.volunteerNumber && !formik.errors.volunteerNumber,
+                }
+              )}
+            />
+            {formik.touched.volunteerNumber && formik.errors.volunteerNumber && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.volunteerNumber}</span>
+                </div>
               </div>
-            </div>
-          )}
-
-        </div>}
+            )}
+          </div>
+        )}
       </div>
 
-
       <div className='row fv-row mb-7'>
-
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Mother name</label>
+            <label className='form-label fw-bolder text-dark fs-6'>שם האם</label>
             <input
-              placeholder='Mother name'
+              placeholder='שם האם'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('motherName')}
@@ -319,12 +329,12 @@ export function UserDetails() {
         </div>
 
         <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>First name</label>
+          <label className='class="form-label fw-bolder text-dark fs-6'>שם פרטי</label>
           <input
-            placeholder='First name'
+            placeholder='שם פרטי'
             type='text'
             autoComplete='off'
-            style={{ marginTop: '5px' }}
+            style={{marginTop: '5px'}}
             {...formik.getFieldProps('firstName')}
             className={clsx(
               'form-control form-control-lg form-control-solid',
@@ -347,7 +357,7 @@ export function UserDetails() {
       </div>
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>Immigration Country Code</label>
+          <label className='class="form-label fw-bolder text-dark fs-6'>מדינת עלייה</label>
           <select
             // name='hebYear'
             aria-label=''
@@ -358,7 +368,7 @@ export function UserDetails() {
             onChange={formik.handleChange}
           >
             {dataForFields?.countryTypes?.map((item: any) => (
-              <option value={item.id} >{item.name}</option>
+              <option value={item.id}>{item.name}</option>
             ))}
           </select>
           {formik.touched.immigrationCountryCode && formik.errors.immigrationCountryCode && (
@@ -372,12 +382,11 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Last name</label>
+            <label className='form-label fw-bolder text-dark fs-6'>שם משפחה</label>
             <input
-              placeholder='Last name'
+              placeholder='שם משפחה'
               type='text'
               autoComplete='off'
-
               {...formik.getFieldProps('lastName')}
               className={clsx(
                 'form-control form-control-lg form-control-solid',
@@ -402,9 +411,9 @@ export function UserDetails() {
       </div>
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>Phone</label>
+          <label className='class="form-label fw-bolder text-dark fs-6'>טלפון</label>
           <input
-            placeholder='Phone'
+            placeholder='טלפון'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('phoneNumber')}
@@ -429,9 +438,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>ID Number</label>
+            <label className='form-label fw-bolder text-dark fs-6'>תעודת זהות</label>
             <input
-              placeholder='ID Number'
+              placeholder='תעודת זהות'
               disabled
               type='text'
               autoComplete='off'
@@ -458,12 +467,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>Cell Phone</label>
+          <label className='class="form-label fw-bolder text-dark fs-6'>נייד</label>
           <input
-            placeholder='Cell Phone'
+            placeholder='נייד'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('cellPhone')}
@@ -488,9 +496,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Passport</label>
+            <label className='form-label fw-bolder text-dark fs-6'>דרכון</label>
             <input
-              placeholder='Passport'
+              placeholder='דרכון'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('passport')}
@@ -517,35 +525,36 @@ export function UserDetails() {
       </div>
 
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6'><div>
-          <label className='class="form-label fw-bolder text-dark fs-6'>Bank Code</label>
-          <input
-            placeholder='Bank Code'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('bankCode')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.bankCode && formik.errors.bankCode,
-              },
-              {
-                'is-valid': formik.touched.bankCode && !formik.errors.bankCode,
-              }
-            )}
-          />
-          {formik.touched.bankCode && formik.errors.bankCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.bankCode}</span>
-              </div>
-            </div>
-          )}
-        </div>
+        <div className='col-xl-6'>
           <div>
-            <label className='class="form-label fw-bolder text-dark fs-6'>Bank Branch</label>
+            <label className='class="form-label fw-bolder text-dark fs-6'>בנק</label>
             <input
-              placeholder='Bank Account'
+              placeholder='בנק'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('bankCode')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.bankCode && formik.errors.bankCode,
+                },
+                {
+                  'is-valid': formik.touched.bankCode && !formik.errors.bankCode,
+                }
+              )}
+            />
+            {formik.touched.bankCode && formik.errors.bankCode && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.bankCode}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className='class="form-label fw-bolder text-dark fs-6'>סניף בנק</label>
+            <input
+              placeholder='סניף בנק'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('bankBranch')}
@@ -571,12 +580,12 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Birthdate</label>
+            <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
             <input
               // placeholder='Passport'
               type='date'
               {...formik.getFieldProps('birthDate')}
-              value="2022-2-2"
+              value='2022-2-2'
               className={clsx(
                 'form-control form-control-lg form-control-solid',
                 {
@@ -599,12 +608,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>Bank Account</label>
+          <label className='class="form-label fw-bolder text-dark fs-6'>חשבון בנק</label>
           <input
-            placeholder='Bank Account'
+            placeholder='חשבון בנק'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('bankAccount')}
@@ -629,8 +637,8 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Hebrew Birthdate</label>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               <select
                 // name='hebYear'
                 aria-label=''
@@ -641,7 +649,7 @@ export function UserDetails() {
                 onChange={formik.handleChange}
               >
                 {dataForFields?.hebYears?.map((item: any) => (
-                  <option value={item.id} >{item.name}</option>
+                  <option value={item.id}>{item.name}</option>
                 ))}
                 {/* <option value='last'>Within the last</option>
                 <option value='between'>Between</option>
@@ -656,7 +664,7 @@ export function UserDetails() {
                 onChange={formik.handleChange}
               >
                 {dataForFields?.hebMonths?.map((item: any) => (
-                  <option value={item.id} >{item.name}</option>
+                  <option value={item.id}>{item.name}</option>
                 ))}
               </select>
               <select
@@ -668,19 +676,23 @@ export function UserDetails() {
                 onChange={formik.handleChange}
               >
                 {dataForFields?.hebDays?.map((item: any) => (
-                  <option value={item.id} >{item.name}</option>
+                  <option value={item.id}>{item.name}</option>
                 ))}
               </select>
             </div>
           </div>
           {/* end::Form group */}
         </div>
-
       </div>
 
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6' >
-          <label className='class="form-label fw-bolder text-dark fs-6' style={{ marginRight: '1rem' }}>Is Army Interested</label>
+        <div className='col-xl-6'>
+          <label
+            className='class="form-label fw-bolder text-dark fs-6'
+            style={{marginRight: '1rem'}}
+          >
+            מעוניינת משרד ביטחון{' '}
+          </label>
           <input
             type='checkbox'
             autoComplete='off'
@@ -688,11 +700,16 @@ export function UserDetails() {
             {...formik.getFieldProps('isArmyInterested')}
             onChange={() => setShowGender(!show)}
           />
-          {!show &&
-            <div className='col-xl-6' >
-              <label className='class="form-label fw-bolder text-dark fs-6' style={{ marginRight: '1rem' }}>Gender</label>
+          {!show && (
+            <div className='col-xl-6'>
+              <label
+                className='class="form-label fw-bolder text-dark fs-6'
+                style={{marginRight: '1rem'}}
+              >
+                Gender
+              </label>
               <select
-                style={{ marginTop: '1.5rem' }}
+                style={{marginTop: '1.5rem'}}
                 aria-label='Select Gender'
                 data-control='select2'
                 data-placeholder='date_period'
@@ -701,17 +718,17 @@ export function UserDetails() {
                 onChange={formik.handleChange}
               >
                 {dataForFields?.genderTypes?.map((item: any) => (
-                  <option value={item.id} >{item.name}</option>
+                  <option value={item.id}>{item.name}</option>
                 ))}
               </select>
             </div>
-          }
+          )}
         </div>
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>CityCode</label>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label className='form-label fw-bolder text-dark fs-6'>יישוב</label>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               <select
                 // name='hebYear'
                 aria-label=''
@@ -722,7 +739,7 @@ export function UserDetails() {
                 onChange={formik.handleChange}
               >
                 {dataForFields?.cityTypes?.map((item: any) => (
-                  <option value={item.id} >{item.name}</option>
+                  <option value={item.id}>{item.name}</option>
                 ))}
               </select>
             </div>
@@ -731,13 +748,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>House Number</label>
+          <label className='form-label fw-bolder text-dark fs-6'>בית</label>
           <input
-            placeholder='House Number'
+            placeholder='בית'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('houseNumber')}
@@ -762,9 +777,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Street</label>
+            <label className='form-label fw-bolder text-dark fs-6'>רחוב</label>
             <input
-              placeholder='Street'
+              placeholder='רחוב'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('streetName')}
@@ -790,12 +805,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>Apartment Number</label>
+          <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
           <input
-            placeholder='Apartment Number'
+            placeholder='דירה'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('apartmentNumber')}
@@ -820,9 +834,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>House Number</label>
+            <label className='form-label fw-bolder text-dark fs-6'>בית</label>
             <input
-              placeholder='House Number'
+              placeholder='בית'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('houseNumber')}
@@ -848,12 +862,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>House Enterance</label>
+          <label className='form-label fw-bolder text-dark fs-6'>כניסה</label>
           <input
-            placeholder='House Enterance'
+            placeholder='כניסה'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('houseEntrance')}
@@ -878,9 +891,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Apartment Number</label>
+            <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
             <input
-              placeholder='Apartment Number'
+              placeholder='דירה'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('apartmentNumber')}
@@ -906,13 +919,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>PO Box</label>
+          <label className='form-label fw-bolder text-dark fs-6'>ת.ד</label>
           <input
-            placeholder='PO Box'
+            placeholder='ת.ד'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('poBox')}
@@ -966,12 +977,11 @@ export function UserDetails() {
       </div>
       {/* end::Form group */}
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>Zip Code</label>
+          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
           <input
-            placeholder='Zip Code'
+            placeholder='מיקוד'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('zipCode')}
@@ -1024,12 +1034,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>School City Code</label>
+          <label className='form-label fw-bolder text-dark fs-6'>יישוב בית ספר</label>
           <select
-            style={{ marginTop: '1.5rem' }}
+            style={{marginTop: '1.5rem'}}
             aria-label='Select School City Code'
             data-control='select2'
             data-placeholder='date_period'
@@ -1038,7 +1047,7 @@ export function UserDetails() {
             onChange={formik.handleChange}
           >
             {dataForFields?.schoolCityTypes?.map((item: any) => (
-              <option value={item.id} >{item.name}</option>
+              <option value={item.id}>{item.name}</option>
             ))}
           </select>
           {formik.touched.schoolCityCode && formik.errors.schoolCityCode && (
@@ -1052,9 +1061,9 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
 
-          <label className='form-label fw-bolder text-dark fs-6'>School Code</label>
+          <label className='form-label fw-bolder text-dark fs-6'>בית ספר</label>
           <select
-            style={{ marginTop: '1.5rem' }}
+            style={{marginTop: '1.5rem'}}
             aria-label='Select School Code'
             data-control='select2'
             data-placeholder='date_period'
@@ -1063,7 +1072,7 @@ export function UserDetails() {
             onChange={formik.handleChange}
           >
             {dataForFields?.schoolCityTypes?.map((item: any) => (
-              <option value={item.id} >{item.name}</option>
+              <option value={item.id}>{item.name}</option>
             ))}
           </select>
           {formik.touched.schoolCode && formik.errors.schoolCode && (
@@ -1077,14 +1086,11 @@ export function UserDetails() {
         </div>
       </div>
 
-
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-
-          <label className='form-label fw-bolder text-dark fs-6'>Zip Code</label>
+          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
           <input
-            placeholder='Zip Code'
+            placeholder='מיקוד'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('zipCode')}
@@ -1105,16 +1111,13 @@ export function UserDetails() {
               </div>
             </div>
           )}
-
-
         </div>
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-
-            <label className='form-label fw-bolder text-dark fs-6'>Email</label>
+            <label className='form-label fw-bolder text-dark fs-6'>דוא”ל</label>
             <input
-              placeholder='School Code'
+              placeholder='דוא”ל'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('email')}
@@ -1135,19 +1138,16 @@ export function UserDetails() {
                 </div>
               </div>
             )}
-
           </div>
           {/* end::Form group */}
         </div>
       </div>
 
-
       <div className='row fv-row mb-7'>
         <div className='col-xl-6'>
-
-          <label className='form-label fw-bolder text-dark fs-6'>Education Years</label>
+          <label className='form-label fw-bolder text-dark fs-6'>שנות לימוד</label>
           <input
-            placeholder='Education Years'
+            placeholder='שנות לימוד'
             type='text'
             autoComplete='off'
             {...formik.getFieldProps('educationYears')}
@@ -1172,27 +1172,24 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Is High Education?</label>
+            <label className='form-label fw-bolder text-dark fs-6'>השכלה גבוהה</label>
             <input
               type='checkbox'
               autoComplete='off'
               defaultChecked={userDetails?.['isHighEducation']}
               {...formik.getFieldProps('isHighEducation')}
             />
-
           </div>
           {/* end::Form group */}
         </div>
       </div>
 
-
-
       <div className='row fv-row mb-7'>
         {/* {show && */}
         <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>Selected Year</label>
+          <label className='form-label fw-bolder text-dark fs-6'>תקופת שירות</label>
           <select
-            style={{ marginTop: '1.5rem' }}
+            style={{marginTop: '1.5rem'}}
             aria-label='Select Year'
             data-control='select2'
             data-placeholder='date_period'
@@ -1201,7 +1198,7 @@ export function UserDetails() {
             onChange={formik.handleChange}
           >
             {dataForFields?.selectedYearTypes?.map((item: any) => (
-              <option value={item.id} >{item.name}</option>
+              <option value={item.id}>{item.name}</option>
             ))}
           </select>
 
@@ -1218,9 +1215,9 @@ export function UserDetails() {
           {/* begin::Form group Lastname */}
           {console.log('Formikkkkkkkkk', formik.values)}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>Service Guide Code</label>
+            <label className='form-label fw-bolder text-dark fs-6'>איך הגעת אלינו?</label>
             <select
-              style={{ marginTop: '1.5rem' }}
+              style={{marginTop: '1.5rem'}}
               aria-label='Service Guide Code'
               data-control='select2'
               data-placeholder='date_period'
@@ -1229,23 +1226,20 @@ export function UserDetails() {
               onChange={formik.handleChange}
             >
               {dataForFields?.serviceGuideTypes?.map((item: any) => (
-                <option value={item.id} >{item.name}</option>
+                <option value={item.id}>{item.name}</option>
               ))}
             </select>
-
           </div>
           {/* end::Form group */}
         </div>
       </div>
 
-
-
       <div className='row fv-row mb-7'>
-        {formik.values.serviceGuideCode == 2 &&
+        {formik.values.serviceGuideCode == 2 && (
           <div className='col-xl-6'>
-            <label className='form-label fw-bolder text-dark fs-6'>Friend First Name</label>
+            <label className='form-label fw-bolder text-dark fs-6'>חברה שם פרטי</label>
             <input
-              placeholder='Friend First Name'
+              placeholder='חברה שם פרטי'
               type='text'
               autoComplete='off'
               {...formik.getFieldProps('friendFirstName')}
@@ -1260,7 +1254,6 @@ export function UserDetails() {
               )}
             />
 
-
             {formik.touched.friendFirstName && formik.errors.friendFirstName && (
               <div className='fv-plugins-message-container'>
                 <div className='fv-help-block'>
@@ -1269,15 +1262,15 @@ export function UserDetails() {
               </div>
             )}
           </div>
-        }
+        )}
 
-        {formik.values.serviceGuideCode == 2 &&
+        {formik.values.serviceGuideCode == 2 && (
           <div className='col-xl-6'>
             {/* begin::Form group Lastname */}
             <div>
-              <label className='form-label fw-bolder text-dark fs-6'>Friend Last Name</label>
+              <label className='form-label fw-bolder text-dark fs-6'>חברה שם משפחה</label>
               <input
-                placeholder='Friend First Name'
+                placeholder='חברה שם משפחה'
                 type='text'
                 autoComplete='off'
                 {...formik.getFieldProps('friendLastName')}
@@ -1300,11 +1293,10 @@ export function UserDetails() {
               )}
             </div>
 
-
             <div>
-              <label className='form-label fw-bolder text-dark fs-6'>Friend Cell Phone</label>
+              <label className='form-label fw-bolder text-dark fs-6'>חברה נייד</label>
               <input
-                placeholder='Friend Cell Phone'
+                placeholder='חברה נייד'
                 type='text'
                 autoComplete='off'
                 {...formik.getFieldProps('friendCellPhone')}
@@ -1327,10 +1319,9 @@ export function UserDetails() {
               )}
             </div>
           </div>
-        }
+        )}
         {/* end::Form group */}
       </div>
-
 
       {/* begin::Form group */}
       {/* <div className='fv-row mb-10'>
@@ -1364,20 +1355,15 @@ export function UserDetails() {
 
       {/* begin::Form group */}
       <div className='text-center'>
-        <button
-          type='submit'
-          id='kt_sign_up_submit'
-          className='btn btn-lg btn-primary mb-5'
-        >
-          {!loading && <span className='indicator-label'>Update</span>}
+        <button type='submit' id='kt_sign_up_submit' className='btn btn-lg btn-primary mb-5'>
+          {!loading && <span className='indicator-label'>עדכון</span>}
           {loading && (
-            <span className='indicator-progress' style={{ display: 'block' }}>
+            <span className='indicator-progress' style={{display: 'block'}}>
               Please wait...{' '}
               <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
             </span>
           )}
         </button>
-
       </div>
       {/* end::Form group */}
     </form>
