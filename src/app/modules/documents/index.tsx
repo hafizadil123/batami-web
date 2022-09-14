@@ -18,7 +18,7 @@ const Documents = () => {
     }
 
     useEffect(() => {
-       // fetchDocumentList();
+       fetchDocumentList();
     }, [])
 
     const fetchDocumentList = async () => {
