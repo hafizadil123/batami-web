@@ -3,14 +3,13 @@ import React, { FC, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import axios from 'axios'
 import { PageTitle } from '../../../_metronic/layout/core'
-
+import './tabs.css'
 const DashboardPage: FC = () => {
 
   const [responseMessage, setResponseMessage] = useState('');
   const [isStartDisabled, setStartDisabled] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [isEndDisabled, setEndDisabled] = useState(false);
-  const [displayWorkActivity, setDisplayWorkActivity] = useState(true);
   const [endTime, setEndTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(0);
   const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
@@ -50,12 +49,11 @@ const DashboardPage: FC = () => {
     if (response && response.data) {
       const { data } = response;
       console.log({data})
-      const { result, message, latestStartTime, latestEndTime, workActivityItems, displayWorkActivity } = data;
+      const { result, message, latestStartTime, latestEndTime, workActivityItems } = data;
       setResponseStatus(result);
       if (result) {
         setStartTimeStatus(latestStartTime)
         setEndTimeStatus(latestEndTime)
-        // setDisplayWorkActivity(true)
         // eslint-disable-next-line no-lone-blocks
         if (workActivityItems && workActivityItems.length) {
           setWorkActivityCodeItems(workActivityItems)
@@ -98,14 +96,43 @@ const DashboardPage: FC = () => {
     }
   }
 
-  const handleChange = (event: any) => {
-    console.log('SelectedValue : ', event.target.value);
-    setSelectedOption(event.target.value);
+  const handleChange =(id:any) => (event: any) => {
+    console.log(id)
+    // console.log('SelectedValue : ', event.target.value);
+    setSelectedOption(id);
   }
-
+const getSelectedClass =(id:any)=>{
+  if(id==selectedOption){
+    return `active-tab`
+  }else{
+    return `general-tab`
+  }
+}
   return <>
-    <div>
-      {displayWorkActivity && workActivityCodeItems && workActivityCodeItems.length && <select
+    <div className='main-container-dashboard'>
+
+      <ul style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer"}} className="nav nav-tabs nav-tabs-line mb-7">
+      {workActivityCodeItems && workActivityCodeItems.length && workActivityCodeItems.map(({id,name})=>{
+
+          return (
+
+            <li key={id} className="nav-item" onClick={handleChange(id)}>
+               <span className={`nav-link tab ${getSelectedClass(id)} ` }  data-toggle="tab" >{`${name}`}</span>
+            </li>
+    
+          )
+      })} 
+        {/* <li className="nav-item">
+          <span className="nav-link tab active-tab" data-toggle="tab" >Active</span>
+        </li>
+        <li className="nav-item">
+        <span className="nav-link tab general-tab" data-toggle="tab" >New Tab</span>
+        </li> */}
+
+      </ul>
+
+
+      {/* {workActivityCodeItems && workActivityCodeItems.length && <select
         aria-label=''
         data-control='select2'
         data-placeholder='Work Activity Code'
@@ -117,13 +144,14 @@ const DashboardPage: FC = () => {
           workActivityCodeItems.map(({ id, name }) => <option value={id}>{`${name}`}</option>)
         }
       </select>
-      }
+      } */}
 
-      <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "100px", cursor: "pointer" }}>
+      <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px", cursor: "pointer" }}>
         
         <button
+        style={{marginLeft:'100px'}}
           onClick={() => {
-            if (displayWorkActivity && selectedOption && startTime != null) {
+            if (selectedOption && startTime != null) {
               saveEndShiftTiming()
             } else {
               setResponseMessage('חובה לבחור ערך בשדה פעילות');
@@ -132,16 +160,16 @@ const DashboardPage: FC = () => {
           disabled={isEndDisabled}
           type='submit'
           id='exit_time_button'
-          className='btn btn-lg btn-secondary mb-5'>
+          className='btn btn-lg btn-secondary w-170-px mb-5'>
           {isEndDisabled ? endTime : `יציאה`}
         </button>
         <button
           type='submit'
           id='entrance_time_button'
-          className='btn btn-lg btn-primary mb-5'
+          className='btn btn-lg btn-primary mb-5 w-170-px'
           disabled={isStartDisabled || responseMessage != null}
           onClick={() => {
-            if (displayWorkActivity && selectedOption) {
+            if (selectedOption) {
               saveStartShiftTiming()
             } else {
               setResponseMessage('חובה לבחור ערך בשדה פעילות');

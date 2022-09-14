@@ -11,6 +11,7 @@ type Props = {
   icon?: string
   fontIcon?: string
   hasBullet?: boolean
+  fontAwesomeIconClass?: string
 }
 
 const AsideMenuItem: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const AsideMenuItem: React.FC<Props> = ({
   title,
   icon,
   fontIcon,
+  fontAwesomeIconClass,
   hasBullet = false,
 }) => {
   const {pathname} = useLocation()
@@ -39,7 +41,11 @@ const AsideMenuItem: React.FC<Props> = ({
             <KTSVG path={icon} className='svg-icon-2' />
           </span>
         )}
-        {fontIcon && aside.menuIcon === 'font' && <i className={clsx('bi fs-3', fontIcon)}></i>}
+        <i className="fa-solid fa-square-info"></i>
+        <i className="fa-regular fa-circle-info"></i>
+        <i className="fa fa-circle-info"></i>
+        <i className="fa fa-square-check"></i>
+        <i className={`fa ${fontAwesomeIconClass}`}></i>&nbsp;&nbsp;&nbsp;
         <span className='menu-title'>{title}</span>
       </Link>
       {children}
