@@ -39,15 +39,17 @@ export function AsideMenuMain() {
         title={`לוּחַ מַחווָנִים
 `}
         hasBullet={true}
+        fontAwesomeIconClass="fa-user"
       ></AsideMenuItem>
-      <AsideMenuItem to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem  fontAwesomeIconClass="fa-user" to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem fontAwesomeIconClass="fa-check" to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
 
-      <AsideMenuItem to={`/builder`} title='בּוֹנֶה' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem to={`/menu-test`} title='תַפרִיט' hasBullet={true}></AsideMenuItem>
+      {/* <AsideMenuItem to={`/builder`} title='בּוֹנֶה' hasBullet={true}></AsideMenuItem> */}
+      {/* <AsideMenuItem to={`/menu-test`} title='תַפרִיט' hasBullet={true}></AsideMenuItem> */}
       <AsideMenuItem
         to={`/documents`}
-        title='מסמכים
-'
+        title='מסמכים'
+        fontAwesomeIconClass="fa-file"
         hasBullet={true}
       ></AsideMenuItem>
       <AsideMenuItem
@@ -55,14 +57,15 @@ export function AsideMenuMain() {
         title='להעלות מסמך
 '
         hasBullet={true}
+        fontAwesomeIconClass="fa-file"
       ></AsideMenuItem>
       <AsideMenuItem
         to={`/admin-interface`}
+        fontAwesomeIconClass="fa-user"
         title='ממשק ניהול
 '
         hasBullet={true}
       ></AsideMenuItem>
-      <AsideMenuItem to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub
