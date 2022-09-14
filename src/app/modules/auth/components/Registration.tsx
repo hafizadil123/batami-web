@@ -23,29 +23,29 @@ const initialValues = {
 
 const registrationSchema = Yup.object().shape({
   firstname: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('First name is required'),
+    .min(3, 'מינימום 3 סמלים')
+    .max(50, 'מקסימום 50 סמלים')
+    .required('נדרש שם פרטי'),
   email: Yup.string()
-    .email('Wrong email format')
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Email is required'),
+    .email('פורמט אימייל שגוי')
+    .min(3, 'מינימום 3 סמלים')
+    .max(50, 'מקסימום 50 סמלים')
+    .required('יש צורך באימייל'),
   lastname: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Last name is required'),
+    .min(3, 'מינימום 3 סמלים')
+    .max(50, 'מקסימום 50 סמלים')
+    .required('נדרש שם משפחה'),
   password: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
+    .min(3, 'מינימום 3 סמלים')
+    .max(50, 'מקסימום 50 סמלים')
+    .required('דרושה סיסמא'),
   changepassword: Yup.string()
-    .required('Password confirmation is required')
+    .required('נדרש אישור סיסמה')
     .when('password', {
       is: (val: string) => (val && val.length > 0 ? true : false),
-      then: Yup.string().oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
+      then: Yup.string().oneOf([Yup.ref('password')], "הסיסמה ואישור הסיסמה לא התאימו"),
     }),
-  acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
+  acceptTerms: Yup.bool().required('עליך לקבל את התנאים וההגבלות'),
 })
 
 export function Registration() {
@@ -69,7 +69,7 @@ export function Registration() {
           .catch(() => {
             setLoading(false)
             setSubmitting(false)
-            setStatus('Registration process has broken')
+            setStatus('תהליך ההרשמה נשבר')
           })
       }, 1000)
     },

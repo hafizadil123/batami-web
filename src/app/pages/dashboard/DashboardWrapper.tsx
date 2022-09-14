@@ -10,7 +10,7 @@ const DashboardPage: FC = () => {
   const [isStartDisabled, setStartDisabled] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [isEndDisabled, setEndDisabled] = useState(false);
-  const [displayWorkActivity, setDisplayWorkActivity] = useState(false);
+  const [displayWorkActivity, setDisplayWorkActivity] = useState(true);
   const [endTime, setEndTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(0);
   const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
@@ -49,12 +49,13 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
+      console.log({data})
       const { result, message, latestStartTime, latestEndTime, workActivityItems, displayWorkActivity } = data;
       setResponseStatus(result);
       if (result) {
         setStartTimeStatus(latestStartTime)
         setEndTimeStatus(latestEndTime)
-        setDisplayWorkActivity(displayWorkActivity)
+        // setDisplayWorkActivity(true)
         // eslint-disable-next-line no-lone-blocks
         if (workActivityItems && workActivityItems.length) {
           setWorkActivityCodeItems(workActivityItems)
@@ -119,6 +120,7 @@ const DashboardPage: FC = () => {
       }
 
       <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "100px", cursor: "pointer" }}>
+        
         <button
           onClick={() => {
             if (displayWorkActivity && selectedOption && startTime != null) {

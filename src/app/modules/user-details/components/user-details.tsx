@@ -18,47 +18,47 @@ const getUser = JSON.parse(logged_user_detail)
 let userType = localStorage.getItem('userType')
 
 const userDetailValidation = Yup.object().shape({
-  firstName: Yup.string().max(50, 'Maximum 50 letters').required('First name is required'),
-  volunteerNumber: Yup.string().required('Required'),
+  firstName: Yup.string().max(50, 'מקסימום 50 אותיות').required('נדרש שם פרטי'),
+  volunteerNumber: Yup.string().required('נדרש מספר מתנדב'),
   email: Yup.string()
-    .email('Wrong email format')
-    .max(50, 'Maximum 50 letters')
-    .required('Email is required'),
-  lastName: Yup.string().max(50, 'Maximum 50 letters').required('Last name is required'),
+    .email('פורמט אימייל שגוי')
+    .max(50, 'מקסימום 50 אותיות')
+    .required('יש צורך באימייל'),
+  lastName: Yup.string().max(50, 'מקסימום 50 אותיות').required('נדרש שם משפחה'),
   cellPhone: Yup.string()
-    .max(10, 'Maximum length is 10')
-    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect number format')
-    .required(),
+    .max(10, 'אורך מקסימלי הוא 10')
+    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'פורמט מספר שגוי')
+    .required('נדרש טלפון סלולרי'),
   phoneNumber: Yup.string()
-    .max(10, 'Maximum length is 10')
-    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format'),
-  idNumber: Yup.string().required('Required'),
-  streetName: Yup.string().max(100, 'Maximum length is 100'),
-  houseNumber: Yup.string().max(5, 'Maximum length is 5'),
+    .max(10, 'אורך מקסימלי הוא 10')
+    .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'פורמט שגוי'),
+  idNumber: Yup.string().required('נדרש'),
+  streetName: Yup.string().max(100, 'האורך המרבי הוא 100'),
+  houseNumber: Yup.string().max(5, 'האורך המרבי הוא 5'),
   apartmentNumber: Yup.number()
-    .required()
-    .min(1, 'Minimum limit is 1')
-    .max(9999, 'Maximum limit is 9999'),
-  houseEntrance: Yup.string().max(5, 'Maximum length is 5').required(),
-  poBox: Yup.string().max(5, 'Maximum length is 10').required(),
+    .required('שדה דרוש מספר דירה')
+    .min(1, 'הגבלה מינימלית היא 1')
+    .max(9999, 'ההגבלה המקסימלית היא 9999'),
+  houseEntrance: Yup.string().max(5, 'האורך המרבי הוא 5').required('הכניסה לבית נדרשת בשדה').nullable(),
+  poBox: Yup.string().max(5, 'אורך מקסימלי הוא 10').required('נדרשת תיבת דואר').nullable(),
   zipCode: Yup.string()
-    .max(7, 'Maximum length is 7')
+    .max(7, 'האורך המרבי הוא 7')
     .matches(/^[0-9]*$/)
-    .required(),
-  schoolCityCode: Yup.string().required(),
-  passport: Yup.string().max(9, 'Maximum length is 9'),
-  schoolCode: Yup.string().required(),
-  fatherName: Yup.string().required().max(20, 'Maximum length is 20'),
-  motherName: Yup.string().required().max(20, 'Maximum length is 20'),
+    .required('נדרש מיקוד'),
+  schoolCityCode: Yup.string().required('קוד עיר בית הספר נדרש'),
+  passport: Yup.string().nullable().max(9, 'האורך המרבי הוא 9'),
+  schoolCode: Yup.string().required('קוד בית ספר נדרש'),
+  fatherName: Yup.string().required('שם האב נדרש').max(20, 'האורך המרבי הוא 20'),
+  motherName: Yup.string().required("שם האם נדרש").max(20, 'האורך המרבי הוא 20'),
   bankCode: Yup.string(),
   bankBranch: Yup.string(),
   bankAccount: Yup.string(),
   immigrationCountryCode: Yup.string(),
   educationYears: Yup.number()
-    .required()
+  .required('נדרש')
     .nullable()
-    .min(0, 'Minimum limit is 0')
-    .max(20, 'Maximum limit is 20'),
+    .min(0, 'הגבול המינימלי הוא 0')
+    .max(20, 'הגבלה מקסימלית היא 20'),
   isHighEducation: Yup.boolean(),
   selectedYear: Yup.string(),
   serviceGuideCode: Yup.string(),
@@ -69,7 +69,7 @@ const userDetailValidation = Yup.object().shape({
       is: (serviceGuideCode: any) => {
         return serviceGuideCode == 2
       },
-      then: Yup.string().required(),
+      then: Yup.string().required('נדרש'),
     }),
   friendLastName: Yup.string()
     .nullable()
@@ -77,7 +77,7 @@ const userDetailValidation = Yup.object().shape({
       is: (serviceGuideCode: any) => {
         return serviceGuideCode == 2
       },
-      then: Yup.string().required(),
+      then: Yup.string().required('נדרש'),
     }),
   friendCellPhone: Yup.string()
     .nullable()
@@ -86,12 +86,12 @@ const userDetailValidation = Yup.object().shape({
         return serviceGuideCode == 2
       },
       then: Yup.string()
-        .required()
-        .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'Incorrect Format'),
+        .required('נדרש')
+        .matches(/^(0[23489]\d{7})|(0[57]\d{8})$/, 'פורמט שגוי'),
     }),
   genderCode: Yup.string().when('isArmyInterested', {
     is: true,
-    then: Yup.string().required(),
+    then: Yup.string().required('נדרש'),
   }),
   // acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
 })
@@ -237,38 +237,10 @@ export function UserDetails() {
 
       {/* begin::Form group Firstname */}
       <div className='row'>
-        <div className={`${userType === 'Volunteer' ? 'col-xl-6' : 'col-xl-12'}`}>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>שם האב</label>
-            <input
-              placeholder='שם האב'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('fatherName')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.fatherName && formik.errors.fatherName,
-                },
-                {
-                  'is-valid': formik.touched.fatherName && !formik.errors.fatherName,
-                }
-              )}
-            />
-            {formik.touched.fatherName && formik.errors.fatherName && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.fatherName}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-        {userType === 'Volunteer' && (
+
+      {userType === 'Volunteer' && (
           <div className='col-xl-6'>
-            <label className='class="form-label fw-bolder text-dark fs-6'>Volunteer Number</label>
+            <label className='class="form-label fw-bolder text-dark fs-6'>מספר מתנדב</label>
             <input
               placeholder=''
               type='text'
@@ -295,40 +267,7 @@ export function UserDetails() {
             )}
           </div>
         )}
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>שם האם</label>
-            <input
-              placeholder='שם האם'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('motherName')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.motherName && formik.errors.motherName,
-                },
-                {
-                  'is-valid': formik.touched.motherName && !formik.errors.motherName,
-                }
-              )}
-            />
-            {formik.touched.motherName && formik.errors.motherName && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.motherName}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-
-        <div className='col-xl-6'>
+            <div className='col-xl-6'>
           <label className='class="form-label fw-bolder text-dark fs-6'>שם פרטי</label>
           <input
             placeholder='שם פרטי'
@@ -354,32 +293,12 @@ export function UserDetails() {
             </div>
           )}
         </div>
+       
+       
       </div>
+
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>מדינת עלייה</label>
-          <select
-            // name='hebYear'
-            aria-label=''
-            data-control='select2'
-            data-placeholder='date_period'
-            className='form-select form-select-sm form-select-solid'
-            {...formik.getFieldProps('immigrationCountryCode')}
-            onChange={formik.handleChange}
-          >
-            {dataForFields?.countryTypes?.map((item: any) => (
-              <option value={item.id}>{item.name}</option>
-            ))}
-          </select>
-          {formik.touched.immigrationCountryCode && formik.errors.immigrationCountryCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.immigrationCountryCode}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
+      <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>שם משפחה</label>
@@ -408,33 +327,7 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
-      </div>
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>טלפון</label>
-          <input
-            placeholder='טלפון'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('phoneNumber')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.phoneNumber && formik.errors.phoneNumber,
-              },
-              {
-                'is-valid': formik.touched.phoneNumber && !formik.errors.phoneNumber,
-              }
-            )}
-          />
-          {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.phoneNumber}</span>
-              </div>
-            </div>
-          )}
-        </div>
+
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
@@ -465,35 +358,10 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
+      
       </div>
-
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>נייד</label>
-          <input
-            placeholder='נייד'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('cellPhone')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.cellPhone && formik.errors.cellPhone,
-              },
-              {
-                'is-valid': formik.touched.cellPhone && !formik.errors.cellPhone,
-              }
-            )}
-          />
-          {formik.touched.cellPhone && formik.errors.cellPhone && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.cellPhone}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
+      <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>דרכון</label>
@@ -521,61 +389,6 @@ export function UserDetails() {
             )}
           </div>
           {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <div>
-            <label className='class="form-label fw-bolder text-dark fs-6'>בנק</label>
-            <input
-              placeholder='בנק'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('bankCode')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.bankCode && formik.errors.bankCode,
-                },
-                {
-                  'is-valid': formik.touched.bankCode && !formik.errors.bankCode,
-                }
-              )}
-            />
-            {formik.touched.bankCode && formik.errors.bankCode && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.bankCode}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          <div>
-            <label className='class="form-label fw-bolder text-dark fs-6'>סניף בנק</label>
-            <input
-              placeholder='סניף בנק'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('bankBranch')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.bankBranch && formik.errors.bankBranch,
-                },
-                {
-                  'is-valid': formik.touched.bankBranch && !formik.errors.bankBranch,
-                }
-              )}
-            />
-            {formik.touched.bankBranch && formik.errors.bankBranch && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.bankBranch}</span>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
@@ -606,35 +419,10 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
+     
       </div>
-
       <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='class="form-label fw-bolder text-dark fs-6'>חשבון בנק</label>
-          <input
-            placeholder='חשבון בנק'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('bankAccount')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.bankAccount && formik.errors.bankAccount,
-              },
-              {
-                'is-valid': formik.touched.bankAccount && !formik.errors.bankAccount,
-              }
-            )}
-          />
-          {formik.touched.bankAccount && formik.errors.bankAccount && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.bankAccount}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
+      <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
@@ -683,9 +471,519 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
+        <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>דוא”ל</label>
+            <input
+              placeholder='דוא”ל'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('email')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.email && formik.errors.email,
+                },
+                {
+                  'is-valid': formik.touched.email && !formik.errors.email,
+                }
+              )}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.email}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* end::Form group */}
+        </div>
+
       </div>
+      <div className='row fv-row mb-7'>
+        <div className='col-xl-6'>
+          <label className='class="form-label fw-bolder text-dark fs-6'>נייד</label>
+          <input
+            placeholder='נייד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('cellPhone')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.cellPhone && formik.errors.cellPhone,
+              },
+              {
+                'is-valid': formik.touched.cellPhone && !formik.errors.cellPhone,
+              }
+            )}
+          />
+          {formik.touched.cellPhone && formik.errors.cellPhone && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.cellPhone}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='class="form-label fw-bolder text-dark fs-6'>טלפון</label>
+          <input
+            placeholder='טלפון'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('phoneNumber')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.phoneNumber && formik.errors.phoneNumber,
+              },
+              {
+                'is-valid': formik.touched.phoneNumber && !formik.errors.phoneNumber,
+              }
+            )}
+          />
+          {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.phoneNumber}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>  
 
       <div className='row fv-row mb-7'>
+     {/* School city types */}
+     <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>יישוב</label>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <select
+                // name='hebYear'
+                aria-label=''
+                data-control='select2'
+                data-placeholder='date_period'
+                className='form-select form-select-sm form-select-solid'
+                {...formik.getFieldProps('cityType')}
+                onChange={formik.handleChange}
+              >
+                {dataForFields?.cityTypes?.map((item: any) => (
+                  <option value={item.id}>{item.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          {/* end::Form group */}
+        </div>
+        <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>רחוב</label>
+            <input
+              placeholder='רחוב'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('streetName')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.streetName && formik.errors.streetName,
+                },
+                {
+                  'is-valid': formik.touched.streetName && !formik.errors.streetName,
+                }
+              )}
+            />
+            {formik.touched.streetName && formik.errors.streetName && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.streetName}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* end::Form group */}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>בית</label>
+          <input
+            placeholder='בית'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('houseNumber')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.houseNumber && formik.errors.houseNumber,
+              },
+              {
+                'is-valid': formik.touched.houseNumber && !formik.errors.houseNumber,
+              }
+            )}
+          />
+          {formik.touched.houseNumber && formik.errors.houseNumber && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.houseNumber}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
+          <input
+            placeholder='דירה'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('apartmentNumber')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.apartmentNumber && formik.errors.apartmentNumber,
+              },
+              {
+                'is-valid': formik.touched.apartmentNumber && !formik.errors.apartmentNumber,
+              }
+            )}
+          />
+          {formik.touched.apartmentNumber && formik.errors.apartmentNumber && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.apartmentNumber}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>כניסה</label>
+          <input
+            placeholder='כניסה'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('houseEntrance')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.houseEntrance && formik.errors.houseEntrance,
+              },
+              {
+                'is-valid': formik.touched.houseEntrance && !formik.errors.houseEntrance,
+              }
+            )}
+          />
+          {formik.touched.houseEntrance && formik.errors.houseEntrance && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.houseEntrance}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>ת.ד</label>
+          <input
+            placeholder='ת.ד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('poBox')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.poBox && formik.errors.poBox,
+              },
+              {
+                'is-valid': formik.touched.poBox && !formik.errors.poBox,
+              }
+            )}
+          />
+          {formik.touched.poBox && formik.errors.poBox && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.poBox}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
+          <input
+            placeholder='מיקוד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('zipCode')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.zipCode && formik.errors.zipCode,
+              },
+              {
+                'is-valid': formik.touched.zipCode && !formik.errors.zipCode,
+              }
+            )}
+          />
+          {formik.touched.zipCode && formik.errors.zipCode && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.zipCode}</span>
+              </div>
+            </div>
+          )}
+        </div>
+         <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>יישוב בית ספר</label>
+          <select
+           
+            aria-label='Select School City Code'
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('schoolCityCode')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.schoolCityTypes?.map((item: any) => (
+              <option value={item.id}>{item.name}</option>
+            ))}
+          </select>
+          {formik.touched.schoolCityCode && formik.errors.schoolCityCode && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.schoolCityCode}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+
+          <label className='form-label fw-bolder text-dark fs-6'>בית ספר</label>
+          <select
+          
+            aria-label='Select School Code'
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('schoolCode')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.schoolCityTypes?.map((item: any) => (
+              <option value={item.id}>{item.name}</option>
+            ))}
+          </select>
+          {formik.touched.schoolCode && formik.errors.schoolCode && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.schoolCode}</span>
+              </div>
+            </div>
+          )}
+          {/* end::Form group */}
+        </div>
+        <div className={`${userType === 'Volunteer' ? 'col-xl-6' : 'col-xl-12'}`}>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>שם האב</label>
+            <input
+              placeholder='שם האב'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('fatherName')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.fatherName && formik.errors.fatherName,
+                },
+                {
+                  'is-valid': formik.touched.fatherName && !formik.errors.fatherName,
+                }
+              )}
+            />
+            {formik.touched.fatherName && formik.errors.fatherName && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.fatherName}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* end::Form group */}
+        </div>
+        <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>שם האם</label>
+            <input
+              placeholder='שם האם'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('motherName')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.motherName && formik.errors.motherName,
+                },
+                {
+                  'is-valid': formik.touched.motherName && !formik.errors.motherName,
+                }
+              )}
+            />
+            {formik.touched.motherName && formik.errors.motherName && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.motherName}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* end::Form group */}
+        </div>
+    
+        <div className='col-xl-6'>
+          <div>
+            <label className='class="form-label fw-bolder text-dark fs-6'>בנק</label>
+            <input
+              placeholder='בנק'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('bankCode')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.bankCode && formik.errors.bankCode,
+                },
+                {
+                  'is-valid': formik.touched.bankCode && !formik.errors.bankCode,
+                }
+              )}
+            />
+            {formik.touched.bankCode && formik.errors.bankCode && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.bankCode}</span>
+                </div>
+              </div>
+            )}
+          </div>
+ 
+        </div>
+        <div className='col-xl-6'>
+        <div>
+            <label className='class="form-label fw-bolder text-dark fs-6'>סניף בנק</label>
+            <input
+              placeholder='סניף בנק'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('bankBranch')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.bankBranch && formik.errors.bankBranch,
+                },
+                {
+                  'is-valid': formik.touched.bankBranch && !formik.errors.bankBranch,
+                }
+              )}
+            />
+            {formik.touched.bankBranch && formik.errors.bankBranch && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.bankBranch}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+           
+        
+        <div className='col-xl-6'>
+          <label className='class="form-label fw-bolder text-dark fs-6'>חשבון בנק</label>
+          <input
+            placeholder='חשבון בנק'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('bankAccount')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.bankAccount && formik.errors.bankAccount,
+              },
+              {
+                'is-valid': formik.touched.bankAccount && !formik.errors.bankAccount,
+              }
+            )}
+          />
+          {formik.touched.bankAccount && formik.errors.bankAccount && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.bankAccount}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='class="form-label fw-bolder text-dark fs-6'>מדינת עלייה</label>
+          <select
+            // name='hebYear'
+            aria-label=''
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('immigrationCountryCode')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.countryTypes?.map((item: any) => (
+              <option value={item.id}>{item.name}</option>
+            ))}
+          </select>
+          {formik.touched.immigrationCountryCode && formik.errors.immigrationCountryCode && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.immigrationCountryCode}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>שנות לימוד</label>
+          <input
+            placeholder='שנות לימוד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('educationYears')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.educationYears && formik.errors.educationYears,
+              },
+              {
+                'is-valid': formik.touched.educationYears && !formik.errors.educationYears,
+              }
+            )}
+          />
+          {formik.touched.educationYears && formik.errors.educationYears && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.educationYears}</span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+          {/* begin::Form group Lastname */}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>השכלה גבוהה</label>
+            <input
+              type='checkbox'
+              autoComplete='off'
+              defaultChecked={userDetails?.['isHighEducation']}
+              {...formik.getFieldProps('isHighEducation')}
+            />
+          </div>
+          {/* end::Form group */}
+        </div>
         <div className='col-xl-6'>
           <label
             className='class="form-label fw-bolder text-dark fs-6'
@@ -725,468 +1023,6 @@ export function UserDetails() {
           )}
         </div>
         <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>יישוב</label>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <select
-                // name='hebYear'
-                aria-label=''
-                data-control='select2'
-                data-placeholder='date_period'
-                className='form-select form-select-sm form-select-solid'
-                {...formik.getFieldProps('cityType')}
-                onChange={formik.handleChange}
-              >
-                {dataForFields?.cityTypes?.map((item: any) => (
-                  <option value={item.id}>{item.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>בית</label>
-          <input
-            placeholder='בית'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('houseNumber')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.houseNumber && formik.errors.houseNumber,
-              },
-              {
-                'is-valid': formik.touched.houseNumber && !formik.errors.houseNumber,
-              }
-            )}
-          />
-          {formik.touched.houseNumber && formik.errors.houseNumber && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.houseNumber}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>רחוב</label>
-            <input
-              placeholder='רחוב'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('streetName')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.streetName && formik.errors.streetName,
-                },
-                {
-                  'is-valid': formik.touched.streetName && !formik.errors.streetName,
-                }
-              )}
-            />
-            {formik.touched.streetName && formik.errors.streetName && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.streetName}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
-          <input
-            placeholder='דירה'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('apartmentNumber')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.apartmentNumber && formik.errors.apartmentNumber,
-              },
-              {
-                'is-valid': formik.touched.apartmentNumber && !formik.errors.apartmentNumber,
-              }
-            )}
-          />
-          {formik.touched.apartmentNumber && formik.errors.apartmentNumber && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.apartmentNumber}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>בית</label>
-            <input
-              placeholder='בית'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('houseNumber')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.houseNumber && formik.errors.houseNumber,
-                },
-                {
-                  'is-valid': formik.touched.houseNumber && !formik.errors.houseNumber,
-                }
-              )}
-            />
-            {formik.touched.houseNumber && formik.errors.houseNumber && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.houseNumber}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>כניסה</label>
-          <input
-            placeholder='כניסה'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('houseEntrance')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.houseEntrance && formik.errors.houseEntrance,
-              },
-              {
-                'is-valid': formik.touched.houseEntrance && !formik.errors.houseEntrance,
-              }
-            )}
-          />
-          {formik.touched.houseEntrance && formik.errors.houseEntrance && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.houseEntrance}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
-            <input
-              placeholder='דירה'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('apartmentNumber')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.apartmentNumber && formik.errors.apartmentNumber,
-                },
-                {
-                  'is-valid': formik.touched.apartmentNumber && !formik.errors.apartmentNumber,
-                }
-              )}
-            />
-            {formik.touched.apartmentNumber && formik.errors.apartmentNumber && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.apartmentNumber}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>ת.ד</label>
-          <input
-            placeholder='ת.ד'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('poBox')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.poBox && formik.errors.poBox,
-              },
-              {
-                'is-valid': formik.touched.poBox && !formik.errors.poBox,
-              }
-            )}
-          />
-          {formik.touched.poBox && formik.errors.poBox && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.poBox}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          {/* <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>House Entrance</label>
-            <input
-              placeholder='House Enterance'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('houseEnterance')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.houseEnterance && formik.errors.houseEnterance,
-                },
-                {
-                  'is-valid': formik.touched.houseEnterance && !formik.errors.houseEnterance,
-                }
-              )}
-            />
-            {formik.touched.houseEnterance && formik.errors.houseEnterance && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.houseEnterance}</span>
-                </div>
-              </div>
-            )}
-          </div> */}
-          {/* end::Form group */}
-        </div>
-      </div>
-      {/* end::Form group */}
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
-          <input
-            placeholder='מיקוד'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('zipCode')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.zipCode && formik.errors.zipCode,
-              },
-              {
-                'is-valid': formik.touched.zipCode && !formik.errors.zipCode,
-              }
-            )}
-          />
-          {formik.touched.zipCode && formik.errors.zipCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.zipCode}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          {/* <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>PO Box</label>
-            <input
-              placeholder='PO Box'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('poBox')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.poBox && formik.errors.poBox,
-                },
-                {
-                  'is-valid': formik.touched.poBox && !formik.errors.poBox,
-                }
-              )}
-            />
-            {formik.touched.poBox && formik.errors.poBox && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.poBox}</span>
-                </div>
-              </div>
-            )}
-          </div> */}
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>יישוב בית ספר</label>
-          <select
-            style={{marginTop: '1.5rem'}}
-            aria-label='Select School City Code'
-            data-control='select2'
-            data-placeholder='date_period'
-            className='form-select form-select-sm form-select-solid'
-            {...formik.getFieldProps('schoolCityCode')}
-            onChange={formik.handleChange}
-          >
-            {dataForFields?.schoolCityTypes?.map((item: any) => (
-              <option value={item.id}>{item.name}</option>
-            ))}
-          </select>
-          {formik.touched.schoolCityCode && formik.errors.schoolCityCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.schoolCityCode}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-
-          <label className='form-label fw-bolder text-dark fs-6'>בית ספר</label>
-          <select
-            style={{marginTop: '1.5rem'}}
-            aria-label='Select School Code'
-            data-control='select2'
-            data-placeholder='date_period'
-            className='form-select form-select-sm form-select-solid'
-            {...formik.getFieldProps('schoolCode')}
-            onChange={formik.handleChange}
-          >
-            {dataForFields?.schoolCityTypes?.map((item: any) => (
-              <option value={item.id}>{item.name}</option>
-            ))}
-          </select>
-          {formik.touched.schoolCode && formik.errors.schoolCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.schoolCode}</span>
-              </div>
-            </div>
-          )}
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
-          <input
-            placeholder='מיקוד'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('zipCode')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.zipCode && formik.errors.zipCode,
-              },
-              {
-                'is-valid': formik.touched.zipCode && !formik.errors.zipCode,
-              }
-            )}
-          />
-          {formik.touched.zipCode && formik.errors.zipCode && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.zipCode}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>דוא”ל</label>
-            <input
-              placeholder='דוא”ל'
-              type='text'
-              autoComplete='off'
-              {...formik.getFieldProps('email')}
-              className={clsx(
-                'form-control form-control-lg form-control-solid',
-                {
-                  'is-invalid': formik.touched.email && formik.errors.email,
-                },
-                {
-                  'is-valid': formik.touched.email && !formik.errors.email,
-                }
-              )}
-            />
-            {formik.touched.email && formik.errors.email && (
-              <div className='fv-plugins-message-container'>
-                <div className='fv-help-block'>
-                  <span role='alert'>{formik.errors.email}</span>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>שנות לימוד</label>
-          <input
-            placeholder='שנות לימוד'
-            type='text'
-            autoComplete='off'
-            {...formik.getFieldProps('educationYears')}
-            className={clsx(
-              'form-control form-control-lg form-control-solid',
-              {
-                'is-invalid': formik.touched.educationYears && formik.errors.educationYears,
-              },
-              {
-                'is-valid': formik.touched.educationYears && !formik.errors.educationYears,
-              }
-            )}
-          />
-          {formik.touched.educationYears && formik.errors.educationYears && (
-            <div className='fv-plugins-message-container'>
-              <div className='fv-help-block'>
-                <span role='alert'>{formik.errors.educationYears}</span>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='col-xl-6'>
-          {/* begin::Form group Lastname */}
-          <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>השכלה גבוהה</label>
-            <input
-              type='checkbox'
-              autoComplete='off'
-              defaultChecked={userDetails?.['isHighEducation']}
-              {...formik.getFieldProps('isHighEducation')}
-            />
-          </div>
-          {/* end::Form group */}
-        </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
-        {/* {show && */}
-        <div className='col-xl-6'>
           <label className='form-label fw-bolder text-dark fs-6'>תקופת שירות</label>
           <select
             style={{marginTop: '1.5rem'}}
@@ -1209,8 +1045,7 @@ export function UserDetails() {
               </div>
             </div>
           )}
-        </div>
-        {/* } */}
+        </div> 
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           {console.log('Formikkkkkkkkk', formik.values)}
@@ -1232,9 +1067,6 @@ export function UserDetails() {
           </div>
           {/* end::Form group */}
         </div>
-      </div>
-
-      <div className='row fv-row mb-7'>
         {formik.values.serviceGuideCode == 2 && (
           <div className='col-xl-6'>
             <label className='form-label fw-bolder text-dark fs-6'>חברה שם פרטי</label>
@@ -1263,8 +1095,7 @@ export function UserDetails() {
             )}
           </div>
         )}
-
-        {formik.values.serviceGuideCode == 2 && (
+                {formik.values.serviceGuideCode == 2 && (
           <div className='col-xl-6'>
             {/* begin::Form group Lastname */}
             <div>
@@ -1320,9 +1151,392 @@ export function UserDetails() {
             </div>
           </div>
         )}
-        {/* end::Form group */}
+
       </div>
 
+    
+
+{/* Unwanted Code Starts */}
+
+
+
+{/*<div className='row fv-row mb-7'>
+        <div className='col-xl-6'>
+          <label
+            className='class="form-label fw-bolder text-dark fs-6'
+            style={{marginRight: '1rem'}}
+          >
+            מעוניינת משרד ביטחון{' '}
+          </label>
+          <input
+            type='checkbox'
+            autoComplete='off'
+            defaultChecked={userDetails?.['isArmyInterested']}
+            {...formik.getFieldProps('isArmyInterested')}
+            onChange={() => setShowGender(!show)}
+          />
+          {!show && (
+            <div className='col-xl-6'>
+              <label
+                className='class="form-label fw-bolder text-dark fs-6'
+                style={{marginRight: '1rem'}}
+              >
+                Gender
+              </label>
+              <select
+                style={{marginTop: '1.5rem'}}
+                aria-label='Select Gender'
+                data-control='select2'
+                data-placeholder='date_period'
+                className='form-select form-select-sm form-select-solid'
+                {...formik.getFieldProps('genderCode')}
+                onChange={formik.handleChange}
+              >
+                {dataForFields?.genderTypes?.map((item: any) => (
+                  <option value={item.id}>{item.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+        <div className='col-xl-6'>
+       
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>1111111יישוב</label>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <select
+              
+                aria-label=''
+                data-control='select2'
+                data-placeholder='date_period'
+                className='form-select form-select-sm form-select-solid'
+                {...formik.getFieldProps('cityType')}
+                onChange={formik.handleChange}
+              >
+                {dataForFields?.cityTypes?.map((item: any) => (
+                  <option value={item.id}>{item.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+      <div className='row fv-row mb-7'>
+     
+        <div className='col-xl-6'>
+     
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>בית</label>
+            <input
+              placeholder='בית'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('houseNumber')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.houseNumber && formik.errors.houseNumber,
+                },
+                {
+                  'is-valid': formik.touched.houseNumber && !formik.errors.houseNumber,
+                }
+              )}
+            />
+            {formik.touched.houseNumber && formik.errors.houseNumber && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.houseNumber}</span>
+                </div>
+              </div>
+            )}
+          </div>
+      
+        </div>
+      </div>
+
+      <div className='row fv-row mb-7'>
+       
+        <div className='col-xl-6'>
+        
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>דירה</label>
+            <input
+              placeholder='דירה'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('apartmentNumber')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.apartmentNumber && formik.errors.apartmentNumber,
+                },
+                {
+                  'is-valid': formik.touched.apartmentNumber && !formik.errors.apartmentNumber,
+                }
+              )}
+            />
+            {formik.touched.apartmentNumber && formik.errors.apartmentNumber && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.apartmentNumber}</span>
+                </div>
+              </div>
+            )}
+          </div>
+ 
+        </div>
+      </div>
+
+      <div className='row fv-row mb-7'>
+        
+        <div className='col-xl-6'>
+         
+        </div>
+      </div>
+    
+
+      <div className='row fv-row mb-7'>
+      
+        <div className='col-xl-6'>
+      
+          {/* <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>PO Box</label>
+            <input
+              placeholder='PO Box'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('poBox')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.poBox && formik.errors.poBox,
+                },
+                {
+                  'is-valid': formik.touched.poBox && !formik.errors.poBox,
+                }
+              )}
+            />
+            {formik.touched.poBox && formik.errors.poBox && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.poBox}</span>
+                </div>
+              </div>
+            )}
+          </div> 
+     
+        </div>
+      </div>
+
+      <div className='row fv-row mb-7'>
+        
+      
+      </div>
+
+      <div className='row fv-row mb-7'>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>מיקוד</label>
+          <input
+            placeholder='מיקוד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('zipCode')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.zipCode && formik.errors.zipCode,
+              },
+              {
+                'is-valid': formik.touched.zipCode && !formik.errors.zipCode,
+              }
+            )}
+          />
+          {formik.touched.zipCode && formik.errors.zipCode && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.zipCode}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      <div className='row fv-row mb-7'>
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>שנות לימוד</label>
+          <input
+            placeholder='שנות לימוד'
+            type='text'
+            autoComplete='off'
+            {...formik.getFieldProps('educationYears')}
+            className={clsx(
+              'form-control form-control-lg form-control-solid',
+              {
+                'is-invalid': formik.touched.educationYears && formik.errors.educationYears,
+              },
+              {
+                'is-valid': formik.touched.educationYears && !formik.errors.educationYears,
+              }
+            )}
+          />
+          {formik.touched.educationYears && formik.errors.educationYears && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.educationYears}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
+
+      <div className='row fv-row mb-7'>
+    
+        <div className='col-xl-6'>
+          <label className='form-label fw-bolder text-dark fs-6'>תקופת שירות</label>
+          <select
+            style={{marginTop: '1.5rem'}}
+            aria-label='Select Year'
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('selectedYear')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.selectedYearTypes?.map((item: any) => (
+              <option value={item.id}>{item.name}</option>
+            ))}
+          </select>
+
+          {formik.touched.educationYears && formik.errors.educationYears && (
+            <div className='fv-plugins-message-container'>
+              <div className='fv-help-block'>
+                <span role='alert'>{formik.errors.educationYears}</span>
+              </div>
+            </div>
+          )}
+        </div>
+  
+        <div className='col-xl-6'>
+      
+          {console.log('Formikkkkkkkkk', formik.values)}
+          <div className='fv-row mb-5'>
+            <label className='form-label fw-bolder text-dark fs-6'>איך הגעת אלינו?</label>
+            <select
+              style={{marginTop: '1.5rem'}}
+              aria-label='Service Guide Code'
+              data-control='select2'
+              data-placeholder='date_period'
+              className='form-select form-select-sm form-select-solid'
+              {...formik.getFieldProps('serviceGuideCode')}
+              onChange={formik.handleChange}
+            >
+              {dataForFields?.serviceGuideTypes?.map((item: any) => (
+                <option value={item.id}>{item.name}</option>
+              ))}
+            </select>
+          </div>
+       
+        </div>
+      </div>
+
+      <div className='row fv-row mb-7'>
+        {formik.values.serviceGuideCode == 2 && (
+          <div className='col-xl-6'>
+            <label className='form-label fw-bolder text-dark fs-6'>חברה שם פרטי</label>
+            <input
+              placeholder='חברה שם פרטי'
+              type='text'
+              autoComplete='off'
+              {...formik.getFieldProps('friendFirstName')}
+              className={clsx(
+                'form-control form-control-lg form-control-solid',
+                {
+                  'is-invalid': formik.touched.friendFirstName && formik.errors.friendFirstName,
+                },
+                {
+                  'is-valid': formik.touched.friendFirstName && !formik.errors.friendFirstName,
+                }
+              )}
+            />
+
+            {formik.touched.friendFirstName && formik.errors.friendFirstName && (
+              <div className='fv-plugins-message-container'>
+                <div className='fv-help-block'>
+                  <span role='alert'>{formik.errors.friendFirstName}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {formik.values.serviceGuideCode == 2 && (
+          <div className='col-xl-6'>
+          
+            <div>
+              <label className='form-label fw-bolder text-dark fs-6'>חברה שם משפחה</label>
+              <input
+                placeholder='חברה שם משפחה'
+                type='text'
+                autoComplete='off'
+                {...formik.getFieldProps('friendLastName')}
+                className={clsx(
+                  'form-control form-control-lg form-control-solid',
+                  {
+                    'is-invalid': formik.touched.friendLastName && formik.errors.friendLastName,
+                  },
+                  {
+                    'is-valid': formik.touched.friendLastName && !formik.errors.friendLastName,
+                  }
+                )}
+              />
+              {formik.touched.friendLastName && formik.errors.friendLastName && (
+                <div className='fv-plugins-message-container'>
+                  <div className='fv-help-block'>
+                    <span role='alert'>{formik.errors.friendLastName}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className='form-label fw-bolder text-dark fs-6'>חברה נייד</label>
+              <input
+                placeholder='חברה נייד'
+                type='text'
+                autoComplete='off'
+                {...formik.getFieldProps('friendCellPhone')}
+                className={clsx(
+                  'form-control form-control-lg form-control-solid',
+                  {
+                    'is-invalid': formik.touched.friendCellPhone && formik.errors.friendCellPhone,
+                  },
+                  {
+                    'is-valid': formik.touched.friendCellPhone && !formik.errors.friendCellPhone,
+                  }
+                )}
+              />
+              {formik.touched.friendCellPhone && formik.errors.friendCellPhone && (
+                <div className='fv-plugins-message-container'>
+                  <div className='fv-help-block'>
+                    <span role='alert'>{formik.errors.friendCellPhone}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+   
+      </div> */}
+
+
+
+
+{/* Unwanted Code ends this will gets removed once client confirmed */}
       {/* begin::Form group */}
       {/* <div className='fv-row mb-10'>
         <div className='form-check form-check-custom form-check-solid'>

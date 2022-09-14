@@ -55,37 +55,37 @@ const UploadDocumentSection = () => {
         if (selectedDocumentTypeId == 24) {
             if (startDate == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Select Start Date')
+                setErrorMessage('יש לבחור בתאריך התחלה')
             }
             if (startDate >= endDate) {
                 isValidFlag = (false)
-                setErrorMessage('Start Date must be smaller then End Date')
+                setErrorMessage('תאריך ההתחלה חייב להיות קטן מתאריך הסיום')
             }
         }
         if (selectedDocumentTypeId == 43) {
             if (marriageDate == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Select Marriage Date')
+                setErrorMessage('יש לבחור תאריך נישואין')
             }
         }
         if (selectedDocumentTypeId == 5) {
             if (selectedBank == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Select Bank')
+                setErrorMessage('חובה לבחור בנק')
             }
             if (bankBranch == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Enter Bank Branch')
+                setErrorMessage('יש להיכנס לסניף הבנק')
             }
             if (bankAccount == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Enter Bank Account')
+                setErrorMessage('יש להזין חשבון בנק')
             }
         }
         if ([23, 40].includes(selectedDocumentTypeId)) {
             if (reportDate == '') {
                 isValidFlag = (false)
-                setErrorMessage('Must Select Report Date')
+                setErrorMessage('יש לבחור בתאריך דיווח')
             }
         }
 

@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import ReactPaginate from 'react-paginate';
+import {ReportTable} from './components'
 import { colors, listData, parentKeys, fieldTypes, listOneFields, listTwoFields, listThreeFields, listFourFields, listFiveTypeOneFields, listFiveTypeNintyNineFields } from './data'
 
 const SectionDataView = (props: any) => {
     const { data, hasSecondYear, sectionTitle, parentKey, onFieldClicked } = props;
     return (
+        
+
         <div style={{ flex: 1, margin: '5px' }}>
             <ListHeaderSection headerTitle={`${sectionTitle || ''}`} hasSecondYear={hasSecondYear} />
             {data && data.map((item: any, index: any) => {
@@ -24,6 +27,7 @@ const SectionDataView = (props: any) => {
             })
             }
         </div>
+       
     )
 }
 
@@ -31,7 +35,7 @@ const ListHeaderSection = (props: any) => {
     const { headerTitle, hasSecondYear } = props;
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'row' , color:"#A1A5B7"}}>
                 {hasSecondYear && <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{`Year 2`}</p>}
                 <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{`Year 1`}</p>
                 <p style={{ textAlign: 'center', flex: 3, fontWeight: 'bold' }}>{headerTitle}</p>
@@ -42,18 +46,18 @@ const ListHeaderSection = (props: any) => {
 
 const AttendaneDetailItem = (props: any) => {
     const { item, hasSecondYear, onFieldClicked } = props
-    const { yearTwoValue, yearOneValue, listNo, type, color, label } = item;
+    const { yearTwoValue, yearOneValue, listNo, type, color, label,keyYearOne } = item;
     return (
         <>
             <div style={{ display: 'flex', flexDirection: 'row', cursor: 'pointer' }}>
                 {hasSecondYear && <div style={{ flex: 1 }} >
                     <p
-                        style={{ padding: '0px 5px', margin: '0px 3px', background: '#ffffff', height: '20px', border: '1px solid #000', textAlign: 'center', cursor: `${![listNo, type].includes(0) ? 'pointer' : 'default'}` }}>{`${yearTwoValue != null ? yearTwoValue : ''}`}</p>
+                        style={{ padding: '0px 5px', margin: '0px 3px', background: '#ffffff', height: '20px', border: '1px solid #E4E6EF', textAlign: 'center', cursor: `${![listNo, type].includes(0) ? 'pointer' : 'default'}` }}>{`${yearTwoValue != null ? yearTwoValue : ''}`}</p>
                 </div>
                 }
                 <div style={{ flex: 1 }}>
                     <p
-                        style={{ padding: '0px 5px', margin: '0px 3px', background: '#ffffff', height: '20px', border: '1px solid #000', textAlign: 'center', cursor: `${![listNo, type].includes(0) ? 'pointer' : 'default'}` }}>{`${yearOneValue != null ? yearOneValue : ''}`}</p>
+                        style={{ padding: '0px 5px', margin: '0px 3px', background: '#ffffff', height: '20px', border: '1px solid #E4E6EF', textAlign: 'center', cursor: `${![listNo, type].includes(0) ? 'pointer' : 'default'}` }}>{`${yearOneValue != null ? yearOneValue : ''}`}</p>
                 </div>
                 <p
                     style={{ marginLeft: '5px', color: color, flex: 3, textAlign: 'right', fontSize: '15px' }}
@@ -358,8 +362,8 @@ const MainAttendance = () => {
 
     return (
         <>
-            <div>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <div style={{border:'1px solid #EFF2F5',background:"#fff",padding:"10px",boxShadow: "0 0px 10px rgb(0 0 0 / 20%)"}}>
+                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between",background:'#fff' }}>
                     <SectionDataView
                         data={data}
                         parentKey={parentKeys.settingsData}
@@ -405,31 +409,7 @@ const MainAttendance = () => {
                         hasSecondYear={hasSecondYear}
                     />
                 </div>
-                <div style={{ width: '100%' }}>
-                    {reportData.length && <table style={{ width: '100%', border: '1px solid black', padding: '15px' }}>
-                        <thead>
-                            <tr style={{ display: 'flex', flexDirection: 'row' }}>
-                                <TableHeadView flexValue={3} text={`Notes`} />
-                                <TableHeadView flexValue={1} text={`Manager Approval`} />
-                                <TableHeadView flexValue={1} text={`Coordinator Approval`} />
-                                <TableHeadView flexValue={1} text={`Report Month`} />
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {reportData.map((item, index) => {
-                                const { reportMonth, notes, managerApproval, coordinatorApproval } = item;
-                                return <tr style={{ display: 'flex', flexDirection: 'row' }} key={index}>
-                                    <TableDataView flexValue={3} text={notes} type={fieldTypes.editText} />
-                                    <TableDataView flexValue={1} text={managerApproval} type={fieldTypes.checkbox} />
-                                    <TableDataView flexValue={1} text={coordinatorApproval} type={fieldTypes.checkbox} />
-                                    <TableDataView flexValue={1} text={reportMonth} type={fieldTypes.text} />
-                                </tr>
-                            })}
-                        </tbody>
-                    </table>
-                    }
-                </div>
                 <Modal
                     show={showModal}
                     onHide={() => setShowModal(false)}
@@ -462,6 +442,12 @@ const MainAttendance = () => {
                     </Modal.Footer>
                 </Modal>
             </div>
+            <div style={{ width: '100%' }}>
+                    {
+                        reportData.length && <ReportTable className='mb-5 mb-xl-8' reportData={reportData} />
+                    }
+                    
+                </div>
         </>
     )
 }

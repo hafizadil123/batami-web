@@ -60,7 +60,7 @@ export function ForgotPassword() {
         setHasErrors(true)
         setLoading(false)
         setSubmitting(false)
-        setStatus('Some Error occured')
+        setStatus('אירעה שגיאה כלשהי')
       }
 
       /////////////////////////
@@ -93,7 +93,7 @@ export function ForgotPassword() {
         {hasErrors === true && (
           <div className='mb-lg-15 alert alert-danger'>
             <div className='alert-text font-weight-bold'>
-              Sorry, looks like there are some errors detected, please try again.
+            מצטערים, נראה שזוהו כמה שגיאות, אנא נסה שוב.
             </div>
           </div>
         )}

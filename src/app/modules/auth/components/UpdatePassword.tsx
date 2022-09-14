@@ -12,14 +12,14 @@ const initialValues = {
 
 const updatePasswordSchema = Yup.object().shape({
     password: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
+    .min(3, 'מינימום 3 סמלים')
+    .max(50, 'מקסימום 50 סמלים')
+    .required('דרושה סיסמא'),
     confirmPassword: Yup.string()
-    .required('Password confirmation is required')
+    .required('נדרש אישור סיסמה')
     .when('password', {
       is: (val: string) => (val && val.length > 0 ? true : false),
-      then: Yup.string().oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
+      then: Yup.string().oneOf([Yup.ref('password')], "הסיסמה ואישור הסיסמה לא התאימו"),
     }),
 })
 
@@ -74,7 +74,7 @@ export function UpdatePassword() {
         {hasErrors === true && (
           <div className='mb-lg-15 alert alert-danger'>
             <div className='alert-text font-weight-bold'>
-              Sorry, looks like there are some errors detected, please try again.
+            מצטערים, נראה שזוהו כמה שגיאות, אנא נסה שוב.
             </div>
           </div>
         )}

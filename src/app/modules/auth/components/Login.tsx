@@ -10,9 +10,9 @@ import { useFormik } from 'formik'
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
-    .required('username is required'),
+    .required( ` שדהשם משתמש הינו חובה`),
   password: Yup.string()
-    .required('Password is required'),
+    .required( ` שדהסיסמה הינו חובה`),
 })
 
 const initialValues = {
@@ -79,7 +79,7 @@ export function Login(props: any) {
         <label className='form-label fs-6 fw-bolder text-dark'>{<FormattedMessage id="AUTH.INPUT.USERNAME" />}</label>
 
         <input
-          placeholder='username'
+          placeholder='תעודת זהות'
           {...formik.getFieldProps('username')}
           className={clsx(
             'form-control form-control-lg form-control-solid',
@@ -113,7 +113,7 @@ export function Login(props: any) {
               className='link-primary fs-6 fw-bolder'
               style={{ marginLeft: '5px' }}
             >
-              Forgot Password ?
+              שכחת סיסמא ?
             </Link>
             {/* end::Link */}
           </div>

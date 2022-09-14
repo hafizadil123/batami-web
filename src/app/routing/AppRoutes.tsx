@@ -15,7 +15,7 @@ import {RootState} from '../../setup'
 import {App} from '../App';
 
 
-
+// import {Tables} from './../modules/widgets/components/Tables'
 
 /**
  * Base URL of the website.
@@ -31,6 +31,7 @@ const AppRoutes: FC = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<App />}>
+          {/* <Route path="/test-tables" element={<Tables/>} /> */}
           <Route path='error/*' element={<ErrorsPage />} />
           <Route path='logout' element={<Logout />} />
           {isAuthorized ? (
