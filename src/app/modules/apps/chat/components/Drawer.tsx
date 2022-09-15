@@ -49,7 +49,7 @@ const Drawer: FC = () => {
         </div>
         <div className='col-md-6 col-xxl-4'>
           <Card1
-            avatar='/media/avatars/300-1.jpg'
+            avatar='/media/avatars/blank.png'
             name='Max Smith'
             job='Software Enginer'
             avgEarnings='$14,560'
