@@ -18,7 +18,11 @@ const DashboardPage: FC = () => {
   const [hebrewButtons,setHebrewButtons]=useState({ButtonAbsenceAllDay:"",ButtonAbsenceEnd:"",ButtonAbsenceStart:"",ButtonAttendanceEnd:"",ButtonAttendanceStart:"",ButtonSickAllDay:"",ButtonSickEnd:"",ButtonSickStart:""})
   const [buttonActions,setButtonActions]=useState({allowAbsenceAllDay:false,allowAbsenceEnd:false,allowAbsenceStart:false,allowAttendanceEnd:false,allowAttendanceStart:false,allowSickAllDay:false,allowSickEnd:false,allowSickStart:false})
   const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
-
+  const [times,setTimes]=useState({
+    attendanceStart:null,
+    absenceStart:null,
+    sickenessStart:null
+  })
   const [activeAbsenceType,setActiveAbsenceType]=useState("");
   const [responseStatus, setResponseStatus] = useState<any>(false)
   const [tabs,setTabs] =useState([
@@ -95,12 +99,22 @@ const DashboardPage: FC = () => {
     }
   }
 
-  const handleAPIForAttendance =async (endPoint:string,dataToSend:any) =>{
+  const handleAPIForAttendance =async (endPoint:string,dataToSend:any,type='attendance') =>{
     console.log({endPoint,dataToSend})
     //axios request
 
 
     const response = await axios.post(`${baseUrl}${endPoint}`, dataToSend, headerJson);
+    if(response && response.data){
+      const {data}=response;
+      console.log({t:data.time});
+      if(type=="attendance"){
+        setTimes({
+          ...times,
+          attendanceStart:data.time
+        })
+      }
+    }
     console.log({response});
 
 
@@ -211,7 +225,7 @@ const DashboardPage: FC = () => {
               handleAPIForAttendance(endPoint,data);
             }}
             className='btn btn-lg btn-secondary w-170-px mb-5'>
-            {hebrewButtons.ButtonAttendanceStart}
+            {times.attendanceStart ? times.attendanceStart: hebrewButtons.ButtonAttendanceStart}
           </button>
 
           <button
