@@ -13,23 +13,20 @@ const DashboardPage: FC = () => {
   const [isEndDisabled, setEndDisabled] = useState(false);
   const [endTime, setEndTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(0);
-  const [activeTab,setActiveTab] = useState(1);
+  const [activeRow,setActiveRow]=useState('attendance');
+  const [activeTab,setActiveTab] = useState('attendance');
   const [absenceTypeItems,setAbsenceTypeItems] = useState([]);
   const [hebrewButtons,setHebrewButtons]=useState({ButtonAbsenceAllDay:"",ButtonAbsenceEnd:"",ButtonAbsenceStart:"",ButtonAttendanceEnd:"",ButtonAttendanceStart:"",ButtonSickAllDay:"",ButtonSickEnd:"",ButtonSickStart:""})
   const [buttonActions,setButtonActions]=useState({allowAbsenceAllDay:false,allowAbsenceEnd:false,allowAbsenceStart:false,allowAttendanceEnd:false,allowAttendanceStart:false,allowSickAllDay:false,allowSickEnd:false,allowSickStart:false})
   const [workActivityCodeItems, setWorkActivityCodeItems] = useState([]);
-  const [times,setTimes]=useState({
-    attendanceStart:null,
-    absenceStart:null,
-    sickenessStart:null
-  })
+  const [latestStartTime,setLatestStartTime]=useState(null);
   const [activeAbsenceType,setActiveAbsenceType]=useState("");
   const [responseStatus, setResponseStatus] = useState<any>(false)
   const [tabs,setTabs] =useState([
    {
      id:1,
      label:"נוכחות",
-     name: 'attendance ',
+     name: 'attendance',
    },
    {
      id:2,
@@ -39,7 +36,7 @@ const DashboardPage: FC = () => {
    },
    {
      id:3,
-     name:'sickness',
+     name:'sick',
      label:"מחלה"
    }
   ])
@@ -73,49 +70,39 @@ const DashboardPage: FC = () => {
     }else{
       let bHebewTexts=JSON.parse(localStorage.getItem('buttonHebrewTexts')|| '');
       let abTypes=JSON.parse(localStorage.getItem('absenceTypes')|| '');
-      console.log({bHebewTexts,abTypes});
       setHebrewButtonsText(bHebewTexts)
       setAbsenceTypeItems(abTypes);
+      setActiveAbsenceType(abTypes[0].id)
+
 
     }
   }, []);
   const setHebrewButtonsText =(data:any[])=>{
     let buttonsHebrew:any ={}
     data.forEach(({id,name})=>{
-      buttonsHebrew[id]=name;
+      buttonsHebrew[id]=id;
     })
-    console.log({buttonsHebrew})
     setHebrewButtons(buttonsHebrew);
 }
 
-  const getSelectedTabData =(activeTab:number) =>{
+  const getSelectedTabData =(activeTab:string) =>{
     switch (activeTab){
-      case 1 :
+      case 'attendance' :
         return  constructAttandancePageContent();
-      case 2:
+      case 'absence':
         return constructAbsencePageContent();
-      case 3:
+      case 'sick':
         return constructSickNessPageContent();
     }
   }
 
-  const handleAPIForAttendance =async (endPoint:string,dataToSend:any,type='attendance') =>{
-    console.log({endPoint,dataToSend})
+  const handleAPIForAttendance =async (endPoint:string,dataToSend:any) =>{
     //axios request
-
-
     const response = await axios.post(`${baseUrl}${endPoint}`, dataToSend, headerJson);
     if(response && response.data){
       const {data}=response;
-      console.log({t:data.time});
-      if(type=="attendance"){
-        setTimes({
-          ...times,
-          attendanceStart:data.time
-        })
-      }
+      getDailyAttendance();
     }
-    console.log({response});
 
 
   }
@@ -126,7 +113,6 @@ const DashboardPage: FC = () => {
   }
 
   const setEndTimeStatus = (time: any) => {
-    console.log('Time : ', time);
     setEndDisabled(time != null);
     setEndTime(time)
   }
@@ -166,7 +152,8 @@ const DashboardPage: FC = () => {
               handleAPIForAttendance(endPoint,data);
             }}
             className='btn btn-lg btn-secondary w-170-px mb-5'>
-            {hebrewButtons.ButtonSickStart}
+              {activeRow==='sick' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonSickStart }
+            {/* {hebrewButtons.ButtonSickStart} */}
           </button>
           <button
             style={{ marginLeft: '100px' }}
@@ -225,7 +212,7 @@ const DashboardPage: FC = () => {
               handleAPIForAttendance(endPoint,data);
             }}
             className='btn btn-lg btn-secondary w-170-px mb-5'>
-            {times.attendanceStart ? times.attendanceStart: hebrewButtons.ButtonAttendanceStart}
+              {activeRow==='attendance' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonAttendanceStart }
           </button>
 
           <button
@@ -303,8 +290,9 @@ const DashboardPage: FC = () => {
               handleAPIForAttendance(endPoint,data);
             }}
             className='btn btn-lg btn-secondary w-170-px mb-5'>
+              {activeRow==='absence' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonAbsenceStart }
            
-            {hebrewButtons.ButtonAbsenceStart}
+            {/* {hebrewButtons.ButtonAbsenceStart} */}
           </button>
           <button
             style={{ marginLeft: '100px' }}
@@ -337,14 +325,16 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      console.log({data})
-      const { result, message, latestStartTime, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
+      const { result, message, latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
       setResponseStatus(result);
+      setActiveTab(rowType);
       setButtonActions({
         allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart
       })
       if (result) {
-        setStartTimeStatus(latestStartTime)
+        setStartTimeStatus(latestStartTime);
+        setLatestStartTime(latestStartTime);
+        setActiveRow(rowType);
         setEndTimeStatus(latestEndTime)
         // eslint-disable-next-line no-lone-blocks
         if (workActivityItems && workActivityItems.length) {
@@ -364,9 +354,8 @@ const DashboardPage: FC = () => {
       localStorage.setItem('absenceTypes',JSON.stringify(absenceTypes));
       localStorage.setItem('buttonHebrewTexts',JSON.stringify(buttonHebrewTexts));
       setAbsenceTypeItems(absenceTypes);
-      setHebrewButtonsText(buttonHebrewTexts);
-      console.log({data111:data})
-      
+      setActiveAbsenceType(absenceTypes[0].id)
+      setHebrewButtonsText(buttonHebrewTexts);      
     }
   }
 
@@ -403,7 +392,6 @@ const DashboardPage: FC = () => {
   }
 
   const handleChange =  (event: any) => {
-    console.log('SelectedValue : ', event.target.value);
     setSelectedOption(event.target.value);
   }
   const handleChangeTab  = (id:any) => (event: any)=>{
@@ -423,8 +411,8 @@ const getSelectedClass =(id:any)=>{
         // ${name.charAt(0).toUpperCase()+name.slice(1)}
           return (
 
-            <li key={id} className="nav-item" onClick={handleChangeTab(id)}>
-               <span className={`nav-link tab ${getSelectedClass(id)} ` }  data-toggle="tab" >{`${label}`}</span>
+            <li key={id} className="nav-item" onClick={handleChangeTab(name)}>
+               <span className={`nav-link tab ${getSelectedClass(name)} ` }  data-toggle="tab" >{`${label}`}</span>
             </li>
     
           )
