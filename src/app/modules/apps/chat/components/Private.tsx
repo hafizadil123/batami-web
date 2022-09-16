@@ -60,7 +60,7 @@ const Private: FC = () => {
               <div className='d-flex flex-stack py-4'>
                 <div className='d-flex align-items-center'>
                   <div className='symbol symbol-45px symbol-circle'>
-                    <img alt='Pic' src={toAbsoluteUrl('/media/avatars/300-1.jpg')} />
+                    <img alt='Pic' src={toAbsoluteUrl('/media/avatars/blank.png')} />
                   </div>
 
                   <div className='ms-5'>
