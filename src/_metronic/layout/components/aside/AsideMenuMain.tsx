@@ -36,23 +36,26 @@ export function AsideMenuMain() {
       {/* <FormattedMessage id="AUTH.GENERAL.ACCOUNT_DETAILS" /> */}
       <AsideMenuItem
         to={`/`}
+        icon='icon-daily-attendance.png'
         title={`לוּחַ מַחווָנִים
 `}
         hasBullet={true}
         fontAwesomeIconClass="fa-user"
       ></AsideMenuItem>
-      <AsideMenuItem  fontAwesomeIconClass="fa-user" to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem fontAwesomeIconClass="fa-check" to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem icon='icon-personal-details.png' fontAwesomeIconClass="fa-user" to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem icon='icon-main-attandance.png' fontAwesomeIconClass="fa-check" to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
 
       {/* <AsideMenuItem to={`/builder`} title='בּוֹנֶה' hasBullet={true}></AsideMenuItem> */}
       {/* <AsideMenuItem to={`/menu-test`} title='תַפרִיט' hasBullet={true}></AsideMenuItem> */}
       <AsideMenuItem
         to={`/documents`}
+        icon='icon-document.png' 
         title='מסמכים'
         fontAwesomeIconClass="fa-file"
         hasBullet={true}
       ></AsideMenuItem>
       <AsideMenuItem
+       icon='icon-document.png' 
         to={`/upload-document`}
         title='להעלות מסמך
 '

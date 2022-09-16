@@ -108,6 +108,7 @@ export function Login(props: any) {
             <label className='form-label fw-bolder text-dark fs-6 mb-0'><FormattedMessage id="AUTH.INPUT.PASSWORD" /></label>
             {/* end::Label */}
             {/* begin::Link */}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link
               to='/auth/forgot-password'
               className='link-primary fs-6 fw-bolder'
