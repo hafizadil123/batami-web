@@ -59,13 +59,13 @@ export function AsideMenuMain() {
         hasBullet={true}
         fontAwesomeIconClass="fa-file"
       ></AsideMenuItem>
-      <AsideMenuItem
+      {/* <AsideMenuItem
         to={`/admin-interface`}
         fontAwesomeIconClass="fa-user"
         title='ממשק ניהול
 '
         hasBullet={true}
-      ></AsideMenuItem>
+      ></AsideMenuItem> */}
 
       {/* </AsideMenuItemWithSub> */}
       {/* <AsideMenuItemWithSub
