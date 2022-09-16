@@ -28,7 +28,6 @@ const UploadDocumentSection = () => {
     const [reportDate, setReportDate] = useState('')
     const logged_user_detail: any = localStorage.getItem('logged_user_detail');
     const loggedInUserDetails = JSON.parse(logged_user_detail);
-
     const [isValid, setValid] = useState<any>(true)
     const [errorMessage, setErrorMessage] = useState<any>('')
 
@@ -40,6 +39,21 @@ const UploadDocumentSection = () => {
         headers: {
             Authorization: `bearer ${loggedInUserDetails.access_token}`
         }
+    }
+    const inputLabels ={
+        labelCategoryType:"Category Type",
+        documentType:"Document Type",
+        description:"Description",
+        file:"File",
+        startDate:"Start Date",
+        endDate:'End Date',
+        hmoTypes:'HMO Types',
+        merriageDate:"Marriage Date",
+        bank:"Bank",
+        bankBranch:'Bank Branch',
+        bankAccount:"Bank Account",
+        reportDate:"Report Date",
+        saveButton:"Save"
     }
 
     const checkAvailableDates = async () => {
@@ -179,12 +193,13 @@ const UploadDocumentSection = () => {
     }
 
     return (
-        <div>
+        <div  style={{border:'1px solid #EFF2F5',background:"#fff",padding:"10px",boxShadow: "0 0px 10px rgb(0 0 0 / 20%)",}} >
             <div className='upload_container'>
                 <div className='inputView'>
-                    <p className='labelStyle'>Category Type</p>
+                   
                     <div className='sectionOne'>
-                        <select style={{ width: '100%' }}
+                        <select style={{ width: '100%'}}
+                        className='form-control custom-input'
                             onChange={(event: any) => {
                                 const selectedItem = categoryTypes.filter((item: any) => item.id == event.target.value)[0] || {}
                                 setDocumentTypes(getTheUpdatedCategoryTypes(selectedItem && selectedItem.documentTypes))
@@ -199,15 +214,17 @@ const UploadDocumentSection = () => {
                             }
                         </select>
                     </div>
+                    <p className='labelStyle'>{inputLabels.labelCategoryType}</p>
 
                 </div>
                 {true && <div className='inputView'>
-                    <p className='labelStyle'>Document Type</p>
                     <div className='sectionOne'>
                         <select style={{ width: '100%' }}
+                        className='form-control custom-input'
                             onChange={(event: any) => {
                                 const selectedItem = documentTypes.filter((item: any) => item.id == event.target.value)[0] || {}
-                                setSelectedDocumentType(selectedItem)
+                                setSelectedDocumentType(selectedItem);
+                                console.log({selectedItem})
                                 setSelectedDocumentTypeId(selectedItem.id)
                             }}>
                             {
@@ -217,59 +234,60 @@ const UploadDocumentSection = () => {
                             }
                         </select>
                     </div>
+                    <p className='labelStyle'>{inputLabels.documentType}</p>
                 </div>
                 }
 
                 <div className='inputView'>
-                    <p className='labelStyle'>Description</p>
                     <div className='sectionOne'>
                         <input
                             value={description}
-                            className='sectionOneField'
+                            className='form-control custom-input'
                             maxLength={100}
                             onChange={(e) => setDescription(e.target.value)} />
                     </div>
+                    <p className='labelStyle'>{inputLabels.description}</p>
                 </div>
                 <div className='inputView'>
-                    <p className='labelStyle'>file</p>
                     <div className='sectionOne'>
                         <input
-                            className='sectionOneField'
+                            className='form-control custom-input'
                             ref={inputFileRef}
                             type='file'
                             onChange={handleChange} accept='.docx, .pdf, .png, .jpg,.jepg ,.gif' />
                     </div>
+                    <p className='labelStyle'>{inputLabels.file}</p>
+
                 </div>
                 {
                     selectedDocumentTypeId === 24 && <div className='inputView'>
-                        <p className='labelStyle'>Start Date</p>
                         <div className='sectionOne'>
                             <input
                                 type='date'
-                                className='sectionOneField'
+                                className='form-control custom-input'
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.startDate}</p>
                     </div>
                 }
                 {
                     selectedDocumentTypeId === 24 && <div className='inputView'>
-                        <p className='labelStyle'>End Date</p>
                         <div className='sectionOne'>
                             <input
                                 type='date'
-                                className='sectionOneField'
+                                className='form-control custom-input'
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.endDate}</p>
                     </div>
                 }
                 {
                     selectedDocumentTypeId === 24 && <div className='inputView'>
-                        <p className='labelStyle'>HMO Type</p>
                         <div className='sectionOne'>
                             <select
-                                className='sectionOneField'
+                                className='form-control custom-input'
                                 value={selectedHMO.id}
                                 onChange={(event: any) => {
                                     const selectedItem = hmoTypes.filter((item: any) => item.id == event.target.value)[0] || {}
@@ -282,26 +300,27 @@ const UploadDocumentSection = () => {
                                 }
                             </select>
                         </div>
+                        <p className='labelStyle'>{inputLabels.hmoTypes}</p>
                     </div>
                 }
                 {
                     selectedDocumentTypeId === 43 && <div className='inputView'>
-                        <p className='labelStyle'>Marriage Date</p>
+                       
                         <div className='sectionOne'>
                             <input
                                 type='date'
-                                className='sectionOneField'
+                                className='form-control custom-input'
                                 value={marriageDate}
                                 onChange={(e) => setMarriageDate(e.target.value)} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.merriageDate}</p>
                     </div>
                 }
                 {
                     selectedDocumentTypeId === 5 && <div className='inputView'>
-                        <p className='labelStyle'>Bank</p>
                         <div className='sectionOne'>
                             <select
-                                className='sectionOneField'
+                                className='form-control custom-input'
                                 value={selectedBank.id}
                                 onChange={(event: any) => {
                                     const selectedItem = banks.filter((item: any) => item.id == event.target.value)[0] || {}
@@ -313,12 +332,15 @@ const UploadDocumentSection = () => {
                                     })
                                 }
                             </select>
+                       
                         </div>
+                        <p className='labelStyle'>{inputLabels.bank}</p>
                     </div>
+
                 }
                 {
                     selectedDocumentTypeId === 5 && <div className='inputView'>
-                        <p className='labelStyle'>Bank Branch</p>
+                        
                         <div className='sectionOne'>
                             <input
                                 value={bankBranch}
@@ -326,11 +348,12 @@ const UploadDocumentSection = () => {
                                 className='sectionOneField'
                                 maxLength={3} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.bankBranch}</p>
                     </div>
                 }
                 {
                     selectedDocumentTypeId === 5 && <div className='inputView'>
-                        <p className='labelStyle'>Bank Account</p>
+                        
                         <div className='sectionOne'>
                             <input
                                 value={bankAccount}
@@ -338,11 +361,12 @@ const UploadDocumentSection = () => {
                                 maxLength={9}
                                 onChange={(e) => setBankAccount(e.target.value)} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.bankAccount}</p>
                     </div>
                 }
                 {
                     [23, 40].includes(selectedDocumentTypeId) && <div className='inputView'>
-                        <p className='labelStyle'>Report Date</p>
+                        
                         <div className='sectionOne'>
                             <input
                                 type='month'
@@ -350,12 +374,17 @@ const UploadDocumentSection = () => {
                                 value={reportDate}
                                 onChange={(e) => setReportDate(e.target.value)} />
                         </div>
+                        <p className='labelStyle'>{inputLabels.reportDate}</p>
                     </div>
                 }
             </div>
-            <button className='btn btn-lg btn-primary mb-5' onClick={() => {
+            <div style={{textAlign:'center'}}>
+            <button className='btn btn-lg btn-primary mb-5' style={{minWidth:"20%"}} onClick={() => {
                 postImageToServer()
-            }}>Save</button>
+            }}>{inputLabels.saveButton}</button>
+
+            </div>
+           
             {errorMessage && <div className='message_section' style={{ background: responseStatus ? '#4CAF50' : '#EF5350' }}>
                 {errorMessage}
             </div>

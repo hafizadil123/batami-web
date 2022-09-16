@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {useLocation} from 'react-router'
-import {checkIsActive, KTSVG} from '../../../helpers'
+import {checkIsActive, KTSVG,toAbsoluteUrl} from '../../../helpers'
 import {useLayout} from '../../core'
 
 type Props = {
@@ -36,16 +36,17 @@ const AsideMenuItem: React.FC<Props> = ({
             <span className='bullet bullet-dot'></span>
           </span>
         )}
-        {icon && aside.menuIcon === 'svg' && (
-          <span className='menu-icon'>
-            <KTSVG path={icon} className='svg-icon-2' />
-          </span>
-        )}
+        {
+          icon &&  <img src={toAbsoluteUrl(`/media/icons/${icon}`)} alt='metronic' style={{maxWidth:'25px'}} />
+        }
+       
+       
         <i className="fa-solid fa-square-info"></i>
         <i className="fa-regular fa-circle-info"></i>
         <i className="fa fa-circle-info"></i>
         <i className="fa fa-square-check"></i>
-        <i className={`fa ${fontAwesomeIconClass}`}></i>&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {/* <i className={`fa ${fontAwesomeIconClass}`}></i>&nbsp;&nbsp;&nbsp; */}
         <span className='menu-title'>{title}</span>
       </Link>
       {children}

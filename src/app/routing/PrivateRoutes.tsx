@@ -35,7 +35,7 @@ const PrivateRoutes = () => {
         <Route path='/main-attendance' element={<DailyAttendancePage />} />
         <Route path='/documents' element={<DocumentsPage />} />
         <Route path='/upload-document' element={<UploadDocumentSection />} />
-        <Route path='/admin-interface' element={<HebrewBirthDate />} />
+        {/* <Route path='/admin-interface' element={<HebrewBirthDate />} /> */}
 
         {/* Lazy Modules */}
         <Route
