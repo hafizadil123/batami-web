@@ -37,13 +37,13 @@ export function AsideMenuMain() {
       <AsideMenuItem
         to={`/`}
         icon='icon-daily-attendance.png'
-        title={`לוּחַ מַחווָנִים
-`}
+        title={`נוכחות יומית`}
+      
         hasBullet={true}
         fontAwesomeIconClass="fa-user"
       ></AsideMenuItem>
-      <AsideMenuItem icon='icon-personal-details.png' fontAwesomeIconClass="fa-user" to={`/user-details`} title='פרטי המשתמש' hasBullet={true}></AsideMenuItem>
-      <AsideMenuItem icon='icon-main-attandance.png' fontAwesomeIconClass="fa-check" to={`/main-attendance`} title='נוכחות יומית' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem icon='icon-personal-details.png' fontAwesomeIconClass="fa-user" to={`/user-details`} title='פרטים אישיים' hasBullet={true}></AsideMenuItem>
+      <AsideMenuItem icon='icon-main-attandance.png' fontAwesomeIconClass="fa-check" to={`/main-attendance`} title='נוכחות' hasBullet={true}></AsideMenuItem>
 
       {/* <AsideMenuItem to={`/builder`} title='בּוֹנֶה' hasBullet={true}></AsideMenuItem> */}
       {/* <AsideMenuItem to={`/menu-test`} title='תַפרִיט' hasBullet={true}></AsideMenuItem> */}
