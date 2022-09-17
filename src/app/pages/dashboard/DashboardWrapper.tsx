@@ -13,6 +13,9 @@ const DashboardPage: FC = () => {
   const [isEndDisabled, setEndDisabled] = useState(false);
   const [endTime, setEndTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(0);
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentStatus, setCurrentStatus] = useState('');
+  const [userFirstName, setUserFirstName] = useState('');
   const [activeRow,setActiveRow]=useState('attendance');
   const [activeTab,setActiveTab] = useState('attendance');
   const [absenceTypeItems,setAbsenceTypeItems] = useState([]);
@@ -65,6 +68,7 @@ const DashboardPage: FC = () => {
 
   useEffect(() => {
     getDailyAttendance();
+    setUserFirstName(localStorage.getItem('logged_in_user_firstName')|| '');
     if(!(localStorage.getItem('absenceTypes') || localStorage.getItem('buttonHebrewTexts'))){
       getDataApi();
     }else{
@@ -329,9 +333,11 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      const { result, message, latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
+      const { result, message, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
       setResponseStatus(result);
       setActiveTab(rowType);
+      setCurrentDate(currentDate);
+      setCurrentStatus(currentStatus);
       setButtonActions({
         allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart
       })
@@ -422,6 +428,12 @@ const getSelectedClass =(id:any)=>{
           )
       })}
       </ul>
+      <div style={{textAlign:'center',fontWeight:'bold',marginBottom:'30px'}}>
+        {/* <p>Here is your Status</p> */}
+        <p>{`שלום ${userFirstName}`}</p>
+        <p>{`נוכחות יומית : ${currentDate}`}</p>
+        <p>{`סטטוס נוכחי : ${currentStatus}`}</p>
+      </div>
        {getSelectedTabData(activeTab)}
 
      
