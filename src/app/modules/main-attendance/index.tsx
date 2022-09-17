@@ -36,8 +36,8 @@ const ListHeaderSection = (props: any) => {
     return (
         <>
             <div style={{ display: 'flex', flexDirection: 'row' , color:"#A1A5B7"}}>
-                {hasSecondYear && <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{`Year 2`}</p>}
-                <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{`Year 1`}</p>
+                {hasSecondYear && <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{"שנה א"}</p>}
+                <p style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>{`שנה ב`}</p>
                 <p style={{ textAlign: 'center', flex: 3, fontWeight: 'bold' }}>{headerTitle}</p>
             </div>
         </>

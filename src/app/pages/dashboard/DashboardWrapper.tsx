@@ -80,7 +80,7 @@ const DashboardPage: FC = () => {
   const setHebrewButtonsText =(data:any[])=>{
     let buttonsHebrew:any ={}
     data.forEach(({id,name})=>{
-      buttonsHebrew[id]=id;
+      buttonsHebrew[id]=name;
     })
     setHebrewButtons(buttonsHebrew);
 }
@@ -101,6 +101,10 @@ const DashboardPage: FC = () => {
     const response = await axios.post(`${baseUrl}${endPoint}`, dataToSend, headerJson);
     if(response && response.data){
       const {data}=response;
+      console.log({data})
+      if(data.result===false){
+        return alert(data.message)
+      }
       getDailyAttendance();
     }
 
