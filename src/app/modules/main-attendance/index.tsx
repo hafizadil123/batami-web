@@ -65,7 +65,7 @@ const AttendaneDetailItem = (props: any) => {
                         console.log('Clicked')
                         onFieldClicked(listNo, type, hasSecondYear ? 2 : 1)
                     }}
-                >{`${keyYearOne}`}</p>
+                >{`${label}`}</p>
             </div>
         </>
     )
