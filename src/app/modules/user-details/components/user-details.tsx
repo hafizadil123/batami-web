@@ -107,11 +107,11 @@ export function UserDetails() {
 
   const initialValues = {
     ...userDetails,
-    birthDate: moment(userDetails?.['birthDate']).format('yyyy-MM-DD'),
+    birthDate: moment(userDetails?.['birthDate']).format('dd-MM-yyyy'),
     // acceptTerms: false,
   }
 
-  console.log('User Details', moment(userDetails?.['birthDate']).format('yyyy-MM-DD'))
+  console.log('User Details', moment(userDetails?.['birthDate']).format('dd-MM-yyyy'))
 
   useEffect(() => {
     getUserDetails()
@@ -206,14 +206,23 @@ export function UserDetails() {
     PasswordMeterComponent.bootstrap()
   }, [])
 
-  var schools: any = []
-  for (let i = 0; i < dataForFields?.schoolCityTypes?.length; i++) {
-    if (dataForFields.schoolCityTypes[i].id === 3002) {
-      schools = dataForFields.schoolCityTypes[i].schools
-    }
+  // var schools: any = []
+  // for (let i = 0; i < dataForFields?.schoolCityTypes?.length; i++) {
+  //   if (dataForFields.schoolCityTypes[i].id === 3002) {
+  //     schools = dataForFields.schoolCityTypes[i].schools
+  //   }
+  // }
+  // console.log('Schollsssssssss', schools)
+  const handleChangeInSchoolCityTypes =(id:any) =>{
+      let schoolsToPopulate = dataForFields?.schoolCityTypes?.find((item:any)=>item.id==id);
+      // console.log({schoolsToPopulate});
+      setSchoolCodesArray(schoolsToPopulate?.schools || []);
+  } 
+  const onSchoolCityCodeChange = (e:any, setFieldValue:any) => {
+    const value = e.target.value;
+    console.log({value})
+    // setFieldValue('mail.domain', domain, false)
   }
-  console.log('Schollsssssssss', schools)
-
   return (
     <form
       className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
@@ -393,7 +402,7 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
+            <label className='form-label fw-bolder text-dark fs-6'>BD תאריך לידה</label>
             <input
               // placeholder='Passport'
               type='date'
@@ -734,15 +743,24 @@ export function UserDetails() {
           )}
         </div>
          <div className='col-xl-6'>
-          <label className='form-label fw-bolder text-dark fs-6'>יישוב בית ספר</label>
+          <label className='form-label fw-bolder text-dark fs-6'>בית ספר</label>
           <select
            
             aria-label='Select School City Code'
             data-control='select2'
             data-placeholder='date_period'
             className='form-select form-select-sm form-select-solid'
+            
             {...formik.getFieldProps('schoolCityCode')}
-            onChange={formik.handleChange}
+            onBlur={e=>{
+              handleChangeInSchoolCityTypes(e.target.value)
+            }}
+            onChange={(e) => {
+              const value = e.target.value;
+              handleChangeInSchoolCityTypes(value);
+             formik.setFieldValue('schoolCityCode',value)
+              // form.setFieldValue('mail.domain', domain)
+            }}
           >
             {dataForFields?.schoolCityTypes?.map((item: any) => (
               <option value={item.id}>{item.name}</option>
@@ -769,7 +787,7 @@ export function UserDetails() {
             {...formik.getFieldProps('schoolCode')}
             onChange={formik.handleChange}
           >
-            {dataForFields?.schoolCityTypes?.map((item: any) => (
+            {schoolCodes.map((item: any) => (
               <option value={item.id}>{item.name}</option>
             ))}
           </select>
@@ -843,8 +861,8 @@ export function UserDetails() {
     
         <div className='col-xl-6'>
           <div>
-            <label className='class="form-label fw-bolder text-dark fs-6'>בנק</label>
-            <input
+            <label className='class="form-label fw-bolder text-dark fs-6'> בנק</label>
+            {/* <input
               placeholder='בנק'
               type='text'
               autoComplete='off'
@@ -858,7 +876,20 @@ export function UserDetails() {
                   'is-valid': formik.touched.bankCode && !formik.errors.bankCode,
                 }
               )}
-            />
+            /> */}
+            <select
+            // name='hebYear'
+            aria-label=''
+            data-control='select2'
+            data-placeholder='date_period'
+            className='form-select form-select-sm form-select-solid'
+            {...formik.getFieldProps('bankCode')}
+            onChange={formik.handleChange}
+          >
+            {dataForFields?.banks?.map((item: any) => (
+              <option value={item.id}>{item.name}</option>
+            ))}
+          </select>
             {formik.touched.bankCode && formik.errors.bankCode && (
               <div className='fv-plugins-message-container'>
                 <div className='fv-help-block'>

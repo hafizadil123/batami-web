@@ -2,6 +2,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import axios from 'axios'
+import DataTable, { createTheme } from 'react-data-table-component';
 import { PageTitle } from '../../../_metronic/layout/core'
 import './tabs.css'
 const DashboardPage: FC = () => {
@@ -14,6 +15,7 @@ const DashboardPage: FC = () => {
   const [endTime, setEndTime] = useState(null);
   const [selectedOption, setSelectedOption] = useState(0);
   const [currentDate, setCurrentDate] = useState('');
+  const [existingData, setExistingData] = useState([]);
   const [currentStatus, setCurrentStatus] = useState('');
   const [userFirstName, setUserFirstName] = useState('');
   const [activeRow,setActiveRow]=useState('attendance');
@@ -42,7 +44,64 @@ const DashboardPage: FC = () => {
      name:'sick',
      label:"מחלה"
    }
-  ])
+  ]);
+  createTheme('solarized', {
+    text: {
+      primary: '#268bd2',
+      secondary: '#2aa198',
+    },
+    // background: {
+    //   default: '#002b36',
+    // },
+    context: {
+      // background: '#cb4b16',
+      text: '#FFFFFF',
+    },
+    divider: {
+      default: '#073642',
+    },
+    action: {
+      button: 'rgba(0,0,0,.54)',
+      hover: 'rgba(0,0,0,.08)',
+      disabled: 'rgba(0,0,0,.12)',
+    },
+  }, 'light');
+  const tableColumns = [
+    {
+      name: 'id',
+      selector: (row: any) => row.id,
+      sortable: true,
+    },
+    {
+      name: 'Absence Name',
+      selector: (row: any) => row.absenceName,
+      sortable: true,
+    },
+
+    {
+      name: 'Note',
+      selector: (row: any) => row.note,
+      sortable: true,
+    },
+
+    {
+      name: 'Activity',
+      selector: (row: any) => row.activity,
+      sortable: true,
+    },
+
+    {
+      name: 'Start Time',
+      selector: (row: any) => row.startTime,
+      sortable: true,
+    },
+    {
+      name: 'end Time',
+      selector: (row: any) => row.endTime,
+      sortable: true,
+    },
+
+  ]
 
   const logged_user_detail: any = localStorage.getItem('logged_user_detail');
   const loggedInUserDetails = JSON.parse(logged_user_detail);
@@ -69,17 +128,19 @@ const DashboardPage: FC = () => {
   useEffect(() => {
     getDailyAttendance();
     setUserFirstName(localStorage.getItem('logged_in_user_firstName')|| '');
-    if(!(localStorage.getItem('absenceTypes') || localStorage.getItem('buttonHebrewTexts'))){
-      getDataApi();
-    }else{
-      let bHebewTexts=JSON.parse(localStorage.getItem('buttonHebrewTexts')|| '');
-      let abTypes=JSON.parse(localStorage.getItem('absenceTypes')|| '');
-      setHebrewButtonsText(bHebewTexts)
-      setAbsenceTypeItems(abTypes);
-      setActiveAbsenceType(abTypes[0].id)
+    getDataApi();
+
+    // if(!(localStorage.getItem('absenceTypes') || localStorage.getItem('buttonHebrewTexts'))){
+    //   getDataApi();
+    // }else{
+    //   let bHebewTexts=JSON.parse(localStorage.getItem('buttonHebrewTexts')|| '');
+    //   let abTypes=JSON.parse(localStorage.getItem('absenceTypes')|| '');
+    //   setHebrewButtonsText(bHebewTexts)
+    //   setAbsenceTypeItems(abTypes);
+    //   setActiveAbsenceType(abTypes[0].id)
 
 
-    }
+    // }
   }, []);
   const setHebrewButtonsText =(data:any[])=>{
     let buttonsHebrew:any ={}
@@ -333,10 +394,11 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      const { result, message, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
+      const { result, message,existingData, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
       setResponseStatus(result);
       setActiveTab(rowType);
       setCurrentDate(currentDate);
+      setExistingData(existingData|| []);
       setCurrentStatus(currentStatus);
       setButtonActions({
         allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart
@@ -360,7 +422,7 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      const {absenceTypes,buttonHebrewTexts}=data;
+      const {absenceTypes,buttonHebrewTexts,banks,}=data;
       localStorage.setItem('absenceTypes',JSON.stringify(absenceTypes));
       localStorage.setItem('buttonHebrewTexts',JSON.stringify(buttonHebrewTexts));
       setAbsenceTypeItems(absenceTypes);
@@ -436,7 +498,7 @@ const getSelectedClass =(id:any)=>{
       </div>
        {getSelectedTabData(activeTab)}
 
-     
+     <DataTable data={existingData} columns={tableColumns} striped theme="solarized" />
       {responseMessage && <div
         style={{
           background: responseStatus ? '#4CAF50' : '#EF5350',
