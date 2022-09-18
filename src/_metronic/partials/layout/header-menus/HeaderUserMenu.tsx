@@ -32,6 +32,7 @@ const HeaderUserMenu: FC = () => {
         }
       });
       localStorage.setItem('userType', response.data.userType);
+      localStorage.setItem('logged_in_user_firstName',response?.data?.firstName);
       setUser(response.data)
     }
 

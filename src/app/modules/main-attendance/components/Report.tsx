@@ -20,10 +20,10 @@ const ReportTable: React.FC<Props> = ({className,reportData}) => {
             {/* begin::Table head */}
             <thead>
               <tr className='fw-bolder text-muted'>
-                <TableHeadView className="min-w-150px" text="Notes" />
-                <TableHeadView className="min-w-150px" text="Manager Approval" />
-                <TableHeadView className="min-w-150px" text="Coordinator Approval" />
-                <TableHeadView className="min-w-150px" text="Report Month" />
+              <TableHeadView className="min-w-150px" text="טופס לחודש" />
+              <TableHeadView className="min-w-150px" text="אישור רכזת" />
+              <TableHeadView className="min-w-150px" text="אישור מנהל" />
+                <TableHeadView className="min-w-150px" text="הערות" />
                 {/* <TableHeadView className="min-w-150px" text="Notes" /> */}
                 
               </tr>
@@ -34,10 +34,10 @@ const ReportTable: React.FC<Props> = ({className,reportData}) => {
             {reportData.map((item, index) => {
                                 const { reportMonth, notes, managerApproval, coordinatorApproval } = item;
                                 return <tr  key={index}>
-                                    <TableDataView flexValue={3} text={notes} type={fieldTypes.editText} />
-                                    <TableDataView flexValue={1} text={managerApproval} type={fieldTypes.checkbox} />
-                                    <TableDataView flexValue={1} text={coordinatorApproval} type={fieldTypes.checkbox} />
                                     <TableDataView flexValue={1} text={reportMonth} type={fieldTypes.text} />
+                                    <TableDataView flexValue={1} text={coordinatorApproval} type={fieldTypes.checkbox} />
+                                    <TableDataView flexValue={1} text={managerApproval} type={fieldTypes.checkbox} />
+                                    <TableDataView flexValue={3} text={notes} type={fieldTypes.editText} />
                                 </tr>
                             })}
              
@@ -66,6 +66,7 @@ const TableDataView = (props: any) => {
                       style={{minHeight: '30px', textAlign: 'right' }}
                       className='form-control'
                       value={note}
+                      disabled={true}
                       onChange={setNote}
                   />
               </td>)

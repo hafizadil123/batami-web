@@ -65,7 +65,7 @@ const AttendaneDetailItem = (props: any) => {
                         console.log('Clicked')
                         onFieldClicked(listNo, type, hasSecondYear ? 2 : 1)
                     }}
-                >{`${label}`}</p>
+                >{`${keyYearOne}`}</p>
             </div>
         </>
     )
@@ -209,6 +209,7 @@ const MainAttendance = () => {
     const renderDynamicTable = () => {
         console.log('Selected List : ',selectedList);
         console.log('Selected Type : ',selectedType);
+        console.log('hihihihihihihihhih',selectedList,selectedType,alertList)
         console.log('AlertList : ',alertList);
         if (selectedList === 1) {
             // === If list one is selected then this section will render === //
@@ -358,6 +359,46 @@ const MainAttendance = () => {
                 </tbody>
             </table>
         }
+
+        else if (selectedList ===5) {
+            // alert('yes i am in')
+            // === If list three is selected then this section will render === //
+            return <table style={{ width: '100%',textAlign:'center' }} >
+                <thead>
+                    <tr style={{  background: '#28b6e5',height:'50px',lineHeight:'50px' }}>
+                        {
+                            listFiveTypeOneFields.map((item) => {
+                                console.log({item})
+                                return (
+                                    // < p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }}>{item.key}</p>
+                                    <th>{item.key}</th>
+                                )
+                            })
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        {
+                            alertList.map((item:any,index)=>{
+                                return (
+
+                                    <tr style={{height:'50px',lineHeight:'50px'}} key={index}>
+                                    <td>{item.name}</td>
+                                    <td>{item.days}</td>
+                                    <td>{item.approvedDays}</td>
+                                    <td>{item.approvedDays}</td>
+                                    <td>{item.onVolunteerDays}</td>
+                                    
+                                    
+                                </tr>
+                                )
+                            })
+                            
+                        }
+                </tbody>
+            </table>
+        }
     }
 
     return (
@@ -412,30 +453,42 @@ const MainAttendance = () => {
 
                 <Modal
                     show={showModal}
-                    onHide={() => setShowModal(false)}
+                    onHide={() => {
+                        setShowModal(false)
+                    }}
+                    // style={{    minWidth: "700px"}}
+                    size="lg"
                     backdrop="static"
-                    keyboard={false}
+                // keyboard={false}
                 >
-                    <Modal.Body>
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body   >
                         <>
-                            <table style={{ width: '100%' }} >
-                                <thead>
-                                    <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
-                                        {
-                                            listOneFields.map((item, index) => {
-                                                return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item.key}</p>
-                                            })
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        {
-                                            renderDynamicTable()
-                                        }
-                                    </tr>
-                                </tbody>
-                            </table>
+                        {
+                            selectedList === 5 ?
+                            renderDynamicTable() :
+                        <table style={{ width: '100%',direction:'rtl' }} >
+                            <thead>
+                                <tr style={{ display: 'flex', flexDirection: 'row', width: '100%', background: '#28b6e5' }}>
+                                    {
+                                        listOneFields.map((item, index) => {
+                                            return <p style={{ flex: 1, textAlign: 'center', color: '#ffffff', height: '100%', justifyContent: 'center' }} key={index}>{item.key}</p>
+                                        })
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {
+                                        renderDynamicTable()
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        }
+                          
                         </>
                     </Modal.Body>
                     <Modal.Footer>
