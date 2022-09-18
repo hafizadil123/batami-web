@@ -130,17 +130,16 @@ const DashboardPage: FC = () => {
     setUserFirstName(localStorage.getItem('logged_in_user_firstName')|| '');
     getDataApi();
 
-    // if(!(localStorage.getItem('absenceTypes') || localStorage.getItem('buttonHebrewTexts'))){
-    //   getDataApi();
-    // }else{
-    //   let bHebewTexts=JSON.parse(localStorage.getItem('buttonHebrewTexts')|| '');
-    //   let abTypes=JSON.parse(localStorage.getItem('absenceTypes')|| '');
-    //   setHebrewButtonsText(bHebewTexts)
-    //   setAbsenceTypeItems(abTypes);
-    //   setActiveAbsenceType(abTypes[0].id)
+    if(!(localStorage.getItem('absenceTypes') || localStorage.getItem('buttonHebrewTexts'))){
+      getDataApi();
+    }else{
+      let bHebewTexts=JSON.parse(localStorage.getItem('buttonHebrewTexts')|| '');
+      let abTypes=JSON.parse(localStorage.getItem('absenceTypes')|| '');
+      setHebrewButtonsText(bHebewTexts)
+      setAbsenceTypeItems(abTypes);
+      setActiveAbsenceType(abTypes[0].id)
 
-
-    // }
+    }
   }, []);
   const setHebrewButtonsText =(data:any[])=>{
     let buttonsHebrew:any ={}
@@ -389,6 +388,31 @@ const DashboardPage: FC = () => {
   const handleChangeAbsenceType =(e:any) =>{
     setActiveAbsenceType(e.target.value)
   }
+  const filterExistingData =(data:any) =>{
+      return data.filter((item:any)=>{
+        if(isDataExist(item)){
+          return item;
+        }
+      });
+
+
+  }
+  const isDataExist =(obj:any) =>{
+    let exists=false;
+    for(let property in obj){
+      console.log({property});
+      if(property!=="id"){
+        if((obj[property]!==null && obj[property]!=="")){
+          exists=true;
+        }else{
+          obj[property]='N/A';
+          console.log({property1:property})
+        }
+      }
+     
+    }
+    return exists;
+  }
   const getDailyAttendance = async () => {
     const response = await axios.post(getDailyAttendanceEndpoint, {}, headerJson)
 
@@ -398,7 +422,8 @@ const DashboardPage: FC = () => {
       setResponseStatus(result);
       setActiveTab(rowType);
       setCurrentDate(currentDate);
-      setExistingData(existingData|| []);
+      let exData=filterExistingData(existingData);
+      setExistingData(exData|| []);
       setCurrentStatus(currentStatus);
       setButtonActions({
         allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart
