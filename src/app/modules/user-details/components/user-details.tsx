@@ -10,6 +10,8 @@ import {Link} from 'react-router-dom'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 import moment from 'moment'
 import {PasswordMeterComponent} from '../../../../_metronic/assets/ts/components'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import './style.css'
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -112,7 +114,7 @@ export function UserDetails() {
   }
 
   console.log('User Details', moment(userDetails?.['birthDate']).format('dd-MM-yyyy'))
-
+  const [startDate, setStartDate] = useState(new Date());
   useEffect(() => {
     getUserDetails()
   }, [])
@@ -137,7 +139,10 @@ export function UserDetails() {
       )
       if (response) {
         setLoading(false)
-        const {data} = response
+        const {data} = response;
+        console.log({data});
+        // console.log('forammmm',new Date(data.birthDate))
+        setStartDate(new Date(data.birthDate));
         setUserDetails(data)
         console.log('aAAAAAAAAAAAAAdataaa', data)
         if (data?.isArmyInterested) {
@@ -402,8 +407,11 @@ export function UserDetails() {
         <div className='col-xl-6'>
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
-            <label className='form-label fw-bolder text-dark fs-6'>BD תאריך לידה</label>
-            <input
+            <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
+            <DatePicker className='form-control'  dateFormat={'dd-MM-yyyy'} selected={startDate} onChange={ (date:Date)=>{
+             formik.setFieldValue('birthDate',date);
+            }} />
+            {/* <input
               // placeholder='Passport'
               type='date'
               {...formik.getFieldProps('birthDate')}
@@ -417,7 +425,7 @@ export function UserDetails() {
                   'is-valid': formik.touched.birthDate && !formik.errors.birthDate,
                 }
               )}
-            />
+            /> */}
             {formik.touched.birthDate && formik.errors.birthDate && (
               <div className='fv-plugins-message-container'>
                 <div className='fv-help-block'>
