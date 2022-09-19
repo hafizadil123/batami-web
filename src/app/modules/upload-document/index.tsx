@@ -41,19 +41,19 @@ const UploadDocumentSection = () => {
         }
     }
     const inputLabels ={
-        labelCategoryType:"Category Type",
-        documentType:"Document Type",
-        description:"Description",
-        file:"File",
-        startDate:"Start Date",
-        endDate:'End Date',
-        hmoTypes:'HMO Types',
-        merriageDate:"Marriage Date",
-        bank:"Bank",
-        bankBranch:'Bank Branch',
-        bankAccount:"Bank Account",
-        reportDate:"Report Date",
-        saveButton:"Save"
+        labelCategoryType:"קטגוריית מסמך",// "Category Type",
+        documentType:"סוג מסמך", //"Document Type",
+        description:"תיאור מסמך",
+        file:"קישור למסמך",
+        startDate:"תאריך התחלה",
+        endDate:'תאריך סיום',
+        hmoTypes:'קופת חולים',
+        merriageDate:"תאריך חתונה",
+        bank:"בנק",
+        bankBranch:'סניף בנק',
+        bankAccount:"חשבון בנק",
+        reportDate:"חודש נוכחות",
+        saveButton:"שמור "
     }
 
     const checkAvailableDates = async () => {
