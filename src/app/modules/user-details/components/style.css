@@ -112,3 +112,7 @@
   footer.text-lg-start{
       margin-top: 20px;
   }
+  .date-picker-custom-css {
+    background: #f5f8fa !important;
+    border: 1px solid black !important;
+  }

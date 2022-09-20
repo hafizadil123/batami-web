@@ -408,7 +408,7 @@ export function UserDetails() {
           {/* begin::Form group Lastname */}
           <div className='fv-row mb-5'>
             <label className='form-label fw-bolder text-dark fs-6'>תאריך לידה</label>
-            <DatePicker className='form-control'  dateFormat={'dd-MM-yyyy'} selected={startDate} onChange={ (date:Date)=>{
+            <DatePicker  className='form-control date-picker-custom-css'  dateFormat={'dd-MM-yyyy'} selected={startDate} onChange={ (date:Date)=>{
              formik.setFieldValue('birthDate',date);
             }} />
             {/* <input
