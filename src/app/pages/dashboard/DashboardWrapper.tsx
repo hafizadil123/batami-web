@@ -70,36 +70,29 @@ const DashboardPage: FC = () => {
   }, 'light');
   const tableColumns = [
     {
-      name: 'id',
-      selector: (row: any) => row.id,
+      name: 'פעילות',
+      selector: (row: any) => row.activity,
       sortable: true,
     },
     {
-      name: 'Absence Name',
+      name: "שעת התחלה",
+      selector: (row: any) => row.startTime,
+      sortable: true,
+    },
+    {
+      name: "שעת סיום",
+      selector: (row: any) => row.endTime,
+      sortable: true,
+    },
+    {
+      name: "סוג היעדרות",
       selector: (row: any) => row.absenceName,
       sortable: true,
     },
 
     {
-      name: 'Note',
+      name: 'הערה לפעילות',
       selector: (row: any) => row.note,
-      sortable: true,
-    },
-
-    {
-      name: 'Activity',
-      selector: (row: any) => row.activity,
-      sortable: true,
-    },
-
-    {
-      name: 'Start Time',
-      selector: (row: any) => row.startTime,
-      sortable: true,
-    },
-    {
-      name: 'end Time',
-      selector: (row: any) => row.endTime,
       sortable: true,
     },
 
@@ -190,9 +183,9 @@ const DashboardPage: FC = () => {
     return <>
       <div>
         <input type='text' className='form-control mt-7' placeholder='הערה' value={note} onChange={e=>setNote(e.target.value)} />
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px", cursor: "pointer" }}>
+        <div className="button-parent-div">
           <button
-            style={{ marginLeft: '100px' }}
+            
             disabled={!buttonActions.allowSickAllDay}
             type='submit'
             id='exit_time_button'
@@ -205,12 +198,12 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
             {hebrewButtons.ButtonSickAllDay}
           </button>
 
           <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             id='exit_time_button'
             disabled={!buttonActions.allowSickStart}
@@ -223,12 +216,12 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
               {activeRow==='sick' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonSickStart }
             {/* {hebrewButtons.ButtonSickStart} */}
           </button>
           <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             id='exit_time_button'
             disabled={!buttonActions.allowSickEnd}
@@ -240,7 +233,7 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
             {hebrewButtons.ButtonSickEnd}
           </button>
         </div>
@@ -268,10 +261,10 @@ const DashboardPage: FC = () => {
           </select>
         }
         <input type='text' className='form-control mt-7' placeholder='הערה' value={note} onChange={e=>setNote(e.target.value)} />
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px", cursor: "pointer" }}>
+        <div className="button-parent-div">
          
           <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             id='exit_time_button'
             disabled={!buttonActions.allowAttendanceStart}
@@ -285,12 +278,12 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
               {activeRow==='attendance' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonAttendanceStart }
           </button>
 
           <button
-            style={{ marginLeft: '100px' }}
+            
             disabled={!buttonActions.allowAttendanceEnd}
             onClick={e=>{
               e.preventDefault();
@@ -301,7 +294,7 @@ const DashboardPage: FC = () => {
             }}
             type='submit'
             id='exit_time_button'
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
             {hebrewButtons.ButtonAttendanceEnd}
           </button>
 
@@ -331,9 +324,9 @@ const DashboardPage: FC = () => {
           </select>
         }
         <input type='text' className='form-control mt-7' placeholder='הערה' value={note} onChange={e=>setNote(e.target.value)} />
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "100px", cursor: "pointer" }}>
+        <div className="button-parent-div">
         <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             id='exit_time_button'
             disabled={!buttonActions.allowAbsenceAllDay}
@@ -347,11 +340,11 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
             {hebrewButtons.ButtonAbsenceAllDay}
           </button>
           <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             id='exit_time_button'
             disabled={!buttonActions.allowAbsenceStart}
@@ -365,13 +358,13 @@ const DashboardPage: FC = () => {
               }
               handleAPIForAttendance(endPoint,data);
             }}
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
               {activeRow==='absence' && latestStartTime!==null ? latestStartTime : hebrewButtons.ButtonAbsenceStart }
            
             {/* {hebrewButtons.ButtonAbsenceStart} */}
           </button>
           <button
-            style={{ marginLeft: '100px' }}
+            
             type='submit'
             disabled={!buttonActions.allowAbsenceEnd}
             onClick={e=>{
@@ -384,7 +377,7 @@ const DashboardPage: FC = () => {
               handleAPIForAttendance(endPoint,data);
             }}
             id='exit_time_button'
-            className='btn btn-lg btn-secondary w-170-px mb-5'>
+            className='btn btn-lg btn-secondary w-170-px mb-5 ml-xl-100'>
             {hebrewButtons.ButtonAbsenceEnd}
           </button>
 
@@ -412,9 +405,6 @@ const DashboardPage: FC = () => {
       if(property!=="id"){
         if((obj[property]!==null && obj[property]!=="")){
           exists=true;
-        }else{
-          obj[property]='N/A';
-          console.log({property1:property})
         }
       }
      
@@ -426,10 +416,19 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      const { result, message,existingData, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
+      const { result, message,existingData,absenceCode,workActivityCode, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
       setResponseStatus(result);
       setActiveTab(rowType);
+   
       setCurrentDate(currentDate);
+      if(workActivityCode){
+        setSelectedOption(workActivityCode);
+      }else{
+        setSelectedOption(workActivityItems[0].id)
+      }
+      if(absenceCode){
+        setActiveAbsenceType(absenceCode)
+      }
       let exData=filterExistingData(existingData);
       setExistingData(exData|| []);
       setCurrentStatus(currentStatus);
@@ -444,7 +443,6 @@ const DashboardPage: FC = () => {
         // eslint-disable-next-line no-lone-blocks
         if (workActivityItems && workActivityItems.length) {
           setWorkActivityCodeItems(workActivityItems)
-          setSelectedOption(workActivityItems[0].id)
         }
       }
       setResponseMessage(message)
@@ -455,6 +453,7 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
+      console.log({dataApi:data})
       const {absenceTypes,buttonHebrewTexts,banks,}=data;
       localStorage.setItem('absenceTypes',JSON.stringify(absenceTypes));
       localStorage.setItem('buttonHebrewTexts',JSON.stringify(buttonHebrewTexts));
@@ -510,7 +509,7 @@ const getSelectedClass =(id:any)=>{
   }
 }
   return <>
-    <div className='main-container-dashboard'>
+    <div style={{height:'auto'}} className='main-container-dashboard'>
       <ul style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer"}} className="nav nav-tabs nav-tabs-line mb-7">
       {tabs.length && tabs.map(({name,id,label})=>{
         // ${name.charAt(0).toUpperCase()+name.slice(1)}
@@ -529,9 +528,13 @@ const getSelectedClass =(id:any)=>{
         <p>{`נוכחות יומית : ${currentDate}`}</p>
         <p>{`סטטוס נוכחי : ${currentStatus}`}</p>
       </div>
-       {getSelectedTabData(activeTab)}
+      {getSelectedTabData(activeTab)}
+      {
+        existingData.length > 0 ?
+          <DataTable data={existingData} columns={tableColumns} striped theme="solarized" />
+          : ""
+      }
 
-     <DataTable data={existingData} columns={tableColumns} striped theme="solarized" />
       {responseMessage && <div
         style={{
           background: responseStatus ? '#4CAF50' : '#EF5350',
@@ -570,7 +573,7 @@ export { DashboardWrapper }
           </button> */}
 
           // <button
-          //   style={{ marginLeft: '100px' }}
+          //   
           //   // onClick={() => {
           //   //   if (selectedOption && startTime != null) {
           //   //     saveEndShiftTiming()
