@@ -2,11 +2,13 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import axios from 'axios'
+import moment from 'moment'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { PageTitle } from '../../../_metronic/layout/core'
 import './tabs.css'
 const DashboardPage: FC = () => {
-
+  const todaysDate = moment( new Date()).format("YYYY-MM-DD");
+  console.log({todaysDate})
   const [responseMessage, setResponseMessage] = useState('');
   const [note, setNote] = useState('');
   const [isStartDisabled, setStartDisabled] = useState(false);
@@ -199,6 +201,7 @@ const DashboardPage: FC = () => {
               let endPoint=endPoints.ButtonFullSickDay;
               let data={
                 workActivityNote:note,
+                date:todaysDate
               }
               handleAPIForAttendance(endPoint,data);
             }}
@@ -216,6 +219,7 @@ const DashboardPage: FC = () => {
               let endPoint=endPoints.ButtonSickStart;
               let data={
                 workActivityNote:note,
+                date:todaysDate
               }
               handleAPIForAttendance(endPoint,data);
             }}
@@ -232,6 +236,7 @@ const DashboardPage: FC = () => {
               e.preventDefault();
               let endPoint=endPoints.exitAnyEntranceAPI;
               let data={
+                date:todaysDate
               }
               handleAPIForAttendance(endPoint,data);
             }}
@@ -275,7 +280,8 @@ const DashboardPage: FC = () => {
               let endPoint=endPoints.ButtonAttendanceStart;
               let data={
                 workActivityCode:selectedOption,
-                workActivityNote:note
+                workActivityNote:note,
+                date:todaysDate
               }
               handleAPIForAttendance(endPoint,data);
             }}
@@ -336,6 +342,7 @@ const DashboardPage: FC = () => {
               let endPoint=endPoints.ButtonFullAbsenceDay;
               let data={
                 absenceCode:activeAbsenceType,
+                date:todaysDate
                 // workActivityNote:note
               }
               handleAPIForAttendance(endPoint,data);
@@ -353,6 +360,7 @@ const DashboardPage: FC = () => {
               let endPoint=endPoints.ButtonAbsenceStart;
               let data={
                 absenceCode:activeAbsenceType,
+                date:todaysDate
                 // workActivityNote:note
               }
               handleAPIForAttendance(endPoint,data);
@@ -389,7 +397,7 @@ const DashboardPage: FC = () => {
     setActiveAbsenceType(e.target.value)
   }
   const filterExistingData =(data:any) =>{
-      return data.filter((item:any)=>{
+      return data?.filter((item:any)=>{
         if(isDataExist(item)){
           return item;
         }
@@ -414,7 +422,7 @@ const DashboardPage: FC = () => {
     return exists;
   }
   const getDailyAttendance = async () => {
-    const response = await axios.post(getDailyAttendanceEndpoint, {}, headerJson)
+    const response = await axios.post(getDailyAttendanceEndpoint, {date:todaysDate}, headerJson)
 
     if (response && response.data) {
       const { data } = response;
