@@ -416,10 +416,19 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      const { result, message,existingData, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
+      const { result, message,existingData,absenceCode,workActivityCode, currentDate,currentStatus , latestStartTime,rowType, latestEndTime, workActivityItems,allowAbsenceAllDay,allowAbsenceEnd,allowAbsenceStart,allowAttendanceEnd,allowAttendanceStart,allowSickAllDay,allowSickEnd,allowSickStart } = data;
       setResponseStatus(result);
       setActiveTab(rowType);
+   
       setCurrentDate(currentDate);
+      if(workActivityCode){
+        setSelectedOption(workActivityCode);
+      }else{
+        setSelectedOption(workActivityItems[0].id)
+      }
+      if(absenceCode){
+        setActiveAbsenceType(absenceCode)
+      }
       let exData=filterExistingData(existingData);
       setExistingData(exData|| []);
       setCurrentStatus(currentStatus);
@@ -434,7 +443,6 @@ const DashboardPage: FC = () => {
         // eslint-disable-next-line no-lone-blocks
         if (workActivityItems && workActivityItems.length) {
           setWorkActivityCodeItems(workActivityItems)
-          setSelectedOption(workActivityItems[0].id)
         }
       }
       setResponseMessage(message)
@@ -501,7 +509,7 @@ const getSelectedClass =(id:any)=>{
   }
 }
   return <>
-    <div className='main-container-dashboard'>
+    <div style={{height:'auto'}} className='main-container-dashboard'>
       <ul style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer"}} className="nav nav-tabs nav-tabs-line mb-7">
       {tabs.length && tabs.map(({name,id,label})=>{
         // ${name.charAt(0).toUpperCase()+name.slice(1)}
