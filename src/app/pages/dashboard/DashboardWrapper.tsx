@@ -6,9 +6,9 @@ import moment from 'moment'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { PageTitle } from '../../../_metronic/layout/core'
 import './tabs.css'
+import './table.css'
 const DashboardPage: FC = () => {
   const todaysDate = moment( new Date()).format("YYYY-MM-DD");
-  console.log({todaysDate})
   const [responseMessage, setResponseMessage] = useState('');
   const [note, setNote] = useState('');
   const [isStartDisabled, setStartDisabled] = useState(false);
@@ -160,7 +160,6 @@ const DashboardPage: FC = () => {
     const response = await axios.post(`${baseUrl}${endPoint}`, dataToSend, headerJson);
     if(response && response.data){
       const {data}=response;
-      console.log({data})
       if(data.result===false){
         return alert(data.message)
       }
@@ -401,7 +400,6 @@ const DashboardPage: FC = () => {
   const isDataExist =(obj:any) =>{
     let exists=false;
     for(let property in obj){
-      console.log({property});
       if(property!=="id"){
         if((obj[property]!==null && obj[property]!=="")){
           exists=true;
@@ -453,7 +451,6 @@ const DashboardPage: FC = () => {
 
     if (response && response.data) {
       const { data } = response;
-      console.log({dataApi:data})
       const {absenceTypes,buttonHebrewTexts,banks,}=data;
       localStorage.setItem('absenceTypes',JSON.stringify(absenceTypes));
       localStorage.setItem('buttonHebrewTexts',JSON.stringify(buttonHebrewTexts));
@@ -529,12 +526,58 @@ const getSelectedClass =(id:any)=>{
         <p>{`סטטוס נוכחי : ${currentStatus}`}</p>
       </div>
       {getSelectedTabData(activeTab)}
-      {
+      {/* {
         existingData.length > 0 ?
           <DataTable data={existingData} columns={tableColumns} striped theme="solarized" />
           : ""
+      } */}
+      {/* Table Custom */}
+
+
+      {
+        existingData.length > 0 ?
+          <table dir="rtl">
+            <thead>
+              <tr>
+                <th role="columnheader">פעילות</th>
+                <th role="columnheader">שעת התחלה</th>
+                <th role="columnheader"> שעת סיום</th>
+                <th role="columnheader">סוג היעדרות</th>
+                <th role="columnheader">הערה לפעילות</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+
+                existingData.map((item: any) => {
+                  return (
+
+                    <tr role="row">
+                      <td data-content=">פעילות">{item.activity}</td>
+                      <td data-content=">שעת התחלה">
+                        <div className="media ">
+                          <div className="bd">
+                            {item.startTime}
+                          </div>
+                        </div>
+                      </td>
+                      <td role="cell" data-content=" שעת סיום">{item.startTime}</td>
+                      <td role="cell" data-content="סוג היעדרות">{item.endTime}</td>
+                      <td role="cell" data-content="סוג היעדרות">{item.absenceName}</td>
+                      <td role="cell" data-content="הערה לפעילות">{item.note}</td>
+                    </tr>
+
+                  )
+                })
+              }
+
+            </tbody>
+          </table>
+          : ''
+
       }
 
+      {/* Table Custom End */}
       {responseMessage && <div
         style={{
           background: responseStatus ? '#4CAF50' : '#EF5350',
