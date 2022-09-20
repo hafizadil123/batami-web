@@ -1,0 +1,96 @@
+
+.media, .bd {
+    overflow: hidden;
+    _overflow: visible;
+    zoom: 1;
+}
+.media .img {
+    float: left;
+    margin-right: 8px;
+}
+.media .img img {
+    display: block;
+    border-radius: 50%;
+    width: 56px;
+}
+.media .imgExt {
+    float: right;
+    margin-left: 10px;
+}
+[dir="rtl"] .media .img {
+    float: right;
+    margin-right: 0;
+    margin-left: 8px;
+}
+.icon__delete {
+    font-size: 16px;
+    transition: none;
+}
+.icon__delete:hover {
+    display: inline-block;
+    color: #db2d42;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table th, table td {
+    position: relative;
+    padding: 8px;
+}
+table th {
+    text-transform: uppercase;
+    text-align: left;
+    font-weight: 400;
+}
+table tr {
+    position: relative;
+    border-bottom: 1px solid #c1c3c6;
+}
+table tr:hover .table__options {
+    right: 0;
+    opacity: 1;
+}
+table .table__options {
+    position: relative;
+    right: -8px;
+    opacity: 0;
+}
+table tr.is-deleted {
+    background: #f5c0c6;
+}
+@media (max-width: 640px) {
+    table thead {
+        display: none;
+   }
+    table tbody td {
+        position: relative;
+        display: block;
+        padding-left: 50%;
+   }
+    table tbody td:before {
+        position: absolute;
+        left: 0;
+        display: block;
+        width: 49%;
+        padding: 0 8px;
+        content: attr(data-content);
+        font-weight: 400;
+        text-transform: uppercase;
+   }
+    table[dir="rtl"] thead th {
+        align: right;
+   }
+    table[dir="rtl"] tbody td {
+        padding-left: 0;
+        padding-right: 50%;
+   }
+    table[dir="rtl"] tbody td:before {
+        left: auto;
+        right: 0;
+   }
+}
+table[dir="rtl"] thead th {
+    text-align: right;
+}
