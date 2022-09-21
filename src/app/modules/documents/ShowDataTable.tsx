@@ -10,6 +10,16 @@ type Props = {
 }
 
 const ShowDataTable: React.FC<Props> = ({className,listData,showDocumentEndpoint}) => {
+  const inputLabels ={
+    labelCategoryType:"קטגוריית מסמך",// "Category Type",
+    documentType:"סוג מסמך", //"Document Type",
+    description:"תיאור מסמך",
+    link:"קישור",
+    isApproved:"האם מאושר",
+    isDeclined:"האם נדחה",
+    uploaded:"ת.התחלת טיפול",
+    actionDate:"ת.פעולה"
+}
   return (
     <div className={`card ${className}`}>
 
@@ -22,13 +32,13 @@ const ShowDataTable: React.FC<Props> = ({className,listData,showDocumentEndpoint
             {/* begin::Table head */}
             <thead>
               <tr className='fw-bolder text-muted'>
-                <TableHeadView className="min-w-150px" text={'DocType'} />
-                <TableHeadView className="min-w-150px" text="Description" />
-                <TableHeadView className="min-w-150px" text="Link" />
-                <TableHeadView className="" text="IsApproved" />
-                <TableHeadView className="" text="IsDeclined" />
-                <TableHeadView className="min-w-150px" text="Uploaded" />
-                <TableHeadView className="min-w-150px" text="ActionDate" />
+                <TableHeadView className="min-w-150px" text={inputLabels.documentType} />
+                <TableHeadView className="min-w-150px" text={inputLabels.description} />
+                <TableHeadView className="min-w-150px" text={inputLabels.link} />
+                <TableHeadView className="" text={inputLabels.isApproved} />
+                <TableHeadView className="" text={inputLabels.isDeclined} />
+                <TableHeadView className="min-w-150px" text={inputLabels.uploaded} />
+                <TableHeadView className="min-w-150px" text={inputLabels.actionDate}/>
               </tr>
             </thead>
             {/* end::Table head */}

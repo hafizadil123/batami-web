@@ -6,7 +6,7 @@ import moment from 'moment'
 import DataTable, { createTheme } from 'react-data-table-component';
 import { PageTitle } from '../../../_metronic/layout/core'
 import './tabs.css'
-import './table.css'
+import {ShowDataTable} from './ShowDataTable'
 const DashboardPage: FC = () => {
   const todaysDate = moment( new Date()).format("YYYY-MM-DD");
   const [responseMessage, setResponseMessage] = useState('');
@@ -536,43 +536,7 @@ const getSelectedClass =(id:any)=>{
 
       {
         existingData.length > 0 ?
-          <table dir="rtl">
-            <thead>
-              <tr>
-                <th role="columnheader">פעילות</th>
-                <th role="columnheader">שעת התחלה</th>
-                <th role="columnheader"> שעת סיום</th>
-                <th role="columnheader">סוג היעדרות</th>
-                <th role="columnheader">הערה לפעילות</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-
-                existingData.map((item: any) => {
-                  return (
-
-                    <tr role="row">
-                      <td data-content=">פעילות">{item.activity}</td>
-                      <td data-content=">שעת התחלה">
-                        <div className="media ">
-                          <div className="bd">
-                            {item.startTime}
-                          </div>
-                        </div>
-                      </td>
-                      <td role="cell" data-content=" שעת סיום">{item.startTime}</td>
-                      <td role="cell" data-content="סוג היעדרות">{item.endTime}</td>
-                      <td role="cell" data-content="סוג היעדרות">{item.absenceName}</td>
-                      <td role="cell" data-content="הערה לפעילות">{item.note}</td>
-                    </tr>
-
-                  )
-                })
-              }
-
-            </tbody>
-          </table>
+       <ShowDataTable  className='mb-5 mb-xl-8 xl-10' listData={existingData} />
           : ''
 
       }
