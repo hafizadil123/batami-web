@@ -44,6 +44,9 @@
     .button-parent-div {
         display: block;
     }
+    .nav-item {
+        margin-bottom: 16px !important;
+    }
     .ml-xl-100 {
         margin-left: 0px;
     }
