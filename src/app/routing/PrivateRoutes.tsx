@@ -1,14 +1,14 @@
-import { lazy, FC, Suspense } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
-import { MasterLayout } from '../../_metronic/layout/MasterLayout'
+import {lazy, FC, Suspense} from 'react'
+import {Route, Routes, Navigate} from 'react-router-dom'
+import {MasterLayout} from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
-import { DashboardWrapper } from '../pages/dashboard/DashboardWrapper'
-import { MenuTestPage } from '../pages/MenuTestPage'
-import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
-import { ChangePassword1 } from '../modules/ChangePassword'
-import { UserDetailsPage } from '../modules/user-details'
-import { AdminInterface } from '../modules/admin-interface'
-import { HebrewBirthDate } from '../modules/hebrew-birth-date'
+import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
+import {MenuTestPage} from '../pages/MenuTestPage'
+import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
+import {ChangePassword1} from '../modules/ChangePassword'
+import {UserDetailsPage} from '../modules/user-details'
+import {AdminInterface} from '../modules/admin-interface'
+import {HebrewBirthDate} from '../modules/hebrew-birth-date'
 
 const PrivateRoutes = () => {
   const BuilderPageWrapper = lazy(() => import('../pages/layout-builder/BuilderPageWrapper'))
@@ -17,6 +17,7 @@ const PrivateRoutes = () => {
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const DailyAttendancePage = lazy(() => import('../modules/main-attendance'))
+  const AttendanceDetailsPage = lazy(() => import('../modules/attendance-details'))
   const DocumentsPage = lazy(() => import('../modules/documents'))
   const UploadDocumentSection = lazy(() => import('../modules/upload-document'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
@@ -33,6 +34,7 @@ const PrivateRoutes = () => {
         <Route path='profile/*' element={<ChangePassword1 />} />
         <Route path='/user-details' element={<UserDetailsPage />} />
         <Route path='/main-attendance' element={<DailyAttendancePage />} />
+        <Route path='/attendance-details' element={<AttendanceDetailsPage />} />
         <Route path='/documents' element={<DocumentsPage />} />
         <Route path='/upload-document' element={<UploadDocumentSection />} />
         {/* <Route path='/admin-interface' element={<HebrewBirthDate />} /> */}
@@ -85,7 +87,7 @@ const PrivateRoutes = () => {
   )
 }
 
-const SuspensedView: FC = ({ children }) => {
+const SuspensedView: FC = ({children}) => {
   const baseColor = getCSSVariableValue('--bs-primary')
   TopBarProgress.config({
     barColors: {
@@ -93,8 +95,8 @@ const SuspensedView: FC = ({ children }) => {
     },
     barThickness: 1,
     shadowBlur: 5,
-  });
+  })
   return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
 }
 
-export { PrivateRoutes }
+export {PrivateRoutes}

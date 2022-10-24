@@ -1,0 +1,15 @@
+export const lables = {
+  comments: 'Lables are horizantly ordered',
+  VolunteerName: 'שם מתנדב',
+  VolunteerNumber: 'מספר מתנדב',
+  IdNumber: 'תעודת זהות',
+  CoordinatorName: 'רכזת',
+  InstituteName: 'מוסד',
+  ReportMonth: 'חודש',
+  TotalWorkTime: 'סיכום שעות אפשריות בחודש',
+  TotalWorkingDays: 'סיכום ימי עבודה שנשמרו',
+  VolunteerWeeklyHours: 'שעות שבועיות של מתנדב',
+  VolunteerWorkTime: 'סה"כ שעות למתנדב החודש',
+  TotalMonthTime: 'סה”כ שעות עבודה בחודש',
+  WorkTimeDiff: 'עודף שעות למתנדב',
+}
