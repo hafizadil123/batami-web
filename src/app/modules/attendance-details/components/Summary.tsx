@@ -39,7 +39,7 @@ const Summary: React.FC<Props> = ({data}) => {
   console.log({sssss: data})
   return (
     <>
-      <div className={`card mb-5 mb-xl-12`} style={{width: '100%'}}>
+      <div className={`card mb-5 col-xl-12`} style={{width: '100%'}}>
         <div className='card-body py-3'>
           {/* begin::Table container */}
           <div className='table-responsive'>

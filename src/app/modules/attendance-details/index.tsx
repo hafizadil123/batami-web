@@ -3,8 +3,10 @@ import axios from 'axios'
 import Modal from 'react-bootstrap/Modal'
 import ReactPaginate from 'react-paginate'
 import Summary from './components/Summary'
+import Table from './components/Table'
 const AttendanceDetails = () => {
-  const [data, setData] = useState([])
+  const [absenceTypes, setAbsenceTypeItems] = useState<any>()
+  const [days, setDays] = useState<any>([])
   const [summaryData, seStummaryData] = useState({
     volunteerName: '',
     volunteerNumber: '',
@@ -26,6 +28,8 @@ const AttendanceDetails = () => {
 
   const baseUrl = process.env.REACT_APP_API_URL
   const getAttendanceSummaryEndpoint = `${baseUrl}/api/Inner/GetMonthlyAttendanceDetails`
+  const getDataEntPoint = `${baseUrl}/api/Inner/GetData`
+
   const authHeader = {
     headers: {
       Authorization: `bearer ${loggedInUserDetails.access_token}`,
@@ -34,7 +38,23 @@ const AttendanceDetails = () => {
 
   useEffect(() => {
     getAttendanceSummary()
+    getAbsenceTypes()
   }, [])
+  // const getDataApi = async () => {
+  //   const response = await axios.post(getDataEntPoint, {}, authHeader)
+
+  //   if (response && response.data) {
+  //     const {data} = response
+  //     const {absenceTypes, buttonHebrewTexts, banks} = data
+  //     setAbsenceTypeItems(absenceTypes)
+  //   }
+  // }
+  const getAbsenceTypes = () => {
+    const s = localStorage.getItem('absenceTypes') || ''
+    const absenceTypes = JSON.parse(s)
+    console.log(absenceTypes)
+    setAbsenceTypeItems(absenceTypes)
+  }
 
   const getAttendanceSummary = async () => {
     let dataToSend = {
@@ -77,6 +97,15 @@ const AttendanceDetails = () => {
         month,
         year,
       })
+      let newDays = data.days.map((day: any) => {
+        return {
+          ...day,
+          itemCount: 1,
+          currentCount: 1,
+        }
+      })
+      console.log({newDays})
+      setDays(newDays)
     }
   }
 
@@ -90,15 +119,9 @@ const AttendanceDetails = () => {
           boxShadow: '0 0px 10px rgb(0 0 0 / 20%)',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            background: '#fff',
-          }}
-        >
+        <div className='row'>
           <Summary data={summaryData} />
+          <Table days={days} absenceTypes={absenceTypes} />
         </div>
       </div>
     </>
