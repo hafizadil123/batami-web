@@ -11,6 +11,7 @@ type Props = {
     value: any,
     value2: any
   ) => any
+  updateCount: (date: any) => any
 }
 
 const Table: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const Table: React.FC<Props> = ({
   absenceTypes,
   updateDataHandler,
   updateWorkActivitItemsHandler,
+  updateCount,
 }) => {
   return (
     <>
@@ -81,6 +83,7 @@ const Table: React.FC<Props> = ({
                         startTime5={day.startTime5}
                         currentCount={day.currentCount}
                         itemCount={day.itemCount}
+                        updateCount={updateCount}
                       />
                       <TableDataViewForEndTime
                         updateDataHandler={updateDataHandler}
@@ -209,17 +212,23 @@ const TableDataViewForAbsenceTypes = (props: any) => {
 }
 const TableDataViewForNote = (props: any) => {
   const {notes, updateDataHandler, date} = props
-
+  const [notesLocal, setNotes] = useState('')
+  useEffect(() => {
+    setNotes(notes)
+  }, [notes])
   const renderFields = () => {
     return (
       <>
         <input
           type='text'
           className='form-control-sm'
-          value={notes}
+          value={notesLocal}
           onChange={(e) => {
-            updateDataHandler(date, 'notes', e.target.value)
-            console.log(e.target.value)
+            setNotes(e.target.value)
+          }}
+          onBlur={() => {
+            updateDataHandler(date, 'notes', notesLocal)
+            console.log(notesLocal)
           }}
         />
       </>
@@ -293,6 +302,7 @@ const TableDataViewForStartTime = (props: any) => {
     startTime5,
     updateDataHandler,
     date,
+    updateCount,
   } = props
   const renderFields = () => {
     switch (itemCount) {
@@ -300,15 +310,25 @@ const TableDataViewForStartTime = (props: any) => {
         return (
           <>
             <td className={``}>
-              <input
-                type='time'
-                className='m-1'
-                value={startTime1}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime1', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime1}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime1', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  onClick={(e) => {
+                    updateCount(date)
+                  }}
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
             </td>
           </>
         )
@@ -316,24 +336,41 @@ const TableDataViewForStartTime = (props: any) => {
         return (
           <>
             <td className={``}>
-              <input
-                type='time'
-                className='m-1'
-                value={startTime1}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime1', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                className='m-1'
-                value={startTime2}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime2', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime1}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime1', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime2}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime2', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  onClick={(e) => {
+                    updateCount(date)
+                  }}
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
             </td>
           </>
         )
@@ -341,30 +378,57 @@ const TableDataViewForStartTime = (props: any) => {
         return (
           <>
             <td className={``}>
-              <input
-                type='time'
-                value={startTime1}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime1', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                value={startTime2}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime2', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                value={startTime3}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime3', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime1}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime1', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime2}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime2', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  value={startTime3}
+                  className='m-1 form-control-sm'
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime3', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  onClick={(e) => {
+                    updateCount(date)
+                  }}
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
             </td>
           </>
         )
@@ -372,40 +436,73 @@ const TableDataViewForStartTime = (props: any) => {
         return (
           <>
             <td className={``}>
-              <input
-                type='time'
-                value={startTime1}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime1', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                value={startTime2}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTim2', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                value={startTime3}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime3', e.target.value)
-
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                value={startTime4}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime4', e.target.value)
-
-                  console.log(e.target.value)
-                }}
-              />
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime1}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime1', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime2}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime2', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  value={startTime3}
+                  className='m-1 form-control-sm'
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime3', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime4}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime4', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  onClick={(e) => {
+                    updateCount(date)
+                  }}
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
             </td>
           </>
         )
@@ -413,54 +510,85 @@ const TableDataViewForStartTime = (props: any) => {
         return (
           <>
             <td className={``}>
-              <input
-                type='time'
-                className='m-1'
-                value={startTime1}
-                onChange={(e) => {
-                  console.log('firing')
-                  updateDataHandler(date, 'startTime1', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                className='m-1'
-                value={startTime2}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime2', e.target.value)
-                  console.log(e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                className='m-1'
-                value={startTime3}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime3', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                className='m-1'
-                value={startTime4}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime4', e.target.value)
-                  console.log(e.target.value)
-                }}
-              />
-              <input
-                type='time'
-                className='m-1'
-                value={startTime5}
-                onChange={(e) => {
-                  updateDataHandler(date, 'startTime5', e.target.value)
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime1}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime1', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime2}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime2', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  value={startTime3}
+                  className='m-1 form-control-sm'
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime3', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime4}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime4', e.target.value)
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                >
+                  +
+                </span>
+              </div>
+              <div style={{display: 'flex'}}>
+                <input
+                  type='time'
+                  className='m-1 form-control-sm'
+                  value={startTime5}
+                  onChange={(e) => {
+                    updateDataHandler(date, 'startTime5', e.target.value)
 
-                  console.log(e.target.value)
-                }}
-              />
+                    console.log(e.target.value)
+                  }}
+                />
+                <span
+                  style={{height: '50px', lineHeight: '50px', fontSize: '3rem', cursor: 'pointer'}}
+                ></span>
+              </div>
             </td>
           </>
         )
@@ -469,7 +597,6 @@ const TableDataViewForStartTime = (props: any) => {
   return <>{renderFields()}</>
 }
 const TableDataViewForEndTime = (props: any) => {
-  console.log('end time fired')
   const {
     type,
     className,
@@ -491,7 +618,7 @@ const TableDataViewForEndTime = (props: any) => {
             <td className={``}>
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime1}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime1', e.target.value)
@@ -507,7 +634,7 @@ const TableDataViewForEndTime = (props: any) => {
             <td className={``}>
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime1}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime1', e.target.value)
@@ -516,7 +643,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime2}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime2', e.target.value)
@@ -532,6 +659,7 @@ const TableDataViewForEndTime = (props: any) => {
             <td className={``}>
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime1}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime1', e.target.value)
@@ -540,6 +668,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime2}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime2', e.target.value)
@@ -548,6 +677,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime3}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime3', e.target.value)
@@ -563,6 +693,7 @@ const TableDataViewForEndTime = (props: any) => {
             <td className={``}>
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime1}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime1', e.target.value)
@@ -571,6 +702,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime2}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime2', e.target.value)
@@ -579,6 +711,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime3}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime3', e.target.value)
@@ -588,6 +721,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
+                className='m-1 form-control-sm'
                 value={endTime4}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime4', e.target.value)
@@ -604,17 +738,16 @@ const TableDataViewForEndTime = (props: any) => {
             <td className={``}>
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime1}
                 onChange={(e) => {
-                  console.log('firing')
                   updateDataHandler(date, 'endTime1', e.target.value)
                   console.log(e.target.value)
                 }}
               />
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime2}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime2', e.target.value)
@@ -624,7 +757,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime3}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime3', e.target.value)
@@ -633,7 +766,7 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime4}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime4', e.target.value)
@@ -642,11 +775,10 @@ const TableDataViewForEndTime = (props: any) => {
               />
               <input
                 type='time'
-                className='m-1'
+                className='m-1 form-control-sm'
                 value={endTime5}
                 onChange={(e) => {
                   updateDataHandler(date, 'endTime5', e.target.value)
-
                   console.log(e.target.value)
                 }}
               />
@@ -733,6 +865,153 @@ const TableDataViewForWorkActivityItems = (props: any) => {
                     date,
                     'workActivity2',
                     'workActivityName2',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+            </td>
+          </>
+        )
+      case 3:
+        return (
+          <>
+            <td>
+              <select
+                value={workActivity1}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity1',
+                    'workActivityName1',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+              <select
+                value={workActivity2}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity2',
+                    'workActivityName2',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+              <select
+                value={workActivity3}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity3',
+                    'workActivityName3',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+            </td>
+          </>
+        )
+      case 4:
+        return (
+          <>
+            <td>
+              <select
+                value={workActivity1}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity1',
+                    'workActivityName1',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+              <select
+                value={workActivity2}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity2',
+                    'workActivityName2',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+              <select
+                value={workActivity3}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity3',
+                    'workActivityName3',
+                    e.target.value,
+                    activityName
+                  )
+                }}
+                className='form-control-sm'
+              >
+                {workActivityItems?.map((item: any) => {
+                  return <option value={item.id}> {item.name}</option>
+                })}
+              </select>
+              <select
+                value={workActivity4}
+                onChange={(e) => {
+                  const value = e.target.value
+                  const activityName = getActivityName(value)
+                  updateWorkActivitItemsHandler(
+                    date,
+                    'workActivity4',
+                    'workActivityName4',
                     e.target.value,
                     activityName
                   )
@@ -863,7 +1142,24 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
     date,
     updateDataHandler,
   } = props
-
+  const [workActivityNoteLocal1, setWorkAcivityNote1] = useState('')
+  const [workActivityNoteLocal2, setWorkAcivityNote2] = useState('')
+  const [workActivityNoteLocal3, setWorkAcivityNote3] = useState('')
+  const [workActivityNoteLocal4, setWorkAcivityNote4] = useState('')
+  const [workActivityNoteLocal5, setWorkAcivityNote5] = useState('')
+  useEffect(() => {
+    setWorkAcivityNote1(workActivityNote1)
+    setWorkAcivityNote2(workActivityNote2)
+    setWorkAcivityNote3(workActivityNote3)
+    setWorkAcivityNote4(workActivityNote4)
+    setWorkAcivityNote5(workActivityNote5)
+  }, [
+    workActivityNote1,
+    workActivityNote2,
+    workActivityNote3,
+    workActivityNote4,
+    workActivityNote5,
+  ])
   const renderFields = () => {
     switch (itemCount) {
       case 1:
@@ -873,10 +1169,13 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote1}
+                value={workActivityNoteLocal1}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote1', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote1(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote1', workActivityNoteLocal1)
+                  console.log(workActivityNoteLocal1)
                 }}
               />
             </td>
@@ -889,19 +1188,25 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote1}
+                value={workActivityNoteLocal1}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote1', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote1(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote1', workActivityNoteLocal1)
+                  console.log(workActivityNoteLocal1)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote2}
+                value={workActivityNoteLocal2}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote2', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote2(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote2', workActivityNoteLocal2)
+                  console.log(workActivityNoteLocal2)
                 }}
               />
             </td>
@@ -914,28 +1219,37 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote1}
+                value={workActivityNoteLocal1}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote1', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote1(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote1', workActivityNoteLocal1)
+                  console.log(workActivityNoteLocal1)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote2}
+                value={workActivityNoteLocal2}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote2', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote2(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote2', workActivityNoteLocal2)
+                  console.log(workActivityNoteLocal2)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote3}
+                value={workActivityNoteLocal3}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote3', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote3(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote3', workActivityNoteLocal3)
+                  console.log(workActivityNoteLocal3)
                 }}
               />
             </td>
@@ -948,37 +1262,49 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote1}
+                value={workActivityNoteLocal1}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote1', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote1(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote1', workActivityNoteLocal1)
+                  console.log(workActivityNoteLocal1)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote2}
+                value={workActivityNoteLocal2}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote2', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote2(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote2', workActivityNoteLocal2)
+                  console.log(workActivityNoteLocal2)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote3}
+                value={workActivityNoteLocal3}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote3', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote3(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote3', workActivityNoteLocal3)
+                  console.log(workActivityNoteLocal3)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote4}
+                value={workActivityNoteLocal4}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote4', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote4(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote4', workActivityNoteLocal4)
+                  console.log(workActivityNoteLocal4)
                 }}
               />
             </td>
@@ -991,46 +1317,61 @@ const TableDataViewForWorkActivityNotes = (props: any) => {
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote1}
+                value={workActivityNoteLocal1}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote1', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote1(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote1', workActivityNoteLocal1)
+                  console.log(workActivityNoteLocal1)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote2}
+                value={workActivityNoteLocal2}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote2', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote2(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote2', workActivityNoteLocal2)
+                  console.log(workActivityNoteLocal2)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote3}
+                value={workActivityNoteLocal3}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote3', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote3(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote3', workActivityNoteLocal3)
+                  console.log(workActivityNoteLocal3)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote4}
+                value={workActivityNoteLocal4}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote4', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote4(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote4', workActivityNoteLocal4)
+                  console.log(workActivityNoteLocal4)
                 }}
               />
               <input
                 type='text'
                 className='form-control-sm'
-                value={workActivityNote5}
+                value={workActivityNoteLocal5}
                 onChange={(e) => {
-                  updateDataHandler(date, 'workActivityNote5', e.target.value)
-                  console.log(e.target.value)
+                  setWorkAcivityNote5(e.target.value)
+                }}
+                onBlur={(e) => {
+                  updateDataHandler(date, 'workActivityNote5', workActivityNoteLocal5)
+                  console.log(workActivityNoteLocal5)
                 }}
               />
             </td>

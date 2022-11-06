@@ -100,15 +100,47 @@ const AttendanceDetails = (props: any) => {
         year,
       })
       let newDays = data.days.map((day: any) => {
+        const {startTime2, startTime3, startTime4, startTime5} = day
+        const itemCount = getCount(startTime2, startTime3, startTime4, startTime5)
         return {
           ...day,
-          itemCount: 5,
+          itemCount: itemCount,
           currentCount: 5,
         }
       })
       console.log({newDays})
       setDays(newDays)
     }
+  }
+  const getCount = (startTime2: any, startTime3: any, startTime4: any, startTime5: any) => {
+    let count = 1
+    if (startTime2) {
+      count++
+    }
+    if (startTime3) {
+      count++
+    }
+    if (startTime4) {
+      count++
+    }
+    if (startTime5) {
+      count++
+    }
+    return count
+  }
+  const updateCount = (date: string) => {
+    console.log(date, 'update count')
+    const updatedDays = days.map((item: any) => {
+      if (item.date == date) {
+        let newCount = item.itemCount
+        newCount++
+        item.itemCount = newCount
+        return item
+      } else {
+        return item
+      }
+    })
+    setDays(updatedDays)
   }
   const updateDataHandler = (date: any, key: string, value: any) => {
     const updatedDays = days.map((item: any) => {
@@ -178,6 +210,7 @@ const AttendanceDetails = (props: any) => {
             absenceTypes={absenceTypes}
             updateDataHandler={updateDataHandler}
             updateWorkActivitItemsHandler={updateWorkActivitItemsHandler}
+            updateCount={updateCount}
           />
         </div>
       </div>
