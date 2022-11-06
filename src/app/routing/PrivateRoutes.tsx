@@ -34,7 +34,7 @@ const PrivateRoutes = () => {
         <Route path='profile/*' element={<ChangePassword1 />} />
         <Route path='/user-details' element={<UserDetailsPage />} />
         <Route path='/main-attendance' element={<DailyAttendancePage />} />
-        <Route path='/attendance-details' element={<AttendanceDetailsPage />} />
+        <Route path='/attendance-details/:month/:year' element={<AttendanceDetailsPage />} />
         <Route path='/documents' element={<DocumentsPage />} />
         <Route path='/upload-document' element={<UploadDocumentSection />} />
         {/* <Route path='/admin-interface' element={<HebrewBirthDate />} /> */}

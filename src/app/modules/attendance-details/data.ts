@@ -20,7 +20,7 @@ export const TableLabels = {
   endTime: 'endTime',
   starTime: 'starTime',
   extraActivities: 'extraActivities',
-  workActivity1: 'workActivity1',
+  workActivity1: 'workActivity',
   workActivityNote1: 'workActivityNote1',
   absenceType: 'absenceType',
   isSickDay: 'isSickDay',

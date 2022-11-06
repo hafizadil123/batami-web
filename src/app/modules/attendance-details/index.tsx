@@ -4,7 +4,9 @@ import Modal from 'react-bootstrap/Modal'
 import ReactPaginate from 'react-paginate'
 import Summary from './components/Summary'
 import Table from './components/Table'
-const AttendanceDetails = () => {
+import {useParams} from 'react-router-dom'
+import moment from 'moment'
+const AttendanceDetails = (props: any) => {
   const [absenceTypes, setAbsenceTypeItems] = useState<any>()
   const [days, setDays] = useState<any>([])
   const [summaryData, seStummaryData] = useState({
@@ -35,7 +37,7 @@ const AttendanceDetails = () => {
       Authorization: `bearer ${loggedInUserDetails.access_token}`,
     },
   }
-
+  let {month, year} = useParams()
   useEffect(() => {
     getAttendanceSummary()
     getAbsenceTypes()
@@ -58,8 +60,8 @@ const AttendanceDetails = () => {
 
   const getAttendanceSummary = async () => {
     let dataToSend = {
-      month: 9,
-      year: 2022,
+      month,
+      year,
     }
     const response = await axios.post(getAttendanceSummaryEndpoint, dataToSend, authHeader)
     if (response && response.data.result) {
@@ -100,13 +102,63 @@ const AttendanceDetails = () => {
       let newDays = data.days.map((day: any) => {
         return {
           ...day,
-          itemCount: 1,
-          currentCount: 1,
+          itemCount: 5,
+          currentCount: 5,
         }
       })
       console.log({newDays})
       setDays(newDays)
     }
+  }
+  const updateDataHandler = (date: any, key: string, value: any) => {
+    const updatedDays = days.map((item: any) => {
+      if (item.date == date) {
+        console.log({date, key, value})
+        console.log('found')
+        item[key] = value
+        return item
+      } else {
+        return item
+      }
+    })
+    setDays(updatedDays)
+  }
+  const getTimeDifference = () => {
+    var startTime: any = moment('01:16', 'HH:mm')
+    var endTime: any = moment('18:12', 'HH:mm')
+    var duration: any = moment.duration(endTime.diff(startTime))
+    var hours = parseInt(duration.asHours())
+    var minutes = parseInt(duration.asMinutes()) - hours * 60
+    console.log(hours + ' hour and ' + minutes + ' minutes.')
+    return hours + ':' + minutes
+  }
+  function addTimes(times: any) {
+    let duration = 0
+    times.forEach((time: any) => {
+      duration = duration + moment.duration(time).as('milliseconds')
+    })
+    return moment.utc(duration).format('HH:mm')
+  }
+
+  const updateWorkActivitItemsHandler = (
+    date: any,
+    key1: string,
+    key2: string,
+    value: any,
+    value2: any
+  ) => {
+    const updatedDays = days.map((item: any) => {
+      if (item.date == date) {
+        console.log({date, key1, key2, value, value2})
+        console.log('found')
+        item[key1] = value
+        item[key2] = value2
+        return item
+      } else {
+        return item
+      }
+    })
+    setDays(updatedDays)
   }
 
   return (
@@ -121,7 +173,12 @@ const AttendanceDetails = () => {
       >
         <div className='row'>
           <Summary data={summaryData} />
-          <Table days={days} absenceTypes={absenceTypes} />
+          <Table
+            days={days}
+            absenceTypes={absenceTypes}
+            updateDataHandler={updateDataHandler}
+            updateWorkActivitItemsHandler={updateWorkActivitItemsHandler}
+          />
         </div>
       </div>
     </>
